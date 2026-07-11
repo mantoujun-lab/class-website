@@ -154,6 +154,7 @@
     box-shadow: $shadow-card;
     border-radius: $radius-md;
     text-align: left;
+    transition: transform $transition-fast, box-shadow $transition-fast;
 
     .card-info {
         display: flex;

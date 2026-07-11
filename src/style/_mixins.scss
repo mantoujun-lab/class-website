@@ -25,8 +25,9 @@
 }
 
 // 卡片悬停上浮效果（替代原 %hover-lift 占位符，支持跨编译单元复用）
+// 注：transition 由调用方自行定义（因为不同卡片可能需要不同的过渡属性）
+// 本 mixin 仅提供 hover 时的 transform 和 box-shadow 变化
 @mixin hover-lift {
-    transition: transform $transition-fast, box-shadow $transition-fast;
     will-change: transform;
 
     &:hover {

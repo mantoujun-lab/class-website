@@ -57,7 +57,24 @@
 {% macro cardBody(title, content, url="", btnText="查看", btnStyleAttr="") %}
 <div class="card-title">{{ title }}</div>
 <div class="card-content">{{ content }}</div>
-<a class="card-btn" href="{{ url }}"{% if btnStyleAttr %} style="{{ btnStyleAttr }}"{% endif %}>{{ btnText }}</a>
+<a class="card-btn" href="{{ url }}"{% if btnStyleAttr %}style="{{ btnStyleAttr }}"{% endif %}>{{ btnText }}</a>
+{% endmacro %}
+
+{# --- 内部公共卡片渲染逻辑（card 和 cardFull 共用） -------
+通过 className 参数区分卡片类型，避免代码重复 #}
+{% macro _cardBase(className, title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) %}
+{%- set _hasCardCustom = (bgColor or textColor or borderColor or hoverBgColor or hoverBorderColor) -%}
+{%- set _hasBtnCustom = (btnColor or btnTextColor or btnHover or btnBorder or btnBorderHover) -%}
+{%- set _hasCustom = (_hasCardCustom or _hasBtnCustom) -%}
+{%- if _hasCustom %}
+<div><div class="{{ className }}"{% if _hasCardCustom %}style="{{ cardStyle(bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor) }}"{% endif %}>
+    {{ cardBody(title, content, url, btnText, btnStyle(btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) if _hasBtnCustom else "") }}
+</div></div>
+{%- else %}
+<div class="{{ className }}">
+    {{ cardBody(title, content, url, btnText) }}
+</div>
+{%- endif %}
 {% endmacro %}
 
 {# --- 网格中的"格子卡片"（当前即三列卡片） -------------
@@ -73,35 +90,13 @@
 - btnBorder : 按钮边框色，默认空 → 走默认样式
 - btnBorderHover : 按钮 hover 边框色，默认空 → 回落到 btnBorder #}
 {% macro card(title, content, url="", btnText="查看", bgColor="", textColor="", borderColor="", hoverBgColor="", hoverBorderColor="", btnColor="", btnTextColor="", btnHover="", btnBorder="", btnBorderHover="") %}
-{%- set _hasCardCustom = (bgColor or textColor or borderColor or hoverBgColor or hoverBorderColor) -%}
-{%- set _hasBtnCustom = (btnColor or btnTextColor or btnHover or btnBorder or btnBorderHover) -%}
-{%- set _hasCustom = (_hasCardCustom or _hasBtnCustom) -%}
-{%- if _hasCustom %}
-<div><div class="three-column-card"{% if _hasCardCustom %} style="{{ cardStyle(bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor) }}"{% endif %}>
-    {{ cardBody(title, content, url, btnText, btnStyle(btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) if _hasBtnCustom else "") }}
-</div></div>
-{%- else %}
-<div class="three-column-card">
-    {{ cardBody(title, content, url, btnText) }}
-</div>
-{%- endif %}
+{{- _cardBase("three-column-card", title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) -}}
 {% endmacro %}
 
 {# --- 通栏独立卡片（占满整列） --------------------------
 可选参数同 card() #}
 {% macro cardFull(title, content, url="", btnText="查看", bgColor="", textColor="", borderColor="", hoverBgColor="", hoverBorderColor="", btnColor="", btnTextColor="", btnHover="", btnBorder="", btnBorderHover="") %}
-{%- set _hasCardCustom = (bgColor or textColor or borderColor or hoverBgColor or hoverBorderColor) -%}
-{%- set _hasBtnCustom = (btnColor or btnTextColor or btnHover or btnBorder or btnBorderHover) -%}
-{%- set _hasCustom = (_hasCardCustom or _hasBtnCustom) -%}
-{%- if _hasCustom %}
-<div><div class="card-full"{% if _hasCardCustom %} style="{{ cardStyle(bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor) }}"{% endif %}>
-    {{ cardBody(title, content, url, btnText, btnStyle(btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) if _hasBtnCustom else "") }}
-</div></div>
-{%- else %}
-<div class="card-full">
-    {{ cardBody(title, content, url, btnText) }}
-</div>
-{%- endif %}
+{{- _cardBase("card-full", title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) -}}
 {% endmacro %}
 
 {# --- 独立信息卡片（对应设计稿 Card） ------------------
