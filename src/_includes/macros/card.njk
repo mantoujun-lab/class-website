@@ -65,16 +65,11 @@
 {% macro _cardBase(className, title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) %}
 {%- set _hasCardCustom = (bgColor or textColor or borderColor or hoverBgColor or hoverBorderColor) -%}
 {%- set _hasBtnCustom = (btnColor or btnTextColor or btnHover or btnBorder or btnBorderHover) -%}
-{%- set _hasCustom = (_hasCardCustom or _hasBtnCustom) -%}
-{%- if _hasCustom %}
-<div><div class="{{ className }}"{% if _hasCardCustom %}style="{{ cardStyle(bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor) }}"{% endif %}>
-    {{ cardBody(title, content, url, btnText, btnStyle(btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) if _hasBtnCustom else "") }}
-</div></div>
-{%- else %}
-<div class="{{ className }}">
-    {{ cardBody(title, content, url, btnText) }}
+{%- set _cardStyle = cardStyle(bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor) if _hasCardCustom else "" -%}
+{%- set _btnStyle = btnStyle(btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) if _hasBtnCustom else "" -%}
+<div class="{{ className }}"{% if _cardStyle %}style="{{ _cardStyle }}"{% endif %}>
+    {{ cardBody(title, content, url, btnText, _btnStyle) }}
 </div>
-{%- endif %}
 {% endmacro %}
 
 {# --- 网格中的"格子卡片"（当前即三列卡片） -------------

@@ -48,7 +48,23 @@
         </div>
     </article>
     <article>
+        <h2>关于我们</h2>
+        <div align="center">
+            <p>我们是<strong>25级计算机应用1班</strong>，一个由 <strong>37</strong> 名同学组成的小集体</p>
+            {{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgb(200, 255, 200)", textColor="rgb(0, 0, 0)", btnHover="rgb(150, 200, 150)", btnBorder="rgb(150,200, 150)") }}
+        </div>
+    </article>
+    <article>
         {{ content | safe }}
+    </article>
+    {# 友情链接：从 src/index.md 迁出，避免 markdown-it attribute sanitizer 把带 style 的 <a> 转义。
+       在布局里用纯 nunjucks 渲染，不再走 markdown 二次扫描。 #}
+    <article>
+        <h2>友情链接</h2>
+        <div align="center">
+            {{ button("fa-solid fa-smile", "mantoujun12 的个人网站", "https://mantoujun12.github.io") }}
+            {{ button("fa-solid fa-school", "海经校网站", "http://www.hnjjx.com", btnColor="rgb(255, 150, 0)", btnHover="rgb(200, 150, 0)", btnBorder="rgb(200, 150, 0)") }}
+        </div>
     </article>
     {% include "components/footer.njk" %}
     <script type="module" src="{{ '/js/main.js' | url }}"></script>
