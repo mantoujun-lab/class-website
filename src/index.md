@@ -10,7 +10,7 @@ eleventyNavigation:
 {% from "macros/button.njk" import button %}
 {% from "macros/card.njk" import card, cardFull, cardStandalone %}
 
-## 分区
+## 📌 分区
 
 <div class="cardzone-three-columns">
 {%- for entry in collections.zone %}
@@ -26,7 +26,7 @@ eleventyNavigation:
 {{ button("fa-solid fa-arrow-right", "更多分区", "/zone.html") }}
 </div>
 
-## 文章
+## 📰 文章
 
 <div class="card-full-list">
 {%- for entry in collections.article %}
@@ -36,7 +36,7 @@ eleventyNavigation:
 {%- endfor %}
 </div>
 
-## 贡献者
+## 👥 贡献者
 
 <!-- CONTRIBUTORS START -->
 <a href="https://github.com/mantoujun12" title="mantoujun12"><img src="https://avatars.githubusercontent.com/u/202384594?v=4" width="80" alt="mantoujun12"/></a>
