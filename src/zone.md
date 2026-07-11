@@ -1,5 +1,6 @@
 ---
 title: 分区
+description: 你可以在这里找到你需要的专区、链接等内容
 layout: layouts/zone
 eleventyNavigation:
   key: zone
@@ -9,10 +10,6 @@ eleventyNavigation:
 
 {% from "macros/button.njk" import button %}
 {% from "macros/card.njk" import card, cardFull, cardStandalone %}
-
-# 分区
-
-你可以在这里找到你需要的专区、链接等内容
 
 <div class="cardzone-three-columns">
 {%- for entry in collections.zone %}
