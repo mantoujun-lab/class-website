@@ -233,6 +233,7 @@ wikiCategoryOrder: 2
 
 | 类名 | 作用 | 备注 |
 |---|---|---|
+| `header` | 顶层 `<header>` 容器 | 固定顶部，主题色背景（支持自定义，见 7.2） |
 | `.nav-title` | 导航栏左侧站点标题 | 加粗 |
 | `.nav-btns` | 导航按钮组容器 | 移动端变为纵向堆叠 |
 | `.nav-hamburger` | 移动端汉堡菜单图标 | 桌面端 `display: none` |
@@ -243,6 +244,32 @@ wikiCategoryOrder: 2
 | 类名 | 作用 | 备注 |
 |---|---|---|
 | `.nav-drawer-open` | 打开移动端导航抽屉 | 抽屉滑入 + 显示遮罩 |
+
+### 7.2 自定义背景色
+
+通过 `--header-bg` CSS 变量自定义 `<header>` 背景色，未设置时使用主题色 (`--color-primary`)，跟随深浅色主题切换。
+
+支持两种方式（推荐优先用 front matter，仅在 layout 层覆盖时用模板 set）：
+
+**方式 1：markdown front matter**
+
+```yaml
+---
+title: 关于
+headerBg: "#c92a2a"
+---
+```
+
+**方式 2：njk 模板（layout 中）**
+
+```jinja2
+{%- set _headerBg = headerBg or "" -%}
+{#- 或在 layout 中直接 set 后 include: -#}
+{%- set headerBg = "#2b8a3e" %}
+{% include "components/header.njk" %}
+```
+
+> 颜色会作为 `style="--header-bg:...";` 内联到 `<header>` 元素上，并通过 `transition: background` 平滑过渡。
 
 ---
 

@@ -308,6 +308,41 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 
 > **说明**：hover 效果包括卡片整体的背景色变化和边框色变化，按钮也有独立的 hover 效果。所有颜色参数都是可选的，未传入的字段会自动使用主题默认值。
 
+### 12.3 header 自定义背景色
+
+header 导航栏支持两种方式自定义背景颜色，颜色会通过 `--header-bg` CSS 变量设置在 `<header>` 元素上。未设置时使用主题色（`--color-primary`）。
+
+#### 方式 1：在 markdown 的 front matter 中定义
+
+在 markdown 文件的 front matter 里写：
+
+{% raw %}
+```
+---
+title: 我的页面
+headerBg: "#c92a2a"
+---
+```
+{% endraw %}
+
+这样这个页面的导航栏背景就会变成红色。
+
+#### 方式 2：在 njk 模板中定义（在 layout 中）
+
+在 layout 模板中通过 Nunjucks 的 set 标签设置 `headerBg` 变量，再 include 引入 header 组件：
+
+{% raw %}
+```
+{% set headerBg = "#2b8a3e" %}
+{% include "components/header.njk" %}
+```
+{% endraw %}
+
+#### 实现原理
+
+- `src/style/header.scss`：把硬编码的 `$color-primary` 改为 `var(--header-bg, $color-primary)`
+- `src/_includes/components/header.njk`：根据 `headerBg` 变量是否为空，条件性地渲染 `style` 属性
+
 ## 13. 数学公式（如启用 KaTeX）
 
 行内公式：爱因斯坦的质能方程 $E = mc^2$。

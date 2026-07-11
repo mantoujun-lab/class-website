@@ -1,4 +1,21 @@
+{# ============================================================
+   导航栏组件（Header Component）
+   ------------------------------------------------------------
+   背景色支持三种方式自定义（按优先级从高到低）：
+   1. md front matter：定义 `headerBg: "#ff0000"`
+   2. njk 模板：在调用 header 的 layout 中通过 set 设定 `headerBg`
+   3. 不设置则使用主题色（由 --color-primary 提供，跟随深浅色主题）
+   实现原理：
+   - header.scss 中 background 使用 var(--header-bg, $color-primary)
+   - 此处仅当 headerBg 非空时输出 inline style，避免给默认卡片加多余的空 style
+   ============================================================ #}
+{%- set _headerBg = headerBg or "" -%}
+{%- set _headerStyle = ("--header-bg:" + _headerBg + ";") if _headerBg else "" -%}
+{%- if _headerStyle -%}
+<header{% if _headerStyle %}style="{{ _headerStyle }}"{% endif %}></header>
+{%- else -%}
 <header>
+{%- endif -%}
     <input type="checkbox" id="nav-toggle" hidden>
     <div class="nav-title"><a href="/"><i class="fa-solid fa-school" aria-hidden="true"></i></a></div>
     <label for="nav-toggle" class="nav-hamburger"><i class="fa-solid fa-bars" aria-hidden="true"></i></label>

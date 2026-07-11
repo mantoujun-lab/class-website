@@ -5,7 +5,7 @@
 
 header {
     @include flex(row, space-between, center);
-    background-color: $color-primary;
+    background: var(--header-bg, $color-primary);
     border-bottom: $color-nav-accent solid $header-accent-height;
     color: $color-white;
     padding: 0 $header-padding;
@@ -15,6 +15,7 @@ header {
     left: 0;
     right: 0;
     z-index: 100;
+    transition: background $transition-fast;
 }
 
 .nav-title {
