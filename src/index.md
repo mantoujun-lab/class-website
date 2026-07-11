@@ -19,7 +19,7 @@ eleventyNavigation:
 {{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgb(200, 255, 200)", textColor="rgb(0, 0, 0)", btnHover="rgb(150, 200, 150)", btnBorder="rgb(150,200, 150)") }}
 </div>
 
-## 专区入口
+## 分区
 
 <div class="cardzone-three-columns">
 {%- for entry in collections.zone %}
@@ -35,6 +35,16 @@ eleventyNavigation:
 {{ button("fa-solid fa-arrow-right", "更多分区", "/zone.html") }}
 </div>
 
+## 文章
+
+<div class="card-full-list">
+{%- for entry in collections.article %}
+{%- if loop.index <= 15 %}
+{{ cardFull(entry.data.title,entry.data.description or "",entry.url | url,"查看详细信息") }}
+{%- endif %}
+{%- endfor %}
+</div>
+
 ## 贡献者
 
 <!-- CONTRIBUTORS START -->
@@ -46,7 +56,9 @@ eleventyNavigation:
 ## 友情链接
 
 <div align="center">
-{{ button("fa-solid fa-smile", "mantoujun12的个人网站", "https://mantoujun12.github.io") }}
+{{ button("fa-solid fa-smile", "mantoujun12 的个人网站", "https://mantoujun12.github.io") }}
+
+{{ button("fa-solid fa-school", "海经校网站", "http://www.hnjjx.com", btnColor="rgb(255, 150, 0)", btnHover="rgb(200, 150, 0)", btnBorder="rgb(200, 150, 0)") }}
 </div>
 
 ## 卡片信息
