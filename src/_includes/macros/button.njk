@@ -15,6 +15,9 @@
      - btnHover       : 自定义 hover 背景色（选填，未传则保持原背景色不变；想换主题 dark 时仍传 var(--color-primary-dark)）
      - btnBorder      : 自定义边框颜色（选填，留空则走 --border-color-blue）
      - btnBorderHover : 自定义 hover 边框颜色（选填，留空则回落到 btnBorder，再回落则走 --border-color-blue）
+     - target         : HTML 原生 target 属性（选填，留空则不写，即默认 _self）
+                          常见值：_blank（新窗口，宏会自动追加 rel="noopener" 防 tabnabbing）、
+                                  _parent / _top / 任意 frame 名
    用法：
      {% from "macros/button.njk" import button %}
      {{ button("fa-solid fa-play", "Button", "/xxx.html") }}
@@ -22,12 +25,11 @@
      {{ button("fa-solid fa-play", "Button", "/xxx.html", btnColor="#abcdef", textColor="#222", btnHover="#123456") }}
      {{ button("fa-solid fa-play", "Button", "/xxx.html", btnBorder="#e03131") }}
      {{ button("fa-solid fa-play", "Button", "/xxx.html", btnColor="#fff0f0", btnBorder="#e03131") }}
+     {{ button("fa-brands fa-github", "前往项目", "https://github.com/xxx", target="_blank") }}
    ============================================================ #}
 
-{% macro button(icon, label, url="#", btnColor="", textColor="", btnHover="", btnBorder="", btnBorderHover="") %}
-{%- set _hasBg = (btnColor or textColor) -%}
+{% macro button(icon, label, url="#", btnColor="", textColor="", btnHover="", btnBorder="", btnBorderHover="", target="") %}
 {%- set _hasHover = btnHover -%}
-{%- set _hasBorder = (btnBorder or btnBorderHover) -%}
 {%- set _bg = ("--btn-bg:" + btnColor + ";") if btnColor else "" -%}
 {%- set _fg = ("--btn-fg:" + textColor + ";") if textColor else "" -%}
 {%- set _hv = ("--btn-hover:" + btnHover + ";") if btnHover else "" -%}
@@ -36,15 +38,10 @@
 {%- set _bdhColor = btnBorderHover or btnBorder -%}
 {%- set _bdh = ("--btn-border-hover:" + _bdhColor + ";") if _bdhColor else "" -%}
 {%- set _style = _bg + _fg + _hv + _bd + _bdh -%}
-{%- if _style or _hasHover %}
-<div><a class="btn-pill" href="{{ url }}"{% if _style %}style="{{ _style }}"{% endif %}{% if _hasHover %} data-bhover="1"{% endif %}>
-    <i class="{{ icon }} btn-pill-icon"></i>
-    <span class="btn-pill-label">{{ label }}</span>
-</a></div>
-{%- else %}
-<a class="btn-pill" href="{{ url }}">
+{# --- target="_blank" 时自动追加 rel="noopener"，防 tabnabbing 安全漏洞 --- #}
+{%- set _rel = ' rel="noopener"' if target == "_blank" else "" -%}
+<a class="btn-pill" href="{{ url }}" {% if target %}target="{{ target }}"{% endif %}{{ _rel | safe }} {% if _style %}style="{{ _style }}"{% endif %}{% if _hasHover %} data-bhover="1"{% endif %}>
     <i class="{{ icon }} btn-pill-icon"></i>
     <span class="btn-pill-label">{{ label }}</span>
 </a>
-{%- endif %}
 {% endmacro %}

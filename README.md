@@ -115,27 +115,6 @@ Follow these steps to run the dev server locally:
    npm run bump -- 1.2.3          # set explicitly
    ```
 
-## 📦 Release Workflow
-
-The release process is automated via the `.github/workflows/release.yml` workflow:
-
-- **Trigger**: Push a `v*` tag (e.g. `v1.2.3`), or run the `Release` workflow manually from the Actions tab.
-- **Output**: A zip archive is generated in `dist/` and uploaded as a GitHub Release asset.
-- **Dry run locally**: Before pushing a tag, run `npm run release` locally to make sure the build artifact is correct.
-
-A typical release flow looks like:
-
-```bash
-# 1. Bump the version in package.json
-# 2. Commit and push to main
-git add package.json && git commit -m "chore(release): 1.2.3"
-git push origin main
-
-# 3. Tag and push → triggers the release workflow
-git tag v1.2.3
-git push origin v1.2.3
-```
-
 ## 🚀 Deployment
 
 This project is automatically deployed to **GitHub Pages** via **GitHub Actions**:

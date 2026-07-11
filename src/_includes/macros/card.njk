@@ -10,6 +10,11 @@
 独立成块使用，无按钮。
 内部统一使用 .card-title / .card-content / .card-btn 三层结构，
 便于样式复用与扩展。
+
+跳转链接统一用 target 参数（card / cardFull 支持，cardStandalone 无跳转因此不支持）：
+  - 留空：不写 target 属性（同 _self，当前 tab 跳转，行为不变）
+  - _blank：新窗口打开，宏会自动追加 rel="noopener" 防 tabnabbing
+  - _parent / _top / 任意 frame 名：透传给 HTML 原生 target
 ============================================================ #}
 
 {# --- 内部片段：拼接 background / color inline style -------
@@ -54,27 +59,24 @@
 {% endmacro %}
 
 {# --- 内部通用片段：拼接标题 / 内容 / 按钮 ----------------- #}
-{% macro cardBody(title, content, url="", btnText="查看", btnStyleAttr="") %}
+{% macro cardBody(title, content, url="", btnText="查看", btnStyleAttr="", target="") %}
 <div class="card-title">{{ title }}</div>
 <div class="card-content">{{ content }}</div>
-<a class="card-btn" href="{{ url }}"{% if btnStyleAttr %}style="{{ btnStyleAttr }}"{% endif %}>{{ btnText }}</a>
+{# --- target="_blank" 时自动追加 rel="noopener"，防 tabnabbing 安全漏洞 --- #}
+{%- set _rel = ' rel="noopener"' if target == "_blank" else "" -%}
+<a class="card-btn" href="{{ url }}"{% if target %} target="{{ target }}"{% endif %}{{ _rel | safe }} {% if btnStyleAttr %}style="{{ btnStyleAttr }}"{% endif %}>{{ btnText }}</a>
 {% endmacro %}
 
 {# --- 内部公共卡片渲染逻辑（card 和 cardFull 共用） -------
 通过 className 参数区分卡片类型，避免代码重复 #}
-{% macro _cardBase(className, title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) %}
+{% macro _cardBase(className, title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover, target) %}
 {%- set _hasCardCustom = (bgColor or textColor or borderColor or hoverBgColor or hoverBorderColor) -%}
 {%- set _hasBtnCustom = (btnColor or btnTextColor or btnHover or btnBorder or btnBorderHover) -%}
-{%- set _hasCustom = (_hasCardCustom or _hasBtnCustom) -%}
-{%- if _hasCustom %}
-<div><div class="{{ className }}"{% if _hasCardCustom %}style="{{ cardStyle(bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor) }}"{% endif %}>
-    {{ cardBody(title, content, url, btnText, btnStyle(btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) if _hasBtnCustom else "") }}
-</div></div>
-{%- else %}
-<div class="{{ className }}">
-    {{ cardBody(title, content, url, btnText) }}
+{%- set _cardStyle = cardStyle(bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor) if _hasCardCustom else "" -%}
+{%- set _btnStyle = btnStyle(btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) if _hasBtnCustom else "" -%}
+<div class="{{ className }}" {% if _cardStyle %}style="{{ _cardStyle }}"{% endif %}>
+    {{ cardBody(title, content, url, btnText, _btnStyle, target) }}
 </div>
-{%- endif %}
 {% endmacro %}
 
 {# --- 网格中的"格子卡片"（当前即三列卡片） -------------
@@ -88,15 +90,18 @@
 - btnTextColor : 按钮文字色，默认空 → 走默认样式
 - btnHover : 按钮 hover 背景色，默认空 → 走默认样式
 - btnBorder : 按钮边框色，默认空 → 走默认样式
-- btnBorderHover : 按钮 hover 边框色，默认空 → 回落到 btnBorder #}
-{% macro card(title, content, url="", btnText="查看", bgColor="", textColor="", borderColor="", hoverBgColor="", hoverBorderColor="", btnColor="", btnTextColor="", btnHover="", btnBorder="", btnBorderHover="") %}
-{{- _cardBase("three-column-card", title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) -}}
+- btnBorderHover : 按钮 hover 边框色，默认空 → 回落到 btnBorder
+- target  : HTML 原生 target 属性（选填），传给卡片内 .card-btn <a> 链接
+             常见值：_blank（新窗口，自动追加 rel="noopener" 防 tabnabbing）、
+                     _parent / _top / 任意 frame 名 #}
+{% macro card(title, content, url="", btnText="查看", bgColor="", textColor="", borderColor="", hoverBgColor="", hoverBorderColor="", btnColor="", btnTextColor="", btnHover="", btnBorder="", btnBorderHover="", target="") %}
+{{- _cardBase("three-column-card", title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover, target) -}}
 {% endmacro %}
 
 {# --- 通栏独立卡片（占满整列） --------------------------
 可选参数同 card() #}
-{% macro cardFull(title, content, url="", btnText="查看", bgColor="", textColor="", borderColor="", hoverBgColor="", hoverBorderColor="", btnColor="", btnTextColor="", btnHover="", btnBorder="", btnBorderHover="") %}
-{{- _cardBase("card-full", title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) -}}
+{% macro cardFull(title, content, url="", btnText="查看", bgColor="", textColor="", borderColor="", hoverBgColor="", hoverBorderColor="", btnColor="", btnTextColor="", btnHover="", btnBorder="", btnBorderHover="", target="") %}
+{{- _cardBase("card-full", title, content, url, btnText, bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor, btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover, target) -}}
 {% endmacro %}
 
 {# --- 独立信息卡片（对应设计稿 Card） ------------------
