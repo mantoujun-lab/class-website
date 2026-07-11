@@ -26,6 +26,16 @@ eleventyNavigation:
 {{ button("fa-solid fa-arrow-right", "更多分区", "/zone.html") }}
 </div>
 
+## 🔔 事件
+
+<div class="card-full-list">
+{%- for entry in collections.event %}
+{%- if loop.index <= 5 %}
+{{ cardFull(entry.data.title,entry.data.description or "",entry.url | url,"查看详细信息") }}
+{%- endif %}
+{%- endfor %}
+</div>
+
 ## 📰 文章
 
 <div class="card-full-list">
