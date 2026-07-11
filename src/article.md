@@ -10,8 +10,6 @@ eleventyNavigation:
 {% from "macros/button.njk" import button %}
 {% from "macros/card.njk" import card, cardFull, cardStandalone %}
 
-# 文章
-
 <div class="card-full-list">
     {%- for entry in collections.article %}
     {{ cardFull(

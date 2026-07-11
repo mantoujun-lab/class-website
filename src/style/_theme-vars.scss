@@ -18,6 +18,8 @@
     --color-border-light: rgba(0, 0, 0, 0.1);
     --border-solid-white: 2px solid rgba(255, 255, 255, 0.8);
     --border-solid-blue: 2px solid rgba(42, 74, 212, 0.8);
+    --border-color-blue: rgba(42, 74, 212, 0.8);
+    --card-border-color: rgba(255, 255, 255, 0.8);
     --color-nav-accent: orange;
     --color-footer-bg: rgb(245, 245, 245);
     --color-inline-code-bg: rgba(74, 108, 247, 0.08);
@@ -50,6 +52,8 @@
         --color-border-light: rgba(255, 255, 255, 0.12);
         --border-solid-white: 2px solid rgba(245, 245, 245, 0.12);
         --border-solid-blue: 2px solid rgba(138, 160, 252, 0.4);
+        --border-color-blue: rgba(138, 160, 252, 0.4);
+        --card-border-color: rgba(245, 245, 245, 0.12);
         --color-nav-accent: #ffa726;
         --color-footer-bg: #1f1f1f;
         --color-inline-code-bg: rgba(107, 133, 250, 0.15);
@@ -81,6 +85,8 @@ html[data-theme="dark"] {
     --color-border-light: rgba(255, 255, 255, 0.12);
     --border-solid-white: 2px solid rgba(245, 245, 245, 0.12);
     --border-solid-blue: 2px solid rgba(138, 160, 252, 0.4);
+    --border-color-blue: rgba(138, 160, 252, 0.4);
+    --card-border-color: rgba(245, 245, 245, 0.12);
     --color-nav-accent: #ffa726;
     --color-footer-bg: #1f1f1f;
     --color-inline-code-bg: rgba(107, 133, 250, 0.15);

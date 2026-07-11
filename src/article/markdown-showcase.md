@@ -175,6 +175,46 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 {{ button("fa-solid fa-book", "阅读 Wiki", "/wiki/") }}
 {{ button("fa-solid fa-code", "查看源码", "https://github.com") }}
 
+### 12.1.1 自定义颜色
+
+按钮宏支持 `btnColor` / `textColor` / `btnHover` 三个可选参数，未传的字段继续走默认主题色。
+
+仅自定义背景色（与 `index.md` 中"了解更多"按钮一致）：
+
+{{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgba(200, 255, 200)") }}
+
+自定义背景色 + 文字色：
+
+{{ button("fa-solid fa-palette", "主题色按钮", "#", btnColor="#222831", textColor="#ffd369") }}
+
+自定义背景色 + hover 背景色：
+
+{{ button("fa-solid fa-hand-pointer", "试试 hover", "#", btnColor="#74c0fc", btnHover="#1c7ed6") }}
+
+背景色 / 文字色 / hover 全部自定义：
+
+{{ button("fa-solid fa-wand-magic-sparkles", "全部自定义", "#", btnColor="#ff6b6b", textColor="#fff5f5", btnHover="#c92a2a") }}
+
+### 12.1.2 自定义边框颜色
+
+`btnBorder` 自定义边框颜色，`btnBorderHover` 自定义 hover 时的边框颜色；未传则继续走 `--border-color-blue`，与三套主题联动。
+
+仅自定义边框：
+
+{{ button("fa-solid fa-circle", "红框按钮", "#", btnBorder="#e03131") }}
+
+自定义边框 + 边框 hover（hover 时边框变深红）：
+
+{{ button("fa-solid fa-circle-arrow-right", "红框 hover", "#", btnBorder="#e03131", btnBorderHover="#c92a2a") }}
+
+背景与边框一起配：
+
+{{ button("fa-solid fa-pen", "编辑", "#", btnColor="#fff0f0", btnBorder="#e03131") }}
+
+背景 + 文字 + hover + 边框 + 边框 hover 五参全开：
+
+{{ button("fa-solid fa-crown", "全部自定义", "#", btnColor="#e03131", textColor="#fff5f5", btnHover="#c92a2a", btnBorder="#ffd369", btnBorderHover="#fab005") }}
+
 ### 12.2 卡片（card.njk）
 
 #### 12.2.1 `cardFull` 通栏独立卡片
@@ -216,6 +256,92 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 {{ cardStandalone("fa-solid fa-triangle-exclamation", "警告", "这是一条警告信息卡片。", bgColor="#fffbe6", textColor="#5a4a00") }}
 
 {{ cardStandalone("fa-solid fa-circle-check", "成功", "这是一条成功信息卡片。", bgColor="#e7f8ee", textColor="#1a6e3a") }}
+
+#### 12.2.4 card 自定义颜色
+
+卡片宏支持 `bgColor` / `textColor` / `borderColor` / `hoverBgColor` / `hoverBorderColor` 等参数自定义卡片样式，同时也支持按钮相关的颜色参数（`btnColor` / `btnTextColor` / `btnHover` / `btnBorder` / `btnBorderHover`）。未传的字段继续走默认主题色。
+
+自定义背景色 + 文字色 + 边框色（暖色调）：
+
+<div class="cardzone-three-columns">
+{{ card("暖色调卡片", "自定义背景、文字和边框颜色", "#", "了解更多", bgColor="#fff5f5", textColor="#c92a2a", borderColor="#ff8787") }}
+{{ card("冷色调卡片", "清爽的蓝色系配色", "#", "了解更多", bgColor="#e7f5ff", textColor="#1864ab", borderColor="#74c0fc") }}
+{{ card("绿色系卡片", "清新自然的绿色调", "#", "了解更多", bgColor="#ebfbee", textColor="#2b8a3e", borderColor="#8ce99a") }}
+</div>
+
+自定义 hover 背景色和 hover 边框色：
+
+<div class="cardzone-three-columns">
+{{ card("hover 变色", "鼠标悬停查看效果", "#", "悬停试试", hoverBgColor="#fff0f6", hoverBorderColor="#f06595") }}
+{{ card("深色 hover", "悬停时背景变深", "#", "悬停试试", hoverBgColor="#212529", textColor="#adb5bd", hoverBorderColor="#495057") }}
+{{ card("金色边框", "hover 时边框变金色", "#", "悬停试试", borderColor="#dee2e6", hoverBorderColor="#fab005") }}
+</div>
+
+自定义按钮颜色的卡片：
+
+<div class="cardzone-three-columns">
+{{ card("红色按钮", "按钮颜色自定义", "#", "红色按钮", btnColor="#fff5f5", btnTextColor="#c92a2a", btnHover="#ffc9c9", btnBorder="#ff8787") }}
+{{ card("深色按钮", "暗色风格按钮", "#", "深色按钮", btnColor="#212529", btnTextColor="#ffd43b", btnHover="#343a40", btnBorder="#495057") }}
+{{ card("渐变风格", "绿色系按钮搭配", "#", "绿色按钮", btnColor="#2b8a3e", btnTextColor="#ebfbee", btnHover="#1c532b", btnBorder="#8ce99a", btnBorderHover="#2b8a3e") }}
+</div>
+
+#### 12.2.5 cardFull 自定义颜色
+
+通栏卡片同样支持完整的颜色自定义，下面是一个全套自定义的示例：
+
+{{ cardFull(
+    "全站自定义主题卡片",
+    "这张卡片演示了 cardFull 宏的完整颜色自定义能力：背景色、文字色、边框色、hover 效果，以及按钮的背景、文字、边框、hover 颜色全部自定义。将鼠标悬停在卡片和按钮上试试看吧～",
+    "#",
+    "试试看",
+    bgColor="#fff9db",
+    textColor="#5c3d00",
+    borderColor="#ffd43b",
+    hoverBgColor="#fff3bf",
+    hoverBorderColor="#fab005",
+    btnColor="#f08c00",
+    btnTextColor="#fff9db",
+    btnHover="#e67700",
+    btnBorder="#ffd43b",
+    btnBorderHover="#fab005"
+) }}
+
+> **说明**：hover 效果包括卡片整体的背景色变化和边框色变化，按钮也有独立的 hover 效果。所有颜色参数都是可选的，未传入的字段会自动使用主题默认值。
+
+### 12.3 header 自定义背景色
+
+header 导航栏支持两种方式自定义背景颜色，颜色会通过 `--header-bg` CSS 变量设置在 `<header>` 元素上。未设置时使用主题色（`--color-primary`）。
+
+#### 方式 1：在 markdown 的 front matter 中定义
+
+在 markdown 文件的 front matter 里写：
+
+{% raw %}
+```
+---
+title: 我的页面
+headerBg: "#c92a2a"
+---
+```
+{% endraw %}
+
+这样这个页面的导航栏背景就会变成红色。
+
+#### 方式 2：在 njk 模板中定义（在 layout 中）
+
+在 layout 模板中通过 Nunjucks 的 set 标签设置 `headerBg` 变量，再 include 引入 header 组件：
+
+{% raw %}
+```
+{% set headerBg = "#2b8a3e" %}
+{% include "components/header.njk" %}
+```
+{% endraw %}
+
+#### 实现原理
+
+- `src/style/header.scss`：把硬编码的 `$color-primary` 改为 `var(--header-bg, $color-primary)`
+- `src/_includes/components/header.njk`：根据 `headerBg` 变量是否为空，条件性地渲染 `style` 属性
 
 ## 13. 数学公式（如启用 KaTeX）
 

@@ -31,13 +31,21 @@
     width: auto;
     height: auto;
     border-radius: $radius-md;
+    background: var(--card-bg, transparent);
     backdrop-filter: $blur-basic;
     -webkit-backdrop-filter: $blur-basic; // Safari 兼容
-    border: $border-solid-white;
+    border: 2px solid var(--card-border, $card-border-color);
     box-shadow: $shadow-card;
     padding: $spacing-md;
+    color: var(--card-fg, $color-text);
     @include flex(column, flex-start);
     gap: $spacing-sm;
+    transition: background $transition-fast, border-color $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+
+    &:hover {
+        background: var(--card-bg-hover, var(--card-bg, transparent));
+        border-color: var(--card-border-hover, var(--card-border, $card-border-color));
+    }
 }
 
 // 卡片内部通用结构（不随布局变化）
@@ -45,13 +53,13 @@
 .card-title {
     font-size: 1rem;
     font-weight: bold;
-    color: $color-text;
+    color: var(--card-fg, $color-text);
     word-break: break-word;
 }
 
 .card-content {
     font-size: 0.85rem;
-    color: $color-text-light;
+    color: var(--card-content-fg, var(--card-fg, $color-text-light));
     line-height: 1.4;
     word-break: break-word;
     overflow-wrap: break-word;
@@ -60,18 +68,19 @@
 .card-btn {
     display: inline-block;
     font-size: 0.85rem;
-    background-color: $color-primary;
+    background: var(--btn-bg, $color-primary);
     cursor: pointer;
     padding: 12px 24px;
-    border: $border-solid-blue;
+    border: 2px solid var(--btn-border, $border-color-blue);
     border-radius: $radius-btn;
     box-shadow: $shadow-btn;
-    color: $color-white;
-    transition: background $transition-fast, box-shadow $transition-fast;
+    color: var(--btn-fg, $color-white);
+    transition: background $transition-fast, box-shadow $transition-fast, border-color $transition-fast;
 
     &:hover {
-        color: $color-white;
-        background-color: $color-primary-dark;
+        color: var(--btn-fg, $color-white);
+        background: var(--btn-hover, var(--btn-bg, $color-primary-dark));
+        border-color: var(--btn-border-hover, var(--btn-border, $border-color-blue));
     }
 }
 
@@ -86,15 +95,23 @@
     max-width: $content-max-width;
     margin: 0 auto;
     border-radius: $radius-md;
+    background: var(--card-bg, transparent);
     backdrop-filter: $blur-basic;
     -webkit-backdrop-filter: $blur-basic; // Safari 兼容
-    border: $border-solid-white;
+    border: 2px solid var(--card-border, $card-border-color);
     box-shadow: $shadow-card;
     padding: $card-padding;
+    color: var(--card-fg, $color-text);
     text-align: justify;
     @include flex(column, flex-start);
     @include hover-lift;
     gap: $card-inner-gap;
+    transition: background $transition-fast, border-color $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+
+    &:hover {
+        background: var(--card-bg-hover, var(--card-bg, transparent));
+        border-color: var(--card-border-hover, var(--card-border, $card-border-color));
+    }
 
     .card-content {
         text-align: justify;
@@ -137,6 +154,7 @@
     box-shadow: $shadow-card;
     border-radius: $radius-md;
     text-align: left;
+    transition: transform $transition-fast, box-shadow $transition-fast;
 
     .card-info {
         display: flex;

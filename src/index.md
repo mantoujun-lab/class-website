@@ -16,7 +16,7 @@ eleventyNavigation:
 
 我们是**25级计算机应用1班**，一个由 **37** 名同学组成的小集体
 
-{{ button("fa-solid fa-arrow-right", "了解更多", "/about.html") }}
+{{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgb(200, 255, 200)", textColor="rgb(0, 0, 0)", btnHover="rgb(150, 200, 150)", btnBorder="rgb(150,200, 150)") }}
 </div>
 
 ## 专区入口
