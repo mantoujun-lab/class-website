@@ -12,16 +12,15 @@
 <body>
     {% from "macros/button.njk" import button %}
     {% include "../components/header.njk" %}
-    <article>
-        <h1>首页</h1>
-
-        <p>这个是<strong>25级计算机应用1班</strong>的班级网站，使用 <strong>Github</strong> 托管代码，使用 <strong>Github Pages</strong> 部署静态页面。
-        </p>
-        <p>你可以浏览相关页面，来了解班级内容。当然，网站目前处于半完成状态，因此有些内容可能会随时变化，所以欢迎每次都回来看看。</p>
-        <p>这个网站目前只有 2 个人在维护，因此如果你有能力的话，欢迎前往 <strong>Github</strong> 点个 <span
-                style="color:orange;font-weight:bold">Star</span> !</p>
-
+    <article style="background: none;box-shadow: none;">
         <div align="center">
+            <img src="https://count.getloli.com/@hjx-25pc1.github.io?name=hjx-25pc1.github.io&theme=miku&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt=":name">
+            <p class="wiki-description">浏览量</p>
+            <p>这个是<strong>25级计算机应用1班</strong>的班级网站，使用 <strong>Github</strong> 托管代码，使用 <strong>Github Pages</strong> 部署静态页面。</p>
+            <p>你可以浏览相关页面，来了解班级内容。</p>
+            <p>当然，网站目前处于半完成状态，因此有些内容可能会随时变化，所以欢迎每次都回来看看。</p>
+            <p>这个网站目前只有 2 个人在维护，因此如果你有能力的话，欢迎前往 <strong>Github</strong> 点个 <span style="color:orange;font-weight:bold">Star</span> !</p>
+            <p>有能力的话，欢迎贡献此项目，即使你不是班级成员~</p>
             {{ button("fa-brands fa-github", "前往项目", "https://github.com/hjx-25pc1/hjx-25pc1.github.io") }}
         </div>
     </article>
