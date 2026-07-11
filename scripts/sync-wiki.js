@@ -131,7 +131,7 @@ function prepareWikiDir() {
     }
 }
 
-// 2. 列出 .wiki-tmp/ 下需要删除的 .md 文件(跳过 Home.md 与 .git/)
+// 2. 列出 .wiki-tmp/ 下需要删除的 .md 文件(跳过 Home.md , 带 _ 的 markdown 文件 ,与 .git/)
 //    输入 srcRelSet:src 条目的相对路径集合(正斜杠)
 function collectWikiExtraFiles(srcRelSet) {
     const extra = [];
@@ -146,6 +146,8 @@ function collectWikiExtraFiles(srcRelSet) {
             } else if (entry.isFile() && entry.name.endsWith('.md')) {
                 // Home.md 由脚本动态生成,不算"多余"
                 if (entry.name === 'Home.md') continue;
+                 // GitHub Wiki 特殊文件(_Footer / _Sidebar / _Header)不参与同步,保留
+                if (entry.name.startsWith('_')) continue;
                 const rel = path.relative(WIKI_DIR, abs).replace(/\\/g, '/');
                 if (!srcRelSet.has(rel)) {
                     extra.push({ absPath: abs, relPath: rel });
