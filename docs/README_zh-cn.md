@@ -116,27 +116,6 @@
    npm run bump -- 1.3.0          # 显式指定版本号
    ```
 
-## 📦 发布说明
-
-仓库已经配置好自动化发布流程（`.github/workflows/release.yml`）：
-
-- **触发方式**：推送 `v*` 标签（如 `v1.2.3`），或在 GitHub Actions 页面手动运行 `Release` 工作流
-- **生成内容**：在 `dist/` 下生成 zip 包，并自动上传到 GitHub Releases
-- **本地预演**：在推送 tag 之前，可先跑 `npm run release` 在本地生成 zip 确认产物无误
-
-完整流程示例：
-
-```bash
-# 1. 更新 package.json 里的版本号
-# 2. 提交并推送 main
-git add package.json && git commit -m "chore(release): 1.2.3"
-git push origin main
-
-# 3. 打 tag 并推送 → 自动触发 Actions 发布
-git tag v1.2.3
-git push origin v1.2.3
-```
-
 ## 🚀 部署说明
 
 本项目使用 **GitHub Actions** 自动部署到 **GitHub Pages**：
