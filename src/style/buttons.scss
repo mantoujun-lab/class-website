@@ -14,23 +14,24 @@
     justify-content: center;
     column-gap: $btn-pill-gap;
     border-radius: $radius-btn;
-    background: $color-primary;
-    border: $border-solid-blue;
+    background: var(--btn-bg, $color-primary);
+    border: 2px solid var(--btn-border, $border-color-blue);
     box-shadow: $shadow-btn-pill;
     padding: 6px 18px;
     height: $btn-pill-height;
     width: fit-content;
     min-width: 0;
-    color: $color-white;
+    color: var(--btn-fg, $color-white);
     text-decoration: none;
     font-size: 15px;
     line-height: 20px;
     letter-spacing: -0.23px;
-    transition: background $transition-fast, box-shadow $transition-fast;
+    transition: background $transition-fast, box-shadow $transition-fast, border-color $transition-fast;
 
     &:hover {
-        background: $color-primary-dark;
-        color: $color-white;
+        background: var(--btn-hover, var(--btn-bg, $color-primary-dark));
+        border-color: var(--btn-border-hover, var(--btn-border, $border-color-blue));
+        color: var(--btn-fg, $color-white);
         box-shadow: $shadow-btn-pill-hover;
     }
 }

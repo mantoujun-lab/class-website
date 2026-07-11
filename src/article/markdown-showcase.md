@@ -175,6 +175,46 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 {{ button("fa-solid fa-book", "阅读 Wiki", "/wiki/") }}
 {{ button("fa-solid fa-code", "查看源码", "https://github.com") }}
 
+### 12.1.1 自定义颜色
+
+按钮宏支持 `btnColor` / `textColor` / `btnHover` 三个可选参数，未传的字段继续走默认主题色。
+
+仅自定义背景色（与 `index.md` 中"了解更多"按钮一致）：
+
+{{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgba(200, 255, 200)") }}
+
+自定义背景色 + 文字色：
+
+{{ button("fa-solid fa-palette", "主题色按钮", "#", btnColor="#222831", textColor="#ffd369") }}
+
+自定义背景色 + hover 背景色：
+
+{{ button("fa-solid fa-hand-pointer", "试试 hover", "#", btnColor="#74c0fc", btnHover="#1c7ed6") }}
+
+背景色 / 文字色 / hover 全部自定义：
+
+{{ button("fa-solid fa-wand-magic-sparkles", "全部自定义", "#", btnColor="#ff6b6b", textColor="#fff5f5", btnHover="#c92a2a") }}
+
+### 12.1.2 自定义边框颜色
+
+`btnBorder` 自定义边框颜色，`btnBorderHover` 自定义 hover 时的边框颜色；未传则继续走 `--border-color-blue`，与三套主题联动。
+
+仅自定义边框：
+
+{{ button("fa-solid fa-circle", "红框按钮", "#", btnBorder="#e03131") }}
+
+自定义边框 + 边框 hover（hover 时边框变深红）：
+
+{{ button("fa-solid fa-circle-arrow-right", "红框 hover", "#", btnBorder="#e03131", btnBorderHover="#c92a2a") }}
+
+背景与边框一起配：
+
+{{ button("fa-solid fa-pen", "编辑", "#", btnColor="#fff0f0", btnBorder="#e03131") }}
+
+背景 + 文字 + hover + 边框 + 边框 hover 五参全开：
+
+{{ button("fa-solid fa-crown", "全部自定义", "#", btnColor="#e03131", textColor="#fff5f5", btnHover="#c92a2a", btnBorder="#ffd369", btnBorderHover="#fab005") }}
+
 ### 12.2 卡片（card.njk）
 
 #### 12.2.1 `cardFull` 通栏独立卡片

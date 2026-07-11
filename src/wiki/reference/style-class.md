@@ -44,6 +44,26 @@ wikiCategoryOrder: 2
 </a>
 ```
 
+**自定义颜色（宏参数）**
+
+调用按钮宏 `macros/button.njk` 时，可通过以下可选参数覆盖默认颜色：
+
+| 参数 | 作用 | 默认 |
+|---|---|---|
+| `btnColor` | 按钮背景色 | `var(--color-primary)` |
+| `textColor` | 按钮文字色 | `var(--color-white)` |
+| `btnHover` | hover 时的背景色 | 未传则保持与 `btnColor` 相同；想换主题 dark 时传 `var(--color-primary-dark)` |
+| `btnBorder` | 边框颜色 | `var(--border-color-blue)` |
+| `btnBorderHover` | hover 时的边框颜色 | 回落到 `btnBorder`，再回落则走 `var(--border-color-blue)` |
+
+任意一个参数省略时，渲染出的 `<a>` 上不会生成对应内联样式，CSS 走 `.btn-pill` 默认值。
+
+```jinja2
+{% from "macros/button.njk" import button %}
+{{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgba(200, 255, 200)") }}
+{{ button("fa-solid fa-pen", "编辑", "#", btnColor="#fff0f0", btnBorder="#e03131") }}
+```
+
 ---
 
 ## 三、卡片（cards.scss）
