@@ -87,6 +87,58 @@ wikiCategoryOrder: 2
 | `.cardzone-three-columns` | 三列网格容器 | 响应式：平板 2 列、手机 1 列 |
 | `.three-column-card` | 三列网格中的"格子卡片" | 居中文字、`hover-lift` 效果 |
 
+**宏参数说明**
+
+调用卡片宏 `macros/card.njk` 中的 `card()` 时，可通过以下参数自定义卡片：
+
+| 参数 | 作用 | 默认 |
+|---|---|---|
+| `title` | 标题文字 | 必填 |
+| `content` | 正文文字 | 必填 |
+| `url` | 按钮跳转地址 | `#` |
+| `btnText` | 按钮文字 | `查看` |
+| `bgColor` | 自定义背景色 | 空 → 走默认样式 |
+| `textColor` | 自定义文字色 | 空 → 走默认样式 |
+| `borderColor` | 自定义边框色 | 空 → 走默认样式 |
+| `hoverBgColor` | 自定义 hover 背景色 | 未传则保持原背景色 |
+| `hoverBorderColor` | 自定义 hover 边框色 | 未传则回落到 `borderColor` |
+| `btnColor` | 按钮背景色 | 空 → 走默认样式 |
+| `btnTextColor` | 按钮文字色 | 空 → 走默认样式 |
+| `btnHover` | 按钮 hover 背景色 | 空 → 走默认样式 |
+| `btnBorder` | 按钮边框色 | 空 → 走默认样式 |
+| `btnBorderHover` | 按钮 hover 边框色 | 未传则回落到 `btnBorder` |
+
+任意一个颜色参数省略时，渲染出的元素上不会生成对应 CSS 变量，SCSS 走默认 fallback 值。
+
+**CSS 变量**
+
+底层通过 CSS 变量实现颜色自定义，高级用户可直接在 HTML 中使用：
+
+| 变量名 | 作用 | Fallback 链 |
+|---|---|---|
+| `--card-bg` | 卡片背景色 | `transparent` |
+| `--card-fg` | 卡片文字色 | `$color-text` |
+| `--card-border` | 卡片边框色 | `$card-border-color` |
+| `--card-bg-hover` | hover 背景色 | `var(--card-bg, transparent)` |
+| `--card-border-hover` | hover 边框色 | `var(--card-border, $card-border-color)` |
+| `--btn-bg` | 按钮背景色 | `$color-primary` |
+| `--btn-fg` | 按钮文字色 | `$color-white` |
+| `--btn-hover` | 按钮 hover 背景色 | `var(--btn-bg, $color-primary-dark)` |
+| `--btn-border` | 按钮边框色 | `$border-color-blue` |
+| `--btn-border-hover` | 按钮 hover 边框色 | `var(--btn-border, $border-color-blue)` |
+
+**使用示例**
+
+```jinja2
+{% from "macros/card.njk" import card %}
+
+{{ card("文档中心", "查阅完整的 API 文档和使用指南", "/docs.html") }}
+
+{{ card("自定义卡片", "淡绿色背景 + 深绿色边框", "#", bgColor="#f0fdf4", borderColor="#22c55e", hoverBorderColor="#16a34a") }}
+
+{{ card("按钮定制", "橙色按钮 + 红色边框", "#", btnColor="#f97316", btnBorder="#ef4444", btnHover="#ea580c") }}
+```
+
 ### 3.3 独立信息卡片（左侧 icon + 右侧 标题/正文）
 
 | 类名 | 作用 | 备注 |
@@ -102,6 +154,43 @@ wikiCategoryOrder: 2
 |---|---|---|
 | `.card-full` | 通栏独立卡片 | 撑满父容器，`hover-lift` |
 | `.card-full-list` | 通栏卡片纵向堆叠容器 | 间距统一为 `$spacing-lg` |
+
+**宏参数说明**
+
+调用卡片宏 `macros/card.njk` 中的 `cardFull()` 时，可通过以下参数自定义卡片（参数列表与 `card()` 完全一致）：
+
+| 参数 | 作用 | 默认 |
+|---|---|---|
+| `title` | 标题文字 | 必填 |
+| `content` | 正文文字 | 必填 |
+| `url` | 按钮跳转地址 | `#` |
+| `btnText` | 按钮文字 | `查看` |
+| `bgColor` | 自定义背景色 | 空 → 走默认样式 |
+| `textColor` | 自定义文字色 | 空 → 走默认样式 |
+| `borderColor` | 自定义边框色 | 空 → 走默认样式 |
+| `hoverBgColor` | 自定义 hover 背景色 | 未传则保持原背景色 |
+| `hoverBorderColor` | 自定义 hover 边框色 | 未传则回落到 `borderColor` |
+| `btnColor` | 按钮背景色 | 空 → 走默认样式 |
+| `btnTextColor` | 按钮文字色 | 空 → 走默认样式 |
+| `btnHover` | 按钮 hover 背景色 | 空 → 走默认样式 |
+| `btnBorder` | 按钮边框色 | 空 → 走默认样式 |
+| `btnBorderHover` | 按钮 hover 边框色 | 未传则回落到 `btnBorder` |
+
+任意一个颜色参数省略时，渲染出的元素上不会生成对应 CSS 变量，SCSS 走默认 fallback 值。
+
+**CSS 变量**
+
+通栏卡片与网格卡片共用同一套 CSS 变量体系，详见 3.2 节"CSS 变量"表格。
+
+**使用示例**
+
+```jinja2
+{% from "macros/card.njk" import cardFull %}
+
+{{ cardFull("新版本发布", "v2.0 带来了全新的设计语言和性能优化，立即了解更新内容。", "/changelog.html", btnText="查看更新日志") }}
+
+{{ cardFull("限时活动", "夏日特惠活动进行中，所有商品 8 折起，点击下方按钮立即参与！", "/event/summer.html", bgColor="#fffbeb", borderColor="#f59e0b", btnColor="#f59e0b", btnHover="#d97706") }}
+```
 
 ---
 

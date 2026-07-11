@@ -257,6 +257,57 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 
 {{ cardStandalone("fa-solid fa-circle-check", "成功", "这是一条成功信息卡片。", bgColor="#e7f8ee", textColor="#1a6e3a") }}
 
+#### 12.2.4 card 自定义颜色
+
+卡片宏支持 `bgColor` / `textColor` / `borderColor` / `hoverBgColor` / `hoverBorderColor` 等参数自定义卡片样式，同时也支持按钮相关的颜色参数（`btnColor` / `btnTextColor` / `btnHover` / `btnBorder` / `btnBorderHover`）。未传的字段继续走默认主题色。
+
+自定义背景色 + 文字色 + 边框色（暖色调）：
+
+<div class="cardzone-three-columns">
+{{ card("暖色调卡片", "自定义背景、文字和边框颜色", "#", "了解更多", bgColor="#fff5f5", textColor="#c92a2a", borderColor="#ff8787") }}
+{{ card("冷色调卡片", "清爽的蓝色系配色", "#", "了解更多", bgColor="#e7f5ff", textColor="#1864ab", borderColor="#74c0fc") }}
+{{ card("绿色系卡片", "清新自然的绿色调", "#", "了解更多", bgColor="#ebfbee", textColor="#2b8a3e", borderColor="#8ce99a") }}
+</div>
+
+自定义 hover 背景色和 hover 边框色：
+
+<div class="cardzone-three-columns">
+{{ card("hover 变色", "鼠标悬停查看效果", "#", "悬停试试", hoverBgColor="#fff0f6", hoverBorderColor="#f06595") }}
+{{ card("深色 hover", "悬停时背景变深", "#", "悬停试试", hoverBgColor="#212529", textColor="#adb5bd", hoverBorderColor="#495057") }}
+{{ card("金色边框", "hover 时边框变金色", "#", "悬停试试", borderColor="#dee2e6", hoverBorderColor="#fab005") }}
+</div>
+
+自定义按钮颜色的卡片：
+
+<div class="cardzone-three-columns">
+{{ card("红色按钮", "按钮颜色自定义", "#", "红色按钮", btnColor="#fff5f5", btnTextColor="#c92a2a", btnHover="#ffc9c9", btnBorder="#ff8787") }}
+{{ card("深色按钮", "暗色风格按钮", "#", "深色按钮", btnColor="#212529", btnTextColor="#ffd43b", btnHover="#343a40", btnBorder="#495057") }}
+{{ card("渐变风格", "绿色系按钮搭配", "#", "绿色按钮", btnColor="#2b8a3e", btnTextColor="#ebfbee", btnHover="#1c532b", btnBorder="#8ce99a", btnBorderHover="#2b8a3e") }}
+</div>
+
+#### 12.2.5 cardFull 自定义颜色
+
+通栏卡片同样支持完整的颜色自定义，下面是一个全套自定义的示例：
+
+{{ cardFull(
+    "全站自定义主题卡片",
+    "这张卡片演示了 cardFull 宏的完整颜色自定义能力：背景色、文字色、边框色、hover 效果，以及按钮的背景、文字、边框、hover 颜色全部自定义。将鼠标悬停在卡片和按钮上试试看吧～",
+    "#",
+    "试试看",
+    bgColor="#fff9db",
+    textColor="#5c3d00",
+    borderColor="#ffd43b",
+    hoverBgColor="#fff3bf",
+    hoverBorderColor="#fab005",
+    btnColor="#f08c00",
+    btnTextColor="#fff9db",
+    btnHover="#e67700",
+    btnBorder="#ffd43b",
+    btnBorderHover="#fab005"
+) }}
+
+> **说明**：hover 效果包括卡片整体的背景色变化和边框色变化，按钮也有独立的 hover 效果。所有颜色参数都是可选的，未传入的字段会自动使用主题默认值。
+
 ## 13. 数学公式（如启用 KaTeX）
 
 行内公式：爱因斯坦的质能方程 $E = mc^2$。

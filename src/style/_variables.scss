@@ -44,6 +44,7 @@ $color-border-light: rgba(0, 0, 0, 0.1); // 浅边框色，用于细腻描边
 $border-solid-white: var(--border-solid-white);
 $border-solid-blue: var(--border-solid-blue);
 $border-color-blue: var(--border-color-blue);
+$card-border-color: var(--card-border-color);
 
 // 卡片专属（统一三种卡片 .three-column-card / .card-full / .card-standalone 的视觉基线）
 $card-padding: 16px; // 卡片内边距（与 $spacing-md 一致，方便后续调整）
