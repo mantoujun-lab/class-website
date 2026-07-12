@@ -123,6 +123,50 @@ module.exports = function (eleventyConfig) {
         return result;
     });
 
+    // 日期格式化 filter：强制锁定北京时间 + 24 小时制
+    // 输入可能是 Luxon DateTime 实例、JS Date、ISO 字符串，统一转成 DateTime 再格式化
+    // 用法：{{ page.date | bjDate }}
+    //
+    // ⚠️ 关键背景：
+    // Eleventy 3.x 解析 frontmatter 时，如果日期字符串没有时区后缀（如 "2026-07-09 07:00:00"），
+    // 会按 **UTC** 解析，然后存为 JS Date（toISOString 输出 "2026-07-09T07:00:00.000Z"）。
+    // 这意味着我们写的北京时间 07:00 实际被理解为 UTC 07:00，
+    // 如果再用本地时区去读就会变成 +08:00 的 15:00，时区错位 8 小时。
+    //
+    // 解决：filter 拿到 JS Date 后，**直接把它当成已经位于 Asia/Shanghai 时区的字面值**输出。
+    eleventyConfig.addFilter("bjDate", (date) => {
+        const { DateTime } = require("luxon");
+        if (!date) return "";
+
+        // 1) 已经是 Luxon DateTime 实例
+        if (typeof date.toFormat === "function") {
+            return date.setZone("Asia/Shanghai").toFormat("yyyy-MM-dd HH:mm");
+        }
+
+        // 2) JS Date / ISO 字符串：
+        //    Eleventy 已经把它转成 UTC 时间的 JS Date（无时区字符串被当 UTC 解析）。
+        //    我们直接取出它的字面值当北京时间输出，不再做时区转换。
+        //    修复了原本用 fromJSDate/setZone 把 +0 误转成 +8 的问题。
+        let dt;
+        if (date instanceof Date) {
+            dt = DateTime.fromObject({
+                year: date.getUTCFullYear(),
+                month: date.getUTCMonth() + 1,
+                day: date.getUTCDate(),
+                hour: date.getUTCHours(),
+                minute: date.getUTCMinutes(),
+                second: date.getUTCSeconds(),
+            }, { zone: "Asia/Shanghai" });
+        } else if (typeof date === "string") {
+            const iso = date.includes("T") ? date : date.replace(" ", "T");
+            dt = DateTime.fromISO(iso, { zone: "Asia/Shanghai" });
+        } else {
+            return "";
+        }
+
+        return dt.isValid ? dt.toFormat("yyyy-MM-dd HH:mm") : String(date);
+    });
+
     // Image shortcode for responsive images
     // 行为：按 srcWidths 生成多分辨率文件（如 [1280, 1920]），
     //      但 <img> 的渲染尺寸由 displayWidths 控制（默认 [300, 600]），
