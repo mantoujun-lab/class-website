@@ -20,7 +20,7 @@
 // ============================================================
 
 import { dom } from './_dom.js';
-import { rememberFocus, restoreFocus, focusFirst, trapFocus, clearFocusableCache } from './focus-trap.js';
+import { rememberFocus, restoreFocus, focusFirst, clearFocusableCache } from './focus-trap.js';
 import { acquireSlot, releaseSlot, markReleased, getSlotOwner } from './history-stack.js';
 
 // ---- 模块状态 ----
