@@ -32,8 +32,13 @@ import { initTheme } from './theme.js';
     'use strict';
 
     // 关键元素缺失时直接退出（优雅降级）
-    if (!dom.header || !dom.popupBtn || !dom.popup) return;
+    if (!dom.header || !dom.popupBtn || !dom.popup) {
+        console.debug('[main] 关键元素缺失，退出初始化');
+        return;
+    }
+    console.debug('[main] 初始化开始');
 
+    console.debug('[main] 初始化各功能模块');
     // ---- 初始化模块 + 注入互斥回调 ----
     // 弹窗互斥关闭抽屉：manageHistory=false 复用 history 槽位
     initPopup({
@@ -86,6 +91,8 @@ import { initTheme } from './theme.js';
         }
     });
 
+    console.debug('[main] 全局事件绑定完成');
+
     // ============================================================
     // popstate 路由
     // 系统返回键/手势触发时，按槽位占用方关闭对应菜单
@@ -101,10 +108,15 @@ import { initTheme } from './theme.js';
         // e.owner 为 null 时不处理（可能由其他代码 push 的 history）
     });
 
+    console.debug('[main] popstate 路由注册完成');
+
     // ============================================================
     // 代码块增强：行号 + 复制按钮（动态加载 Prism 插件）
     // 异步执行，不阻塞上面菜单初始化
     // ============================================================
+    console.debug('[main] 初始化代码高亮和主题模块');
     initPrism();
     initTheme();
+
+    console.debug('[main] 初始化完成 ✓');
 })();
