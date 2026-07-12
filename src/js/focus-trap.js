@@ -14,21 +14,34 @@
 // ---- 状态：记忆打开菜单前的活动元素 ----
 let lastFocused = null;
 
+// ---- 缓存：容器 -> 可聚焦元素数组 ----
+const focusableCache = new Map();
+
 // 记录当前焦点（菜单打开前调用）
 export function rememberFocus() {
+    console.debug('[focus-trap] 记录当前焦点');
     lastFocused = document.activeElement;
 }
 
 // 归还焦点到记忆的元素（菜单关闭后调用）
 export function restoreFocus() {
+    console.debug('[focus-trap] 恢复焦点到原元素');
     if (lastFocused && typeof lastFocused.focus === 'function') {
         lastFocused.focus();
     }
 }
 
-// 获取容器内所有可见可聚焦元素
+// 获取容器内所有可见可聚焦元素（带缓存）
 // display:none 的元素无法接收焦点，通过 offsetParent 过滤
 export function getVisibleFocusable(container) {
+    // 先查缓存
+    if (focusableCache.has(container)) {
+        const cached = focusableCache.get(container);
+        console.debug(`[focus-trap] 缓存命中，容器内可聚焦元素数量: ${cached.length}`);
+        return cached;
+    }
+
+    console.debug('[focus-trap] 缓存未命中，重新查询可聚焦元素');
     const candidates = container.querySelectorAll(
         'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
     );
@@ -38,11 +51,19 @@ export function getVisibleFocusable(container) {
             visible.push(candidates[i]);
         }
     }
+    focusableCache.set(container, visible);
     return visible;
+}
+
+// 清除指定容器的可聚焦元素缓存
+export function clearFocusableCache(container) {
+    console.debug('[focus-trap] 清除缓存');
+    focusableCache.delete(container);
 }
 
 // 将焦点移至容器内首个可见可聚焦元素
 export function focusFirst(container) {
+    console.debug('[focus-trap] 焦点移至首个可聚焦元素');
     const focusable = getVisibleFocusable(container);
     if (focusable.length) {
         focusable[0].focus();
@@ -60,12 +81,14 @@ export function trapFocus(e, container) {
     if (e.shiftKey) {
         // Shift+Tab：在首个元素上按则跳到末尾
         if (document.activeElement === first) {
+            console.debug('[focus-trap] 焦点循环: 首部→末尾');
             e.preventDefault();
             last.focus();
         }
     } else {
         // Tab：在末尾元素上按则跳回首部
         if (document.activeElement === last) {
+            console.debug('[focus-trap] 焦点循环: 末尾→首部');
             e.preventDefault();
             first.focus();
         }

@@ -18,4 +18,9 @@ export const dom = {
     closeBtn: document.querySelector('.nav-popup-close'),
     drawerCloseBtn: document.querySelector('.nav-drawer-close'),
     navToggle: document.getElementById('nav-toggle'),
+    themeBtn: document.querySelector('.theme-btn'),
+    themeMenu: document.querySelector('.theme-menu'),
+    wikiLayout: document.querySelector('.wiki-layout'),
+    wikiSidebar: document.querySelector('.wiki-sidebar'),
+    wikiSidebarToggle: document.querySelector('.wiki-sidebar-toggle'),
 };

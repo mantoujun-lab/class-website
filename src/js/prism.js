@@ -39,11 +39,11 @@ function loadScriptsSequentially(urls) {
 
 export async function initPrism() {
     if (!document.querySelector('pre code')) {
-        console.log('[Prism] 无代码块，跳过');
+        console.debug('[Prism] 无代码块，跳过');
         return;
     }
 
-    console.log('[Prism] 开始加载脚本链');
+    console.debug('[Prism] 开始加载脚本链');
 
     try {
         await loadScriptsSequentially([
@@ -91,12 +91,12 @@ export async function initPrism() {
         // 延迟打印：toolbar 在 highlightAll 之后才会注入 DOM
         setTimeout(function () {
             var pres = document.querySelectorAll('pre.line-numbers');
-            console.log('[Prism] 共', pres.length, '个代码块');
+            console.debug('[Prism] 共', pres.length, '个代码块');
             pres.forEach(function (pre, i) {
                 var hasLineRows = !!pre.querySelector('.line-numbers-rows');
                 var hasToolbar = !!pre.querySelector('.toolbar');
                 var hasCopyBtn = !!pre.querySelector('.copy-to-clipboard-button');
-                console.log('  [' + i + '] 行号:', hasLineRows, '工具栏:', hasToolbar, '复制按钮:', hasCopyBtn);
+                console.debug('  [' + i + '] 行号:', hasLineRows, '工具栏:', hasToolbar, '复制按钮:', hasCopyBtn);
             });
         }, 500);
     } catch (err) {

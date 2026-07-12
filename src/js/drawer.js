@@ -26,8 +26,10 @@ let drawerOpen = false;
 // ---- 公共 API ----
 // 打开抽屉（程序化调用场景预留，checkbox 由用户点击触发时无需调用）
 function openDrawer() {
+    console.debug('[drawer] 打开抽屉');
     // 互斥：若弹窗正打开，静默关闭（复用 history 槽位，不 back）
     if (getSlotOwner() === 'popup') {
+        console.debug('[drawer] 互斥关闭弹窗');
         onPopupClose(false); // 由 main.js 注入
     }
     header.classList.add('nav-drawer-open');
@@ -39,7 +41,11 @@ function openDrawer() {
 // 参数 manageHistory：true（默认）= 主动 back 清理 history 栈；
 //                     false = 不触碰（用于 popstate 回调内 / 互斥关闭时复用槽位）
 function closeDrawer(manageHistory = true) {
-    if (!drawerOpen && !navToggle.checked) return; // 已关闭，跳过
+    if (!drawerOpen && !navToggle.checked) {
+        console.debug('[drawer] 已关闭，跳过');
+        return; // 已关闭，跳过
+    }
+    console.debug('[drawer] 关闭抽屉, manageHistory=' + manageHistory);
     header.classList.remove('nav-drawer-open');
     drawerOpen = false;
     navToggle.checked = false; // 同步 checkbox 状态（无副作用：change 不会重入）
@@ -59,6 +65,7 @@ var onPopupClose = function () {}; // 默认 no-op
 
 // 初始化入口：由 main.js 调用，注入弹窗互斥回调
 export function initDrawer(deps) {
+    console.debug('[drawer] 初始化');
     if (deps && typeof deps.onPopupClose === 'function') {
         onPopupClose = deps.onPopupClose;
     }
@@ -66,6 +73,7 @@ export function initDrawer(deps) {
     // 监听 checkbox change 事件（用户点击汉堡图标 / 切换触发）
     if (navToggle) {
         navToggle.addEventListener('change', function () {
+            console.debug('[drawer] checkbox 状态变化，checked=' + navToggle.checked);
             if (navToggle.checked) {
                 // 用户打开抽屉
                 openDrawer();
@@ -79,6 +87,7 @@ export function initDrawer(deps) {
     // 抽屉内关闭按钮点击（仅移动端显示）
     if (drawerCloseBtn && navToggle) {
         drawerCloseBtn.addEventListener('click', function () {
+            console.debug('[drawer] 关闭按钮点击');
             closeDrawer(true);
         });
     }

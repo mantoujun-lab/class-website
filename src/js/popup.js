@@ -20,7 +20,7 @@
 // ============================================================
 
 import { dom } from './_dom.js';
-import { rememberFocus, restoreFocus, focusFirst, trapFocus } from './focus-trap.js';
+import { rememberFocus, restoreFocus, focusFirst, clearFocusableCache } from './focus-trap.js';
 import { acquireSlot, releaseSlot, markReleased, getSlotOwner } from './history-stack.js';
 
 // ---- 模块状态 ----
@@ -28,8 +28,10 @@ let popupOpen = false;
 
 // ---- 公共 API ----
 function openPopup() {
+    console.debug('[popup] 打开弹窗');
     // 互斥：若抽屉正打开，静默关闭它（不触碰 history，复用槽位）
     if (getSlotOwner() === 'drawer') {
+        console.debug('[popup] 互斥关闭抽屉');
         onDrawerClose(false); // 由 main.js 注入
     }
     header.classList.add('nav-popup-open');
@@ -43,10 +45,16 @@ function openPopup() {
 }
 
 function closePopup(manageHistory = true) {
-    if (!popupOpen) return; // 已关闭，跳过
+    if (!popupOpen) {
+        console.debug('[popup] 已关闭，跳过');
+        return; // 已关闭，跳过
+    }
+    console.debug('[popup] 关闭弹窗, manageHistory=' + manageHistory);
     header.classList.remove('nav-popup-open');
     popupBtn.setAttribute('aria-expanded', 'false');
     popupOpen = false;
+
+    clearFocusableCache(popup);
 
     if (manageHistory) {
         releaseSlot();
@@ -66,6 +74,7 @@ var onDrawerClose = function () { }; // 默认 no-op
 
 // 初始化入口
 export function initPopup(deps) {
+    console.debug('[popup] 初始化');
     if (deps && typeof deps.onDrawerClose === 'function') {
         onDrawerClose = deps.onDrawerClose;
     }
@@ -74,6 +83,7 @@ export function initPopup(deps) {
     popupBtn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation(); // 阻止冒泡到 document 的外部点击关闭逻辑
+        console.debug('[popup] 导航按钮点击，将打开=' + (!popupOpen));
         if (popupOpen) {
             closePopup(true);
         } else {
@@ -84,6 +94,7 @@ export function initPopup(deps) {
     // 弹窗内关闭按钮（移动端可见，桌面端 display:none）
     if (closeBtn) {
         closeBtn.addEventListener('click', function () {
+            console.debug('[popup] 关闭按钮点击');
             closePopup(true);
         });
     }
