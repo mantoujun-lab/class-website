@@ -19,6 +19,10 @@ header {
 }
 
 .nav-title {
+    // 让 .nav-title 自身成为 flex 容器，继承 header 的 align-items: center 上下文
+    // 高度撑满 header，保证图标垂直居中与右侧导航按钮对齐
+    @include flex(row, flex-start, center);
+    height: 100%;
     font-size: 1.2rem;
     font-weight: bold;
 

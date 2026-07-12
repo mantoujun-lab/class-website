@@ -6,13 +6,48 @@
 footer {
     text-align: center;
     background-color: $color-footer-bg;
-    padding: 20px 0;
+    padding: 20px $spacing-lg;
 
+    // 三行垂直堆叠：版权 / 链接 / 技术信息
     p {
-        display: flex;
-        justify-content: left;
+        @include flex(row, center, center);
+        flex-wrap: wrap;
         gap: $spacing-sm;
-        margin: 0 $spacing-lg;
+        margin: 0 0 $spacing-sm 0;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        // 让 a 自身成为 inline-flex 盒子，避免 inline 元素的 baseline 错位
+        a {
+            display: inline-flex;
+            align-items: center;
+        }
+    }
+
+    // 行间分隔符 · 视觉上更透气
+    .footer-sep {
+        color: $color-text-light;
+        user-select: none;
+    }
+
+    // 版权行：最醒目
+    .footer-copyright {
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    // 链接行：中等字号
+    .footer-links {
+        font-size: 0.9rem;
+    }
+
+    // 技术信息行：最弱化
+    .footer-meta {
+        font-size: 0.8rem;
+        color: $color-text-light;
+        margin-top: $spacing-sm;
     }
 }
 
@@ -20,7 +55,8 @@ footer {
 
 @include respond-to($breakpoint-tablet) {
     footer p {
-        display: block;
+        // 移动端保持 flex + center，与桌面端一致；
+        // 保留此钩子便于未来扩展（如强制换行）
         justify-content: center;
         align-items: center;
     }
