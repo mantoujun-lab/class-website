@@ -9,6 +9,7 @@ Class 1, Computer Application, Grade 2025
 [![GitHub Pages](https://img.shields.io/github/deployments/hjx-25pc1/hjx-25pc1.github.io/github-pages?style=for-the-badge)](https://hjx-25pc1.github.io)
 [![License](https://img.shields.io/github/license/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-181717?style=for-the-badge&logo=github)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/codespaces)
 [![Eleventy](https://img.shields.io/badge/Eleventy-000000?style=for-the-badge&logo=eleventy&logoColor=white)](https://www.11ty.dev)
 [![Nunjunks](https://img.shields.io/badge/nunjunks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
@@ -57,6 +58,19 @@ Before you start, make sure the following tools are installed locally:
 | **Git** | Latest stable | Version control and commits |
 
 > 💡 Recommend using [nvm](https://github.com/nvm-sh/nvm) (or [nvm-windows](https://github.com/coreybutler/nvm-windows) on Windows) to manage Node.js versions.
+
+## ☁️ Developing in GitHub Codespaces
+
+No local toolchain needed — fire up a full dev environment straight from your browser:
+
+1. Open <https://github.com/hjx-25pc1/hjx-25pc1.github.io> and click the green **Code** button.
+2. Switch to the **Codespaces** tab → click **Create codespace on main**.
+3. On first launch, `npm ci` will run automatically to install dependencies, and `npm run serve` will start in the background.
+4. Once the codespace is ready, a port-forwarding prompt will appear at the bottom-right — pick port `8080` and click **Open in Browser** to open `http://localhost:8080` for live preview.
+5. Edit any file under `src/`; Eleventy will rebuild automatically and the browser will refresh — true WYSIWYG.
+6. When you're done, commit, push, and open a PR straight from the Source Control panel on the left — exactly like local development.
+
+> 💡 Each GitHub account gets a free monthly Codespace allowance (the 2-core machine type). That's plenty for writing articles and tweaking styles. If you need more horsepower, pick a 4-core (or larger) machine when creating the codespace.
 
 ## 💻 Local Development
 

@@ -16,6 +16,7 @@ This guide will walk you through how to get involved. Please give it a full read
     - [Bug Reports](#bug-reports)
     - [Feature Requests](#feature-requests)
 - [Submitting a Pull Request](#submitting-a-pull-request)
+- [Developing in GitHub Codespaces](#developing-in-github-codespaces)
 - [Local Development Setup](#local-development-setup)
 - [Project Structure](#project-structure)
 - [Coding Conventions](#coding-conventions)
@@ -125,6 +126,21 @@ Please try to cover:
 - If your PR fixes an Issue, link it with `Fixes #123` or `Closes #123` in the description.
 - For UI / style changes, please attach **before / after** screenshots.
 - Maintainers may ask for revisions; please stay patient and open-minded.
+
+---
+
+## Developing in GitHub Codespaces
+
+Don't want to install Node.js locally? No problem — this repo ships with a Codespace devcontainer that gives you a full environment straight from your browser:
+
+1. Open <https://github.com/hjx-25pc1/hjx-25pc1.github.io> and click the green **Code** button.
+2. Switch to the **Codespaces** tab → click **Create codespace on main**.
+3. On first launch, `npm ci` will run automatically to install dependencies, and `npm run serve` will start in the background.
+4. Once the codespace is ready, a port-forwarding prompt will appear at the bottom-right — pick port `8080` and click **Open in Browser** to open `http://localhost:8080` for live preview.
+5. Edit any file under `src/`; Eleventy will rebuild automatically and the browser will refresh — true WYSIWYG.
+6. When you're done, commit, push, and open a PR straight from the Source Control panel on the left — exactly like local development.
+
+> 💡 Each GitHub account gets a free monthly Codespace allowance (the 2-core machine type). That's plenty for writing articles and tweaking styles. If you see "Your codespace exceeds its usage limits", stop any codespaces you aren't using or wait for the quota to reset.
 
 ---
 

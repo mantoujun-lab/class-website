@@ -14,6 +14,7 @@
     - [Bug 反馈](#bug-反馈)
     - [功能建议](#功能建议)
 - [提交 Pull Request](#提交-pull-request)
+- [在 GitHub Codespace 中开发](#在-github-codespace-中开发)
 - [本地开发环境搭建](#本地开发环境搭建)
 - [项目结构](#项目结构)
 - [编码规范](#编码规范)
@@ -123,6 +124,21 @@
 - 如果你的 PR 解决了某个 Issue，请在描述中使用 `Fixes #123` 或 `Closes #123` 关联。
 - 如果是 UI / 样式变更，请附上**修改前 / 修改后**的截图。
 - 维护者可能会要求调整，请保持耐心与开放的态度。
+
+---
+
+## 在 GitHub Codespace 中开发
+
+不想在本地装 Node.js 也可以！仓库已经配置好 Codespace 开发容器，在浏览器里就能进入完整环境：
+
+1. 打开 <https://github.com/hjx-25pc1/hjx-25pc1.github.io>，点击绿色的 **Code** 按钮。
+2. 切到 **Codespaces** 标签 → 点击 **Create codespace on main**。
+3. 首次创建时会自动跑 `npm ci` 安装依赖，并在后台启动 `npm run serve`。
+4. 创建完成后右下角会弹出端口转发提示，选择 8080 端口并点击 **Open in Browser**，即可在网页上访问 `http://localhost:8080` 实时预览。
+5. 修改 `src/` 下的任意文件，Eleventy 会自动重新构建并刷新浏览器，所见即所得。
+6. 改完之后直接通过左侧 Source Control 面板提交、推送、发起 PR，与本地开发完全一致。
+
+> 💡 每个 GitHub 账号每月有免费的 Codespace 额度（2 核机型），普通写稿、改样式完全够用。如果看到「Your codespace exceeds its usage limits」提示，请关闭不用的 Codespace 或等待额度重置。
 
 ---
 

@@ -10,6 +10,7 @@
 [![GitHub Pages](https://img.shields.io/github/deployments/hjx-25pc1/hjx-25pc1.github.io/github-pages?style=for-the-badge)](https://hjx-25pc1.github.io)
 [![License](https://img.shields.io/github/license/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-181717?style=for-the-badge&logo=github)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/codespaces)
 [![Eleventy](https://img.shields.io/badge/Eleventy-000000?style=for-the-badge&logo=eleventy&logoColor=white)](https://www.11ty.dev)
 [![Nunjunks](https://img.shields.io/badge/nunjunks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
@@ -58,6 +59,19 @@
 | **Git** | 最新稳定版 | 版本控制与代码提交 |
 
 > 💡 推荐使用 [nvm](https://github.com/nvm-sh/nvm)（Windows 下推荐 [nvm-windows](https://github.com/coreybutler/nvm-windows)）来管理 Node.js 版本。
+
+## ☁️ 在 GitHub Codespace 中开发
+
+不用在本地装任何东西，浏览器一点就能进入完整开发环境：
+
+1. 打开 <https://github.com/hjx-25pc1/hjx-25pc1.github.io>，点击绿色的 **Code** 按钮。
+2. 切到 **Codespaces** 标签 → 点击 **Create codespace on main**。
+3. 首次创建会自动跑 `npm ci` 装依赖，并在后台启动 `npm run serve`。
+4. 创建完成后，右下角会弹出端口转发提示，端口选 `8080` 并点击 **Open in Browser**，就能在网页上打开 `http://localhost:8080` 实时预览。
+5. 修改 `src/` 下的任意文件，Eleventy 会自动重新构建并刷新浏览器，所见即所得。
+6. 改完之后在左侧 Source Control 面板直接提交、推送、发起 PR，与本地开发完全一致。
+
+> 💡 每个 GitHub 账号每月有免费的 Codespace 额度（2 核机型），普通写稿、改样式完全够用。需要更高配置时可在创建 Codespace 时手动选择 4 核或更大机型。
 
 ## 💻 本地开发
 
