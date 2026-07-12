@@ -27,6 +27,7 @@ import { initPopup, closePopup, getPopupOpen } from './popup.js';
 import { initDrawer, closeDrawer, getDrawerOpen } from './drawer.js';
 import { initPrism } from './prism.js';
 import { initTheme } from './theme.js';
+import { initWikiSidebar } from './wiki-sidebar.js';
 
 (function () {
     'use strict';
@@ -117,6 +118,10 @@ import { initTheme } from './theme.js';
     console.debug('[main] 初始化代码高亮和主题模块');
     initPrism();
     initTheme();
+
+    // 按需初始化 wiki 侧边栏（非 wiki 页面无相关元素，内部会优雅跳过）
+    // 此处不重复打日志，由 wiki-sidebar.js 内部负责调试输出（详见该模块顶部注释）
+    initWikiSidebar();
 
     console.debug('[main] 初始化完成 ✓');
 })();
