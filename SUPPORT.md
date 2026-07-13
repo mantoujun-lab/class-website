@@ -1,6 +1,6 @@
 # Support
 
-> 📖 [Contributing Guide](CONTRIBUTING.md) · 🛡️ [Security Policy](SECURITY.md) · 📜 [Code of Conduct](CODE_OF_CONDUCT.md)
+> 📖 [Contributing Guide](CONTRIBUTING.md) · 🛡️ [Security Policy](SECURITY.md) · 📜 [Code of Conduct](CODE_OF_CONDUCT.md) · 🏠 [Back to README](README.md)
 >
 > 🌐 [简体中文](docs/SUPPORT_zh-cn.md)
 
@@ -16,6 +16,10 @@ Before submitting an issue, please check:
 - **General questions**: Use [GitHub Discussions](https://github.com/hjx-25pc1/hjx-25pc1.github.io/discussions)
 - **Bug reports**: Use the [Bug Report Issue template](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=bug-report.yml)
 - **Feature requests**: Use the [Feature Request Issue template](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=feature-request.yml)
+- **Documentation improvements**: Use the [Documentation Issue template](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=documentation.yml)
+- **Performance issues**: Use the [Performance Issue template](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=performance.yml)
+
+> See the full Issue template list in [CONTRIBUTING.md](CONTRIBUTING.md#submitting-an-issue).
 
 ## ⚠️ Security Issues
 
@@ -25,6 +29,8 @@ Before submitting an issue, please check:
 
 - Maintainer: [@mantoujun12](https://github.com/mantoujun12)
 - Email: 3881679030@qq.com
+- Backup maintainer: [@mantoujun6](https://github.com/mantoujun6)
+- Backup email: 2064074143@qq.com
 
 ## ⏰ Response Time
 

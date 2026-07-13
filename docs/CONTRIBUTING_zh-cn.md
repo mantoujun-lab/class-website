@@ -4,15 +4,21 @@
 
 本指南会帮助你快速了解如何参与本项目。请在提交任何贡献之前通读一遍。
 
+> 🌐 [English Version](../CONTRIBUTING.md)
+
 ---
 
 ## 目录
 
 - [行为准则](#行为准则)
 - [我可以从哪些方面参与？](#我可以从哪些方面参与)
+- [项目结构](#项目结构)
 - [提交 Issue](#提交-issue)
     - [Bug 反馈](#bug-反馈)
     - [功能建议](#功能建议)
+    - [文档改进](#文档改进)
+    - [性能问题](#性能问题)
+    - [任务跟踪](#任务跟踪)
 - [提交 Pull Request](#提交-pull-request)
 - [在 GitHub Codespace 中开发](#在-github-codespace-中开发)
 - [本地开发环境搭建](#本地开发环境搭建)
@@ -32,6 +38,8 @@
 - 禁止任何形式的歧视、骚扰、攻击性言论。
 - 优先以维护者与社区共识为依据，避免反复争论。
 
+详细公约请阅读 [CODE_OF_CONDUCT_zh-cn.md](CODE_OF_CONDUCT_zh-cn.md)。
+
 违反行为准则的 Issue / PR 可能会被关闭，相关账号可能被限制参与。
 
 ---
@@ -49,19 +57,55 @@
 
 ---
 
+## 项目结构
+
+仓库主要目录如下：
+
+```
+src/                  # 站点源码（页面、模板、样式、脚本、资源）
+├── _includes/        # Nunjucks 布局与组件
+│   ├── layouts/      # 页面骨架（main / home / article / wiki / zone）
+│   ├── components/   # 可复用组件（head-assets / header / nav / footer / styles）
+│   └── macros/       # Nunjucks 宏（button / card）
+├── _data/            # 全局数据（如 buildDate.js）
+├── style/            # SCSS 源码（入口由 .eleventy.js 自动扫描）
+│   ├── _variables.scss   # 公共变量
+│   ├── _theme-vars.scss  # 主题变量
+│   ├── _mixins.scss      # 公共 mixin
+│   └── *.scss            # 各模块样式（base / buttons / cards / ...）
+├── js/               # 原生 ES Modules（main / popup / drawer / focus-trap / ...）
+├── wiki/             # 知识库源文件（自动同步到 GitHub Wiki）
+├── article/          # 文章
+├── event/            # 事件
+├── zone/             # 专区入口
+├── assets/           # 静态资源（images / audios / videos）
+├── index.md          # 首页
+├── about.md          # 关于页
+└── ...               # 其他页面（article / wiki / zone 等）
+
+docs/                 # 中文文档主源（README / CONTRIBUTING / CODE_OF_CONDUCT / SECURITY / SUPPORT）
+scripts/              # Node.js 工具脚本（bump-version / release / sync-wiki / update-contributors）
+.github/              # GitHub 配置（workflows / ISSUE_TEMPLATE / CODEOWNERS / dependabot / SECURITY）
+_site/                # Eleventy 构建产物（请勿手动修改）
+```
+
+> 💡 添加新内容时，把 **Markdown 文件放到对应内容目录**（如 `src/event/`、`src/article/`、`src/wiki/`），把 **样式 / 脚本放到对应职责目录**（`src/style/`、`src/js/`），并复用 `_includes/` 里已有的组件或宏。新页面默认会被 Eleventy 自动渲染到 `_site/` 下。
+
+---
+
 ## 提交 Issue
 
 提交 Issue 之前，请先**搜索现有 Issue**，避免重复。
 
 本仓库提供了五种 Issue 模板：
 
-| 模板              | 用途                                                    |
-| ----------------- | ------------------------------------------------------- |
-| `bug-feedback`    | 报告网站功能异常、显示错乱、链接失效等                   |
-| `feature-request` | 提出新功能或内容板块建议                                 |
-| `documentation`   | 文档改进建议                                             |
-| `performance`     | 性能问题反馈                                             |
-| `task`            | 任务跟踪与分配                                           |
+| 模板                | 用途                                                |
+| ------------------ | --------------------------------------------------- |
+| `bug-report`       | 报告网站功能异常、显示错乱、链接失效等                |
+| `feature-request`  | 提出新功能或内容板块建议                              |
+| `documentation`    | 文档改进建议                                         |
+| `performance`      | 性能问题反馈                                         |
+| `task`             | 任务跟踪与分配（项目内部使用）                       |
 
 请按照对应模板填写，模板内未填写清楚可能会被要求补充信息。
 
@@ -84,6 +128,38 @@
 - 期望的效果
 - 是否可以提供替代方案或参考页面
 - 是否愿意自己实现这个功能
+
+### 文档改进
+
+请尽量说明：
+
+- 涉及的文档位置（文件路径或 URL）
+- 当前问题（哪里不清楚、错误或缺失）
+- 改进建议或草稿
+- （可选）截图或参考材料
+
+### 性能问题
+
+请尽量提供：
+
+- 性能症状（哪个页面、哪个指标差、影响什么场景）
+- 受影响页面
+- Lighthouse / WebPageTest 实测指标（LCP / FCP / TBT / CLS 等）
+- 测试环境（设备、网络、浏览器、地区）
+- 期望指标或优化方向
+
+### 任务跟踪
+
+> ⚠️ 仅项目成员使用。
+
+请尽量包含：
+
+- 背景与目标
+- 验收标准（Acceptance Criteria，checklist 形式）
+- 优先级（P0 / P1 / P2 / P3）
+- 工作量预估（XS / S / M / L / XL）
+- 关联 Milestone（可选）
+- 子任务拆解
 
 ---
 
@@ -148,9 +224,11 @@
 
 ### 环境要求
 
-- Node.js（推荐使用当前 LTS 版本）
-- npm（随 Node.js 一起安装）
+- Node.js 24.x（当前 LTS）
+- npm 11.x+（随 Node.js 一起安装）
 - Git
+
+> 💡 推荐使用 [nvm](https://github.com/nvm-sh/nvm)（Windows 下推荐 [nvm-windows](https://github.com/coreybutler/nvm-windows)）来管理 Node.js 版本。
 
 ### 克隆与安装
 
@@ -162,14 +240,15 @@ npm install
 
 ### 常用命令
 
-| 命令              | 说明                                  |
-| ----------------- | ------------------------------------- |
-| `npm run serve`   | 启动本地开发服务器，支持热重载         |
-| `npm run build`   | 构建生产版本，产物输出到 `_site/`     |
-| `npm run watch`   | 仅监听文件变化并重新构建，不启动服务器 |
+| 命令                | 说明                                          |
+| ------------------ | --------------------------------------------- |
+| `npm run serve`    | 启动本地开发服务器，支持热重载                 |
+| `npm run build`    | 构建生产版本，产物输出到 `_site/`             |
+| `npm run watch`    | 仅监听文件变化并重新构建，不启动服务器         |
 | `npm run sync:wiki` | 把 `src/wiki/` 下的条目同步到 GitHub Wiki 仓库 |
-| `npm run release` | 构建并打包 `_site/` 为 zip，输出到 `dist/` |
-| `npm run bump`    | 升级 `package.json` / `package-lock.json` 中的 `version` |
+| `npm run release`  | 构建并打包 `_site/` 为 zip，输出到 `dist/`    |
+| `npm run bump`     | 升级 `package.json` / `package-lock.json` 中的 `version` |
+| `npm run generate:contributors` | 重新生成 README 中的贡献者头像墙（与 `Generate contributors image` workflow 效果相同） |
 
 启动开发服务器后，默认会在终端输出访问地址（通常是 `http://localhost:8080`），在浏览器打开即可预览。
 
@@ -351,4 +430,4 @@ git push origin main
 
 ## 许可协议
 
-本项目使用 [MIT 许可证](./LICENSE)。提交贡献即表示你同意以相同协议授权你的代码与文档。
+本项目使用 [MIT 许可证](../LICENSE)。提交贡献即表示你同意以相同协议授权你的代码与文档。

@@ -28,6 +28,8 @@
 
 本仓库是 **25 级计算机应用 1 班** 的官方班级网站源代码，用于展示班级风采、分享学习资料、记录班级日常，并作为同学们学习 Web 开发的练手项目。
 
+站点主要分为 **事件 / 文章 / 知识库（Wiki）** 三大内容板块，辅以若干「专区入口」（讨论区、学习区、活动区等）。
+
 - **作者**：hjx-25pc1
 - **许可证**：MIT
 - **在线访问**：<https://hjx-25pc1.github.io>
@@ -55,7 +57,7 @@
 | 工具 | 版本要求 | 说明 |
 | --- | --- | --- |
 | **Node.js** | 24.x（LTS，建议使用最新 LTS 版本） | 运行环境与包管理 |
-| **npm** | 随 Node.js 一同安装 | 依赖管理与脚本执行 |
+| **npm** | 11.x+（随 Node.js 一同安装） | 依赖管理与脚本执行 |
 | **Git** | 最新稳定版 | 版本控制与代码提交 |
 
 > 💡 推荐使用 [nvm](https://github.com/nvm-sh/nvm)（Windows 下推荐 [nvm-windows](https://github.com/coreybutler/nvm-windows)）来管理 Node.js 版本。
@@ -130,11 +132,31 @@
    npm run bump -- 1.3.0          # 显式指定版本号
    ```
 
-## 🚀 部署说明
+9. **重新生成贡献者头像墙**（与 `Generate contributors image` workflow 效果相同）
+
+   ```bash
+   npm run generate:contributors
+   ```
+
+## � 反馈与建议
+
+本仓库提供了 5 种 **Issue 模板** 供你选择：
+
+| 模板                | 用途                                                |
+| ------------------ | --------------------------------------------------- |
+| `bug-report`       | 报告网站功能异常、显示错乱、链接失效等                |
+| `feature-request`  | 提出新功能或内容板块建议                              |
+| `documentation`    | 文档改进建议                                         |
+| `performance`      | 性能问题反馈                                         |
+| `task`             | 任务跟踪与分配（项目内部使用）                       |
+
+> 提交前请先搜索现有 Issue，避免重复。完整流程见 [CONTRIBUTING_zh-cn.md](CONTRIBUTING_zh-cn.md)。
+
+## �🚀 部署说明
 
 本项目使用 **GitHub Actions** 自动部署到 **GitHub Pages**：
 
-- 触发条件：向 `main` 分支推送，并且改动位于 `src/**`、`.eleventy.js`、`package.json` 或 `package-lock.json`
+- 触发条件：向 `main` 分支推送，并且改动位于 `src/**`、`.eleventy.js`、`package.json`、`package-lock.json`、`README.md` 或 `docs/README_zh-cn.md`
 - 构建环境：Ubuntu 最新版 + Node.js 24
 - 部署流程：`npm ci` → `npm run build` → 上传 `_site/` 工件 → 部署到 `github-pages` 环境
 - 并发策略：同一时刻仅允许一个部署任务进行，队列中的中间部署会被跳过
