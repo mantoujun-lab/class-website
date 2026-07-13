@@ -15,7 +15,7 @@ Class 1, Computer Application, Grade 2025
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-[简体中文](docs/README_zh-cn.md)
+**English** | [简体中文](docs/README_zh-cn.md)
 
 This is a Class Website. You can Find some intersting contents.
 
@@ -26,6 +26,8 @@ This is a Class Website. You can Find some intersting contents.
 ## 🔭 Overview
 
 This repository hosts the source code of the official class website for **Class 1, Computer Application, Grade 2025**. It is used to showcase the class, share learning materials, document everyday class life, and serve as a hands-on project for classmates learning web development.
+
+The site is organized into three main content sections — **Events / Articles / Wiki** — plus a handful of "Zone" entry points (discussion, study, activities, etc.).
 
 - **Author**: hjx-25pc1
 - **License**: MIT
@@ -54,7 +56,7 @@ Before you start, make sure the following tools are installed locally:
 | Tool | Version | Description |
 | --- | --- | --- |
 | **Node.js** | 24.x (LTS; the latest LTS is recommended) | Runtime and package management |
-| **npm** | Installed with Node.js | Dependency management and script execution |
+| **npm** | 11.x or newer (installed with Node.js) | Dependency management and script execution |
 | **Git** | Latest stable | Version control and commits |
 
 > 💡 Recommend using [nvm](https://github.com/nvm-sh/nvm) (or [nvm-windows](https://github.com/coreybutler/nvm-windows) on Windows) to manage Node.js versions.
@@ -129,11 +131,31 @@ Follow these steps to run the dev server locally:
    npm run bump -- 1.2.3          # set explicitly
    ```
 
+9. **Regenerate the contributors avatar wall** (same effect as the `Generate contributors image` workflow)
+
+   ```bash
+   npm run generate:contributors
+   ```
+
+## 🐛 Feedback & Suggestions
+
+This repository ships with **5 Issue templates** — pick the one that fits your case:
+
+| Template            | Purpose                                                              |
+| ------------------- | -------------------------------------------------------------------- |
+| `bug-report`        | Report broken functionality, display glitches, dead links             |
+| `feature-request`   | Suggest new features or content sections                             |
+| `documentation`     | Suggest improvements to the documentation                            |
+| `performance`       | Report performance issues                                            |
+| `task`              | Track internal tasks and assignments (maintainers only)              |
+
+> Please search existing Issues before opening a new one. The full workflow is in [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## 🚀 Deployment
 
 This project is automatically deployed to **GitHub Pages** via **GitHub Actions**:
 
-- **Trigger**: Pushes to the `main` branch that modify `src/**`, `.eleventy.js`, `package.json`, or `package-lock.json`
+- **Trigger**: Pushes to the `main` branch that modify `src/**`, `.eleventy.js`, `package.json`, `package-lock.json`, `README.md`, or `docs/README_zh-cn.md`
 - **Build environment**: Latest Ubuntu + Node.js 24
 - **Pipeline**: `npm ci` → `npm run build` → upload `_site/` artifact → deploy to the `github-pages` environment
 - **Concurrency**: Only one deployment runs at a time; queued runs in between are skipped

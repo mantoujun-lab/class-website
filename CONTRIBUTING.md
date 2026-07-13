@@ -15,10 +15,12 @@ This guide will walk you through how to get involved. Please give it a full read
 - [Submitting an Issue](#submitting-an-issue)
     - [Bug Reports](#bug-reports)
     - [Feature Requests](#feature-requests)
+    - [Documentation Improvements](#documentation-improvements)
+    - [Performance Issues](#performance-issues)
+    - [Task Tracking](#task-tracking)
 - [Submitting a Pull Request](#submitting-a-pull-request)
 - [Developing in GitHub Codespaces](#developing-in-github-codespaces)
 - [Local Development Setup](#local-development-setup)
-- [Project Structure](#project-structure)
 - [Coding Conventions](#coding-conventions)
 - [Commit Conventions](#commit-conventions)
 - [Deployment Notes](#deployment-notes)
@@ -34,6 +36,8 @@ All participants are expected to follow these basic guidelines:
 - Critique ideas, not people; keep discussions rational.
 - No discrimination, harassment, or aggressive language in any form.
 - Follow the maintainers' and the community's consensus; avoid endless debate.
+
+See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for the full code of conduct.
 
 Issues / PRs that violate the Code of Conduct may be closed, and the associated accounts may be restricted from participating.
 
@@ -56,12 +60,15 @@ You don't have to write code! You can:
 
 Before opening an Issue, please **search existing Issues** to avoid duplicates.
 
-This repo provides two Issue templates:
+This repo provides five Issue templates:
 
-| Template              | Purpose                                                    |
-| --------------------- | ---------------------------------------------------------- |
-| `bug-feedback`        | Report broken functionality, display glitches, dead links |
-| `feature-request`     | Suggest new features or content sections                  |
+| Template            | Purpose                                                              |
+| ------------------- | -------------------------------------------------------------------- |
+| `bug-report`        | Report broken functionality, display glitches, dead links             |
+| `feature-request`   | Suggest new features or content sections                             |
+| `documentation`     | Suggest improvements to the documentation                            |
+| `performance`       | Report performance issues                                            |
+| `task`              | Track internal tasks and assignments (maintainers only)              |
 
 Please fill out the matching template. Incomplete submissions may be asked for additional information.
 
@@ -84,6 +91,38 @@ Please try to cover:
 - The expected outcome
 - Possible alternatives or reference pages
 - Whether you're willing to implement it yourself
+
+### Documentation Improvements
+
+Please try to cover:
+
+- The location of the document (file path or URL)
+- The current issue (what's unclear, wrong, or missing)
+- Your suggested change or a draft
+- (Optional) screenshots or reference material
+
+### Performance Issues
+
+Please try to provide:
+
+- The symptom (which page, which metric, what scenario)
+- The affected page
+- Lighthouse / WebPageTest metrics (LCP / FCP / TBT / CLS, etc.)
+- The test environment (device, network, browser, region)
+- Target metrics or optimization direction
+
+### Task Tracking
+
+> ⚠️ Maintainers only.
+
+Please include as much of the following as possible:
+
+- Background and goal
+- Acceptance Criteria (as a checklist)
+- Priority (P0 / P1 / P2 / P3)
+- Effort estimate (XS / S / M / L / XL)
+- Linked Milestone (optional)
+- Sub-task breakdown
 
 ---
 
@@ -148,9 +187,11 @@ Don't want to install Node.js locally? No problem — this repo ships with a Cod
 
 ### Requirements
 
-- Node.js (the current LTS version is recommended)
-- npm (installed together with Node.js)
+- Node.js 24.x (current LTS)
+- npm 11.x or newer (installed together with Node.js)
 - Git
+
+> 💡 Recommend using [nvm](https://github.com/nvm-sh/nvm) (or [nvm-windows](https://github.com/coreybutler/nvm-windows) on Windows) to manage Node.js versions.
 
 ### Clone and Install
 
@@ -162,14 +203,15 @@ npm install
 
 ### Common Commands
 
-| Command            | Description                                                |
-| ------------------ | ---------------------------------------------------------- |
-| `npm run serve`    | Start the local dev server with hot reload                |
-| `npm run build`    | Build the production bundle into `_site/`                  |
-| `npm run watch`    | Watch files and rebuild without starting a server          |
-| `npm run sync:wiki` | Sync entries under `src/wiki/` to the GitHub Wiki repo    |
-| `npm run release`  | Build `_site/` and package it as a zip into `dist/`       |
-| `npm run bump`     | Bump the `version` field in `package.json` / `package-lock.json` |
+| Command                        | Description                                                              |
+| ------------------------------ | ------------------------------------------------------------------------ |
+| `npm run serve`                | Start the local dev server with hot reload                               |
+| `npm run build`                | Build the production bundle into `_site/`                                |
+| `npm run watch`                | Watch files and rebuild without starting a server                        |
+| `npm run sync:wiki`            | Sync entries under `src/wiki/` to the GitHub Wiki repo                   |
+| `npm run release`              | Build `_site/` and package it as a zip into `dist/`                      |
+| `npm run bump`                 | Bump the `version` field in `package.json` / `package-lock.json`        |
+| `npm run generate:contributors` | Regenerate the contributors avatar wall in the READMEs (same effect as the `Generate contributors image` workflow) |
 
 Once the dev server is running, the terminal will print the local URL (usually `http://localhost:8080`). Open it in your browser to preview.
 
@@ -238,12 +280,6 @@ The site is deployed at the GitHub Pages root path (`/`), so please use Eleventy
 ```
 
 Avoid hard-coding the root path `/`; otherwise styles and links will break during local preview.
-
----
-
-## Project Structure
-
-> *(See `README.md` and the source tree for the canonical layout. In short: `src/` holds templates, content, and assets; `_site/` is the build output.)*
 
 ---
 
@@ -352,7 +388,7 @@ This repository follows a **Chinese-first → translate to English** workflow fo
 
 - [`docs/CONTRIBUTING_zh-cn.md`](docs/CONTRIBUTING_zh-cn.md) is the **primary source of truth**. All additions and edits should be made in Chinese first.
 - Then translate the changes into English in this file ([CONTRIBUTING.md](CONTRIBUTING.md)).
-- The same rule applies to [`docs/README_zh-cn.md`](docs/README_zh-cn.md) (Chinese primary) and [`README.md`](README.md) (English translation).
+- The same rule applies to [`docs/README_zh-cn.md`](docs/README_zh-cn.md) (Chinese primary) and [README.md](README.md) (English translation).
 - When opening a PR, please update the Chinese version first and sync the English translation afterward, to avoid semantic drift between the two.
 
 ---
