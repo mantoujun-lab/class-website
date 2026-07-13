@@ -1,3 +1,8 @@
+# 💡 提示：请根据您的需求选择合适的沟通渠道：
+# - 一般性问题或讨论 → 使用 GitHub Discussions
+# - 查看项目文档 → 访问 Wiki
+# - 提交 Bug 或功能请求 → 提交 Issue
+
 blank_issues_enabled: false
 contact_links:
   - name: ❓ 问题和讨论

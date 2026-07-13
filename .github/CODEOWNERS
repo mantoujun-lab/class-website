@@ -1,0 +1,48 @@
+# CODEOWNERS — 文件变更自动指派审阅人
+# 语法：<pattern>  <owner>
+# Owner 写法：
+#   - 个人：@username
+#   - 团队：@org/team-name（需要先在组织里创建 Team 并加入成员）
+#   - 邮箱：user@example.com
+# 匹配规则：自上而下，后匹配覆盖先匹配（同文件多个匹配，最后一个生效）
+
+# ╔══════════════════════════════════════════════════════════════╗
+# ║ 前提条件：在 https://github.com/orgs/hjx-25pc1/teams 创建        ║
+# ║ 一个名为 main 的 Team，并把三个 Owner 全部加入。                  ║
+# ║ 未将成员加入 Team 即使是组织 Owner 也不能审批 CODEOWNERS PR。     ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+# 默认 owner：所有文件先指派给维护者 Team
+*                                           @hjx-25pc1/main
+
+# —— 构建与配置 —— 一旦改坏整站就瘫，必须仔细审
+/.eleventy.js                               @hjx-25pc1/main
+/package.json                               @hjx-25pc1/main
+/package-lock.json                          @hjx-25pc1/main
+/postcss.config.*                           @hjx-25pc1/main
+/scripts/**                                 @hjx-25pc1/main
+
+# —— 样式系统 —— Sass 主题与变量改动会牵动全站
+/src/style/_variables.scss                  @hjx-25pc1/main
+/src/style/_theme-vars.scss                 @hjx-25pc1/main
+/src/style/_mixins.scss                     @hjx-25pc1/main
+
+# —— 核心模板与布局 —— 公共组件改动需谨慎
+/src/_includes/layouts/**                   @hjx-25pc1/main
+/src/_includes/components/header.njk        @hjx-25pc1/main
+/src/_includes/components/footer.njk         @hjx-25pc1/main
+/src/_includes/components/nav.njk           @hjx-25pc1/main
+
+# —— CI / GitHub 配置 ——
+/.github/workflows/**                       @hjx-25pc1/main
+/.github/CODEOWNERS                         @hjx-25pc1/main
+/.github/dependabot.yml                     @hjx-25pc1/main
+
+# —— 文档主入口 ——
+/README.md                                  @hjx-25pc1/main
+/docs/README_zh-cn.md                       @hjx-25pc1/main
+
+# —— Wiki 写作指南与贡献指南 ——
+/src/wiki/guide/writing-guide.md            @hjx-25pc1/main
+/src/wiki/guide/contribution.md             @hjx-25pc1/main
+/src/wiki/coding-style.md                   @hjx-25pc1/main
