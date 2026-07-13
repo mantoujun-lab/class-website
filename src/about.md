@@ -1,5 +1,5 @@
 ---
-title: 关于
+title: 关于我们
 layout: layouts/main
 description: 海南省经济技术学校 25 级计算机应用 1 班组织介绍
 eleventyNavigation:
@@ -8,7 +8,7 @@ eleventyNavigation:
     order: 7
 ---
 
-{% from "macros/card.njk" import cardFull, cardStandalone %}
+{% from "macros/card.njk" import card, cardFull, cardStandalone %}
 {% from "macros/button.njk" import button %}
 
 # 关于我们
@@ -30,48 +30,45 @@ eleventyNavigation:
 
 围绕班级,我们持续在使用 **GitHub** 做这些事情:
 
-{{ cardFull(
+<div class="cardzone-three-columns">
+{{ card(
     "🏠 班级主页",
     "展示班级风貌,作为对外窗口。",
     "/",
     "回到首页"
 ) }}
-
-{{ cardFull(
+{{ card(
     "📚 班级 Wiki",
     "沉淀学习资料、写作规范、API 参考、部署指南等知识文档。",
     "/wiki.html",
     "浏览 Wiki"
 ) }}
-
-{{ cardFull(
+{{ card(
     "🔔 事件记录",
     "记录班级里的重要事件、活动与日常。",
     "/event.html",
     "查看事件"
 ) }}
-
-{{ cardFull(
+{{ card(
     "📰 文章分享",
     "同学撰写的技术笔记、随笔与心得。",
     "/article.html",
     "阅读文章"
 ) }}
-
-{{ cardFull(
+{{ card(
     "💬 讨论区",
     "基于 GitHub Issues / Giscus 的开放讨论空间。",
     "/discussion.html",
     "前往讨论"
 ) }}
-
-{{ cardFull(
+{{ card(
     "🛠️ 开源协作",
     "使用 GitHub Actions 自动部署,鼓励同学提交 PR 参与共建。",
     "https://github.com/hjx-25pc1/hjx-25pc1.github.io",
     "查看仓库",
     target="_blank"
 ) }}
+</div>
 
 ## 👥 团队与角色
 
