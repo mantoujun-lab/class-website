@@ -34,7 +34,9 @@
 }
 
 .hero-inner {
-    max-width: 880px; // hero 内层最大宽度,留出外层边距
+    // 不设固定 max-width,跟随 hero-banner 同宽
+    // 避免在窄屏(phone/tablet)下 hero-inner 比 hero-banner 还宽,
+    // 导致内部内容被挤压到屏幕外的视觉问题
     margin: 0 auto; // 水平居中
 }
 
@@ -110,10 +112,20 @@
         gap: $spacing-lg;
     }
 
-    // 手机:全部单列居中
+    // 手机:横向 flex 排列,可横向滚动(溢出时滑动)
+    // 相比 grid:5 项独立占位,counter 不再单独占行
     @include respond-to($breakpoint-phone) {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: nowrap;
         gap: $spacing-md;
+        overflow-x: auto;
+        // iOS 平滑滚动 + 隐藏滚动条(仍可滚动)
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; // Firefox
+
+        &::-webkit-scrollbar {
+            display: none; // Chrome / Safari
+        }
     }
 }
 
@@ -124,6 +136,12 @@
     // counter 项在桌面端贴右对自身,平板/手机居中
     @include respond-to($breakpoint-tablet) {
         grid-column: span 1;
+    }
+
+    // 手机:横向排列时,每项固定最小宽度,允许整行横向滚动
+    @include respond-to($breakpoint-phone) {
+        flex: 0 0 auto; // 不收缩、不伸展、按内容宽度
+        min-width: 72px; // 每项至少 72px,既不放纵大也不挤碎
     }
 }
 
