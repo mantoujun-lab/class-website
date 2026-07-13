@@ -46,7 +46,7 @@ header {
         transition: background $transition-fast;
 
         &:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--header-hover-bg, rgba(255, 255, 255, 0.15));
         }
 
         &:focus {
@@ -120,7 +120,7 @@ header {
         transition: background $transition-fast, color $transition-fast;
 
         &:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--nav-drawer-close-hover-bg, rgba(255, 255, 255, 0.15));
             color: $color-white;
         }
 
@@ -144,8 +144,8 @@ header {
         a {
             padding: 14px;
             margin: $spacing-sm 0;
-            background: rgba(255, 255, 255, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.6);
+            background: var(--nav-mobile-btn-bg, rgba(255, 255, 255, 0.3));
+            border: 2px solid var(--nav-mobile-btn-border, rgba(255, 255, 255, 0.6));
             border-radius: $radius-btn;
             transition: $transition-fast;
 
@@ -154,7 +154,7 @@ header {
             }
 
             &:hover {
-                background-color: rgba(255, 255, 255, 0.6);
+                background-color: var(--nav-mobile-btn-hover-bg, rgba(255, 255, 255, 0.6));
             }
         }
 

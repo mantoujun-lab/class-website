@@ -31,6 +31,12 @@
     --color-primary-five: rgba(74, 108, 247, 0.05);
     --color-primary-eight: rgba(74, 108, 247, 0.08);
     --color-black-six: rgba(0, 0, 0, 0.06);
+    // 导航栏按钮 hover / 移动端背景色（默认用 color-mix 跟随 header-bg 自动适配）
+    --header-hover-bg: color-mix(in srgb, white 15%, transparent);
+    --nav-drawer-close-hover-bg: color-mix(in srgb, white 15%, transparent);
+    --nav-mobile-btn-bg: color-mix(in srgb, white 30%, transparent);
+    --nav-mobile-btn-border: color-mix(in srgb, white 60%, transparent);
+    --nav-mobile-btn-hover-bg: color-mix(in srgb, white 60%, transparent);
     --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
     --shadow-btn-pill: 0 2px 6px rgba(0, 0, 0, 0.12);
@@ -65,6 +71,12 @@
         --color-primary-five: rgba(107, 133, 250, 0.1);
         --color-primary-eight: rgba(107, 133, 250, 0.15);
         --color-black-six: rgba(0, 0, 0, 0.2);
+        // 导航栏按钮 hover / 移动端背景色（默认用 color-mix 跟随 header-bg 自动适配）
+        --header-hover-bg: color-mix(in srgb, white 15%, transparent);
+        --nav-drawer-close-hover-bg: color-mix(in srgb, white 15%, transparent);
+        --nav-mobile-btn-bg: color-mix(in srgb, white 30%, transparent);
+        --nav-mobile-btn-border: color-mix(in srgb, white 60%, transparent);
+        --nav-mobile-btn-hover-bg: color-mix(in srgb, white 60%, transparent);
         --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
         --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.6);
         --shadow-btn-pill: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -98,8 +110,50 @@ html[data-theme="dark"] {
     --color-primary-five: rgba(107, 133, 250, 0.1);
     --color-primary-eight: rgba(107, 133, 250, 0.15);
     --color-black-six: rgba(0, 0, 0, 0.2);
+    // 导航栏按钮 hover / 移动端背景色（默认用 color-mix 跟随 header-bg 自动适配）
+    --header-hover-bg: color-mix(in srgb, white 15%, transparent);
+    --nav-drawer-close-hover-bg: color-mix(in srgb, white 15%, transparent);
+    --nav-mobile-btn-bg: color-mix(in srgb, white 30%, transparent);
+    --nav-mobile-btn-border: color-mix(in srgb, white 60%, transparent);
+    --nav-mobile-btn-hover-bg: color-mix(in srgb, white 60%, transparent);
     --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
     --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.6);
     --shadow-btn-pill: 0 2px 6px rgba(0, 0, 0, 0.3);
     --shadow-btn-pill-hover: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.nav-btns a[href="/"] {
+    --header-hover-bg: rgba(255, 255, 255, 0.5);
+    --nav-mobile-btn-bg: rgba(255, 255, 255, 0.3);
+    --nav-mobile-btn-hover-bg: rgba(255, 255, 255, 0.5);
+}
+
+.nav-btns a[href="/article.html"] {
+    --header-hover-bg: rgba(76, 175, 80, 0.5);
+    --nav-mobile-btn-bg: rgba(76, 175, 80, 0.3);
+    --nav-mobile-btn-hover-bg: rgba(76, 175, 80, 0.5);
+}
+
+.nav-btns a[href="/wiki.html"] {
+    --header-hover-bg: rgba(0, 132, 255, 0.5);
+    --nav-mobile-btn-bg: rgba(0, 132, 255, 0.3);
+    --nav-mobile-btn-hover-bg: rgba(0, 132, 255, 0.5);
+}
+
+.nav-btns a[href="/zone.html"] {
+    --header-hover-bg: rgba(255, 0, 255, 0.5);
+    --nav-mobile-btn-bg: rgba(255, 0, 255, 0.3);
+    --nav-mobile-btn-hover-bg: rgba(255, 0, 255, 0.5);
+}
+
+.nav-btns a[href="/astro"] {
+    --header-hover-bg: rgba(255, 93, 1, 0.5);
+    --nav-mobile-btn-bg: rgba(255, 93, 1, 0.3);
+    --nav-mobile-btn-hover-bg: rgba(255, 93, 1, 0.5);
+}
+
+.nav-btns a[href="https://github.com/hjx-25pc1/hjx-25pc1.github.io"] {
+    --header-hover-bg: rgba(150, 0, 255, 0.5);
+    --nav-mobile-btn-bg: rgba(150, 0, 255, 0.3);
+    --nav-mobile-btn-hover-bg: rgba(150, 0, 255, 0.5);
 }

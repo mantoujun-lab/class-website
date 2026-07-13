@@ -3,7 +3,8 @@ title: Markdown & 组件展示示例
 author: 一张白纸
 description: 演示本站支持的所有 Markdown 语法、宏、图片画廊与按钮等组件
 layout: layouts/article
-date: 2026-07-09
+date: 2026-07-09 00:00:00
+headerBg: green
 eleventyNavigation:
     key: article-markdown-showcase
     title: 📝 Markdown & 组件展示示例
@@ -358,6 +359,28 @@ headerBg: "#c92a2a"
 
 - `src/style/header.scss`：把硬编码的 `$color-primary` 改为 `var(--header-bg, $color-primary)`
 - `src/_includes/components/header.njk`：根据 `headerBg` 变量是否为空，条件性地渲染 `style` 属性
+
+#### 自定义按钮 hover / 移动端背景（全局）
+
+按钮 hover 与移动端展示的 5 处背景色**不暴露页面级字段**，统一在全局主题文件 `_theme-vars.scss` 中以 CSS 变量集中配置：
+
+| 变量 | 作用 | 默认值 |
+|---|---|---|
+| `--header-hover-bg` | 桌面端导航按钮 hover 背景 | `color-mix(in srgb, white 15%, transparent)` |
+| `--nav-drawer-close-hover-bg` | 移动端关闭按钮 hover 背景 | 同上 |
+| `--nav-mobile-btn-bg` | 移动端菜单默认背景 | `color-mix(in srgb, white 30%, transparent)` |
+| `--nav-mobile-btn-border` | 移动端菜单边框 | `color-mix(in srgb, white 60%, transparent)` |
+| `--nav-mobile-btn-hover-bg` | 移动端菜单 hover 背景 | `color-mix(in srgb, white 60%, transparent)` |
+
+默认值用 `color-mix` 自动跟随 `--header-bg` 计算：只设置 `headerBg` 时 hover 也会给出协调的对比色。若需统一替换某一处（例如所有页面的移动端菜单都改成黑色半透明），直接在 `_theme-vars.scss` 的浅色 / 深色 `:root` 中改对应变量即可。
+
+**覆盖单个按钮**：无需修改 njk 模板，按 CSS 选择器写更高优先级的规则即可：
+
+```scss
+.nav-btns a[href="/article.html"]:hover {
+    --header-hover-bg: rgba(76, 175, 80, 0.3); // "文章"按钮 hover 显示绿色
+}
+```
 
 ## 13. 数学公式（如启用 KaTeX）
 

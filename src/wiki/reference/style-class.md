@@ -271,6 +271,46 @@ headerBg: "#c92a2a"
 
 > 颜色会作为 `style="--header-bg:...";` 内联到 `<header>` 元素上，并通过 `transition: background` 平滑过渡。
 
+#### 自定义按钮 hover / 移动端背景（全局）
+
+按钮 hover 与移动端展示的 5 处背景色**不在页面级暴露**，统一在全局主题文件 `_theme-vars.scss` 中以 CSS 变量集中配置：
+
+| 变量 | 作用 |
+|---|---|
+| `--header-hover-bg` | 桌面端导航按钮 hover 背景 |
+| `--nav-drawer-close-hover-bg` | 移动端关闭按钮 hover 背景 |
+| `--nav-mobile-btn-bg` | 移动端菜单默认背景 |
+| `--nav-mobile-btn-border` | 移动端菜单边框 |
+| `--nav-mobile-btn-hover-bg` | 移动端菜单 hover 背景 |
+
+默认值通过 `color-mix(in srgb, white X%, transparent)` 自动跟随 `--header-bg` 颜色——只设置 `headerBg` 时 hover 也会给出协调的对比色；如需全局替换某一处（例如所有页面的移动端菜单都改成黑色半透明），直接在 `_theme-vars.scss` 的浅色 / 深色 `:root` 中改对应变量即可。
+
+#### 覆盖单个按钮的 hover 背景
+
+由于 5 个变量就是 CSS 自定义属性，任何**更高优先级的 CSS 规则**都能覆盖默认色。无需修改 njk 模板或新增 class，直接在 SCSS 文件里按属性选择器写规则即可：
+
+```scss
+// 例：让"文章"按钮 hover 显示绿色
+.nav-btns a[href="/article.html"]:hover {
+    --header-hover-bg: rgba(76, 175, 80, 0.3);
+}
+
+// 例：让"此 Github 项目"按钮 hover 显示深色
+.nav-btns a[href^="https://github.com"]:hover {
+    --header-hover-bg: rgba(0, 0, 0, 0.4);
+}
+
+// 例：让所有 `.theme-btn` 的 hover 用主色（移动端抽屉关闭按钮同样适用）
+.theme-btn:hover {
+    --header-hover-bg: rgba(74, 108, 247, 0.4);
+}
+```
+
+**要点**：
+- 选择器优先级需**高于** `header.scss` 里的 `.nav-btns a:hover`，所以写在更靠后的文件（如新建一个 `_nav-override.scss` 并在 `styles.njk` 末尾 `@use` 进来）即可
+- 移动端菜单同理——在 `respond-to($breakpoint-tablet)` 内的 `.nav-btns a:hover` 用同一套变量，移动端覆盖选择器也写在媒体查询内即可
+- 也可直接在 njk 模板的 `<a>` 标签上写 `style="--header-hover-bg: rgba(...)"`，内联 style 优先级天然最高
+
 ---
 
 ## 八、导航弹出菜单（nav-popup.scss）
