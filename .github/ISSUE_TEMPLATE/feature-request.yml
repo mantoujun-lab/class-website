@@ -1,0 +1,30 @@
+name: 🚀 功能请求
+description: 给这个项目提出意见
+title: "[功能请求]: "
+labels: ["feat"]
+body:
+  - type: textarea
+    id: feature-text
+    attributes:
+      label: 需要的功能
+      description: 提出你需要的功能，在能力范围内的会尽量做
+      placeholder: 需要的功能
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 功能实现
+      description: 这个功能具体怎么实现
+      placeholder: 加一个xx按钮,点击后可以xxxxx.
+  - type: textarea
+    id: another
+    attributes:
+      label: 替代方案
+      description: 如果有什么替代方案可以写在这
+      placeholder: 通过xxx方法也可以实现
+  - type: textarea
+    id: context
+    attributes:
+      label: 附加上下文
+      description: 添加其他你认为有帮助的上下文信息

@@ -1,0 +1,73 @@
+name: 🐛 Bug 报告
+description: 报告一个问题或意外行为,帮助改进项目
+title: "[Bug]: "
+labels: ["bug", "待处理"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 感谢你花时间报告这个 Bug!
+        在提交前，请先搜索已有的 Issues,避免重复。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug 描述
+      description: 清晰简洁地描述这个 Bug 是什么
+      placeholder: 当我在...操作时,发生了...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 请提供复现这个问题的详细步骤
+      placeholder: |
+        1. 打开 '...'
+        2. 点击 '....'
+        3. 滚动到 '....'
+        4. 看到错误
+      render: bash
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+      description: 你期望发生什么?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+      description: 实际发生了什么?
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境信息
+      description: 请提供你的运行环境信息(可选)
+      placeholder: |
+        - 操作系统: [例如 Windows 11, macOS 15]
+        - 浏览器: [例如 Chrome 120, Safari 17]
+        - 版本: [例如 v1.2.3]
+      render: markdown
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志输出
+      description: 请粘贴相关的日志或错误信息(自动格式化为代码)
+      render: shell
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 附加内容
+      description: 添加其他你认为有帮助的内容,以更快完成修复
