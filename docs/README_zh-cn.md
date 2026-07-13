@@ -16,7 +16,7 @@
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-[English](../README.md)
+[English](../README.md) | **简体中文**
 
 这是一个班级网站，你可以在这里找到一些有趣的内容。
 

@@ -15,7 +15,7 @@ Class 1, Computer Application, Grade 2025
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-[简体中文](docs/README_zh-cn.md)
+**English** | [简体中文](docs/README_zh-cn.md)
 
 This is a Class Website. You can Find some intersting contents.
 

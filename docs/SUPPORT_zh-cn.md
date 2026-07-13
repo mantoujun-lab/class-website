@@ -5,7 +5,7 @@
 提交问题前，请先查看：
 
 - [班级知识库 Wiki](https://hjx-25pc1.github.io/wiki/) — 包含新手指南、代码规范、部署指南
-- [贡献指南](CONTRIBUTING.md) — 如何参与贡献
+- [贡献指南](CONTRIBUTING_zh-cn.md) — 如何参与贡献
 
 ## 💬 提问
 
