@@ -1,5 +1,5 @@
 ---
-title: 25级计算机应用1班|首页
+title: 首页 - 25级计算机应用1班
 description: 海经校 25 计算机 1 班官方班级主页 —— 记录学习心得、笔记、事件与项目
 layout: layouts/home
 eleventyNavigation:

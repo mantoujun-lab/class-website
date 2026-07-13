@@ -85,6 +85,12 @@
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
+
+    .Eleventy {
+        background: #000000;
+        border-radius: $radius-btn;
+        padding: $spacing-sm;
+    }
 }
 
 .hero-actions {
