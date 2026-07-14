@@ -1,4 +1,4 @@
 @use 'theme-vars' as *;
 
-// 主题本身没有任何选择器（变量都定义在 _theme.scss 的 :root 里），
+// 主题本身没有任何选择器（变量都定义在 _theme-vars.scss 的 :root 里），
 // 这个文件只是让 compileSass 把它当作入口编译一次，确保 CSS 变量在所有页面生效。
