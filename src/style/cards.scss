@@ -34,7 +34,7 @@
     background: var(--card-bg, transparent);
     backdrop-filter: $blur-basic;
     -webkit-backdrop-filter: $blur-basic; // Safari 兼容
-    border: 2px solid var(--card-border, $card-border-color);
+    border: $border-width-md solid var(--card-border, $card-border-color);
     box-shadow: $shadow-card;
     padding: $spacing-md;
     color: var(--card-fg, $color-text);
@@ -71,7 +71,7 @@
     background: var(--btn-bg, $color-primary);
     cursor: pointer;
     padding: 12px 24px;
-    border: 2px solid var(--btn-border, $border-color-blue);
+    border: $border-width-md solid var(--btn-border, $border-color-blue);
     border-radius: $radius-btn;
     box-shadow: $shadow-btn;
     color: var(--btn-fg, $color-white);
@@ -98,7 +98,7 @@
     background: var(--card-bg, transparent);
     backdrop-filter: $blur-basic;
     -webkit-backdrop-filter: $blur-basic; // Safari 兼容
-    border: 2px solid var(--card-border, $card-border-color);
+    border: $border-width-md solid var(--card-border, $card-border-color);
     box-shadow: $shadow-card;
     padding: $card-padding;
     color: var(--card-fg, $color-text);

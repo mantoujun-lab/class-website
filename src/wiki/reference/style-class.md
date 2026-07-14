@@ -249,7 +249,11 @@ wikiCategoryOrder: 2
 
 通过 `--header-bg` CSS 变量自定义 `<header>` 背景色，未设置时使用主题色 (`--color-primary`)，跟随深浅色主题切换。
 
-支持两种方式（推荐优先用 front matter，仅在 layout 层覆盖时用模板 set）：
+支持两种方式，**优先级从高到低**：
+
+1. **njk 模板 set 标签**（最高）—— 在 layout 里通过 `set headerBg = "..."` 后再 include header。因为 Nunjucks set 在 include 之前求值，会**覆盖** front matter 的设置
+2. **markdown front matter**（次高）—— `headerBg: "#xxx"`
+3. **主题色兜底**—— 未设置时使用 `--color-primary`
 
 **方式 1：markdown front matter**
 
@@ -283,7 +287,7 @@ headerBg: "#c92a2a"
 | `--nav-mobile-btn-border` | 移动端菜单边框 |
 | `--nav-mobile-btn-hover-bg` | 移动端菜单 hover 背景 |
 
-默认值通过 `color-mix(in srgb, white X%, transparent)` 自动跟随 `--header-bg` 颜色——只设置 `headerBg` 时 hover 也会给出协调的对比色；如需全局替换某一处（例如所有页面的移动端菜单都改成黑色半透明），直接在 `_theme-vars.scss` 的浅色 / 深色 `:root` 中改对应变量即可。
+默认值通过 `color-mix(in srgb, var(--header-bg, var(--color-primary)) X%, transparent)` 自动跟随当前 `--header-bg` 颜色——只设置 `headerBg` 时 hover 也会给出协调的对比色；如需全局替换某一处（例如所有页面的移动端菜单都改成黑色半透明），直接在 `_theme-vars.scss` 的浅色 / 深色 `:root` 中改对应变量即可。
 
 #### 覆盖单个按钮的 hover 背景
 

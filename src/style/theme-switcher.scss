@@ -26,7 +26,7 @@
     justify-content: center;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.15);
+        background: var(--glass-white-15);
     }
 
     // 用 :focus（而非 :focus-visible），与 .nav-btns a 焦点反馈一致
@@ -108,8 +108,8 @@
         height: auto;
         padding: 14px;
         margin: $spacing-sm 0;
-        background: rgba(255, 255, 255, 0.3);
-        border: 2px solid rgba(255, 255, 255, 0.6);
+        background: var(--glass-white-30);
+        border: $border-width-md solid var(--glass-white-60);
         border-radius: $radius-btn;
         font-size: 1rem;
         color: $color-white;
@@ -117,7 +117,7 @@
         gap: 7px;
 
         &:hover {
-            background-color: rgba(255, 255, 255, 0.6);
+            background-color: var(--glass-white-60);
             transform: none;
         }
 
@@ -147,10 +147,10 @@
         opacity: 0;
         transform: translateY(-8px);
         transition:
-            max-height $transition-fast cubic-bezier(0.4, 0, 0.2, 1),
-            padding $transition-fast cubic-bezier(0.4, 0, 0.2, 1),
-            opacity $transition-fast cubic-bezier(0.4, 0, 0.2, 1),
-            transform $transition-fast cubic-bezier(0.4, 0, 0.2, 1);
+            max-height $transition-fast $cubic-ease,
+            padding $transition-fast $cubic-ease,
+            opacity $transition-fast $cubic-ease,
+            transform $transition-fast $cubic-ease;
 
         &.open {
             // 500px 足够容纳 3 个选项 + padding，移动端不会超过
@@ -166,7 +166,7 @@
             font-size: 0.95rem;
 
             &:hover {
-                background: rgba(255, 255, 255, 0.2);
+                background: var(--glass-white-20);
             }
         }
     }
