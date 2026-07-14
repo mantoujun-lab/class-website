@@ -46,14 +46,7 @@ i {
 // ==================== Hover 显示文本 ====================
 // 桌面端：默认隐藏（宽度 0 + 溢出隐藏），父级 hover 时展开宽度并显示文字，带缓动动画
 // 移动端：始终显示文字，无动画（移动端没有 hover 概念，节省性能）
-
-// 展开动画专属曲线：Material Standard（柔顺起步 + 优雅收尾）
-// 比默认 ease 更细腻，避免"前段过快、后段拖沓"的生硬感
-$cubic-hover: cubic-bezier(0.4, 0, 0.2, 1);
-
-// 展开/收起时长（展开略快于收起，符合"响应迅速"的交互直觉）
-$dur-hover-in: 0.32s;
-$dur-hover-out: 0.22s;
+// 注：$cubic-ease（动画曲线）和 $dur-hover-in / $dur-hover-out（展开/收起时长）已在 _variables.scss 统一定义
 
 .hover-show {
     display: inline-block;
@@ -66,9 +59,9 @@ $dur-hover-out: 0.22s;
     opacity: 0;
     // 收起：先收宽度再淡出，避免文字被突然截断的"咔"感
     transition:
-        max-width $dur-hover-out $cubic-hover,
-        padding $dur-hover-out $cubic-hover,
-        opacity $dur-hover-out $cubic-hover 0.05s;
+        max-width $dur-hover-out $cubic-ease,
+        padding $dur-hover-out $cubic-ease,
+        opacity $dur-hover-out $cubic-ease 0.05s;
 
     // 父元素（通常是导航按钮）hover 时展开
     &:hover,
@@ -81,9 +74,9 @@ $dur-hover-out: 0.22s;
         opacity: 1;
         // 展开：宽度优先走完，opacity 略微延后开始 → 文字"逐字滑出"而非被截断
         transition:
-            max-width $dur-hover-in $cubic-hover,
-            padding $dur-hover-in $cubic-hover,
-            opacity $dur-hover-in $cubic-hover 0.08s;
+            max-width $dur-hover-in $cubic-ease,
+            padding $dur-hover-in $cubic-ease,
+            opacity $dur-hover-in $cubic-ease 0.08s;
     }
 
     @include respond-to($breakpoint-tablet) {
