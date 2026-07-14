@@ -18,5 +18,5 @@ eleventyNavigation:
 </div>
 
 <div align="center">
-{{ button("fa-solid fa-book-open", "进入班级 Wiki", "/wiki.html") }}
+{{ button("fa-solid fa-book-open", "进入班级 Wiki", "/wiki/") }}
 </div>

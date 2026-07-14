@@ -22,9 +22,9 @@ eleventyNavigation:
 </div>
 
 <div align="center">
-{{ button("fa-solid fa-book-open", "进入班级 Wiki", "/wiki.html") }}
+{{ button("fa-solid fa-book-open", "进入班级 Wiki", "/wiki/") }}
 
-{{ button("fa-solid fa-arrow-right", "更多分区", "/zone.html") }}
+{{ button("fa-solid fa-arrow-right", "更多分区", "/zone/") }}
 </div>
 
 ## 🔔 事件

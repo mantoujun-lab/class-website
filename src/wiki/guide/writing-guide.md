@@ -36,7 +36,7 @@ Wiki / Article 页面是 `.md` 文件，Eleventy 配置 `markdownTemplateEngine:
 {% raw %}
 ```html
 <div>
-{{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgba(200, 255, 200)") }}
+{{ button("fa-solid fa-arrow-right", "了解更多", "/about/", btnColor="rgba(200, 255, 200)") }}
 </div>
 ```
 {% endraw %}
@@ -58,8 +58,8 @@ Wiki / Article 页面是 `.md` 文件，Eleventy 配置 `markdownTemplateEngine:
 ```html
 <!-- ❌ 第二个按钮会被转义 -->
 <div>
-{{ button("fa-icon-a", "按钮 1", "/a", btnColor="#fff5f5") }}
-{{ button("fa-icon-b", "按钮 2", "/b", btnColor="#ffe7e7") }}
+{{ button("fa-icon-a", "按钮 1", "#", btnColor="#fff5f5") }}
+{{ button("fa-icon-b", "按钮 2", "#", btnColor="#ffe7e7") }}
 </div>
 ```
 {% endraw %}
@@ -70,10 +70,10 @@ Wiki / Article 页面是 `.md` 文件，Eleventy 配置 `markdownTemplateEngine:
 ```html
 <!-- ✅ -->
 <div>
-{{ button("fa-icon-a", "按钮 1", "/a", btnColor="#fff5f5") }}
+{{ button("fa-icon-a", "按钮 1", "#", btnColor="#fff5f5") }}
 </div>
 <div>
-{{ button("fa-icon-b", "按钮 2", "/b", btnColor="#ffe7e7") }}
+{{ button("fa-icon-b", "按钮 2", "#", btnColor="#ffe7e7") }}
 </div>
 ```
 {% endraw %}
@@ -89,8 +89,8 @@ Nunjucks 的 raw 块（用 `raw` / `endraw` 标签包裹）会把其中内容当
 {% raw %}
 ```html
 <div class="cardzone-three-columns">
-{{ card("学习资源", "一些常用的学习资源", "/study.html", "跳转", bgColor="#fff5f5") }}
-{{ card("事件", "班级里的一些事件", "/event.html", "进入", bgColor="#e7f5ff") }}
+{{ card("学习资源", "一些常用的学习资源", "/zone/study/", "跳转", bgColor="#fff5f5") }}
+{{ card("事件", "班级里的一些事件", "/event/", "进入", bgColor="#e7f5ff") }}
 </div>
 ```
 {% endraw %}
@@ -114,4 +114,4 @@ Nunjucks 的 raw 块（用 `raw` / `endraw` 标签包裹）会把其中内容当
 
 ### 实际演示
 
-完整可运行的演示可参考 [Markdown & 组件展示示例](/article/markdown-showcase.html) 的「自定义颜色」小节，看到每个 div 内只放一个带颜色按钮的真实渲染结果。
+完整可运行的演示可参考 [Markdown & 组件展示示例](/article/markdown-showcase/) 的「自定义颜色」小节，看到每个 div 内只放一个带颜色按钮的真实渲染结果。

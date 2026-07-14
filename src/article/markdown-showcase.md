@@ -53,7 +53,7 @@ headerBg: green
 ## 4. 链接
 
 - 内联链接：[返回首页]({{ "/" | url }})
-- 带标题的链接：[Wiki 首页]({{ "/wiki.html" | url }} "Wiki 文档")
+- 带标题的链接：[Wiki 首页]({{ "/wiki/" | url }} "Wiki 文档")
 - 自动链接：<https://github.com>
 
 ## 5. 图片 & 图片画廊
@@ -178,7 +178,7 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 仅自定义背景色（与 `index.md` 中"了解更多"按钮一致）：
 
 <div>
-{{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgba(200, 255, 200)") }}
+{{ button("fa-solid fa-arrow-right", "了解更多", "/about/", btnColor="rgba(200, 255, 200)") }}
 </div>
 
 自定义背景色 + 文字色：
@@ -234,7 +234,7 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 {{ cardFull(
     "6月班级量化分",
     "本次量化分由纪律、学习、卫生三项组成，详情见正文。",
-    "/event/scoreclass6/",
+    "#",
     "查看详细信息"
 ) }}
 
@@ -254,9 +254,9 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 上面是没有套div，所以不是三列展示
 
 <div class="cardzone-three-columns">
-{{ card("学习资源", "一些常用的学习资源", "/study.html", " 跳转") }}
-{{ card("事件", "班级里的一些事件", "/event.html", "进入") }}
-{{ card("讨论区", "[需要 Github 账户]可以在这里讨论一些事情", "/discussion.html", "前往") }}
+{{ card("学习资源", "一些常用的学习资源", "/zone/study/", " 跳转") }}
+{{ card("事件", "班级里的一些事件", "/event/", "进入") }}
+{{ card("讨论区", "[需要 Github 账户]可以在这里讨论一些事情", "/discussion/", "前往") }}
 </div>
 
 套了div后
@@ -379,7 +379,7 @@ headerBg: "#c92a2a"
 **覆盖单个按钮**：无需修改 njk 模板，按 CSS 选择器写更高优先级的规则即可：
 
 ```scss
-.nav-btns a[href="/article.html"]:hover {
+.nav-btns a[href="/article/"]:hover {
     --header-hover-bg: rgba(76, 175, 80, 0.3); // "文章"按钮 hover 显示绿色
 }
 ```
