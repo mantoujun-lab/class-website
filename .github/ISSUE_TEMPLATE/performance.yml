@@ -38,29 +38,25 @@ body:
   - type: textarea
     id: metrics
     attributes:
-      label: 实测指标
-      description: 贴出 Lighthouse / WebPageTest / DevTools Performance 面板的关键指标
+      label: 实测指标（可选）
+      description: 贴出 Lighthouse / WebPageTest / DevTools Performance 面板的关键指标；没有专业设备可不填，只描述主观感受也可以
       placeholder: |
         - LCP: 4.2s
         - FCP: 2.8s
         - TBT: 850ms
         - CLS: 0.18
         - Lighthouse 性能分: 58
-    validations:
-      required: true
 
   - type: textarea
     id: environment
     attributes:
-      label: 测试环境
-      description: 设备型号、网络状况、浏览器版本、地区
+      label: 测试环境（可选）
+      description: 设备型号、网络状况、浏览器版本、地区；能填多少填多少，没专业设备只需大致说明
       placeholder: |
         - 设备: Pixel 5 (模拟)
         - 网络: Slow 4G
         - 浏览器: Chrome 126
         - 地区: 杭州
-    validations:
-      required: true
 
   - type: textarea
     id: expected
