@@ -2,9 +2,11 @@
    导航栏组件（Header Component）
    ------------------------------------------------------------
    header 整体背景色支持页面级自定义（按优先级从高到低）：
-   1. md front matter：定义 `headerBg: "#ff0000"`
-   2. njk 模板：在调用 header 的 layout 中通过 set 设定 `headerBg`
+   1. njk 模板：在调用 header 的 layout 中通过 `{% set headerBg = ... %}` 设定
+      （Nunjucks set 是在 include header 之前求值，因此会覆盖下方 front matter）
+   2. md front matter：定义 `headerBg: "#ff0000"`（次高优先级）
    3. 不设置则使用主题色（由 --color-primary 提供，跟随深浅色主题）
+
    实现原理：
    - header.scss 中 background 使用 var(--header-bg, $color-primary)
    - 此处仅当 headerBg 非空时输出 inline style，避免给默认卡片加多余的空 style
@@ -14,7 +16,8 @@
    --header-hover-bg / --nav-drawer-close-hover-bg /
    --nav-mobile-btn-bg / --nav-mobile-btn-border /
    --nav-mobile-btn-hover-bg
-   默认值用 color-mix 跟随 --header-bg 自动给出协调的对比色。
+   默认值用 color-mix(in srgb, var(--header-bg, var(--color-primary)) X%, transparent)
+   自动跟随当前 header 底色给出协调的对比色。
    ============================================================ #}
 {%- set _headerBg = headerBg or "" -%}
 {%- set _headerStyle = ("--header-bg:" + _headerBg + ";") if _headerBg else "" -%}

@@ -38,12 +38,13 @@
     --glass-white-60: rgba(255, 255, 255, 0.6); // 移动端按钮边框、hover 高亮
     // 遮罩背景（统一弹窗/抽屉/菜单的全局遮罩）
     --overlay-bg: rgba(0, 0, 0, 0.3);
-    // 导航栏按钮 hover / 移动端背景色（默认用 color-mix 跟随 header-bg 自动适配）
-    --header-hover-bg: color-mix(in srgb, white 15%, transparent);
-    --nav-drawer-close-hover-bg: color-mix(in srgb, white 15%, transparent);
-    --nav-mobile-btn-bg: color-mix(in srgb, white 30%, transparent);
-    --nav-mobile-btn-border: color-mix(in srgb, white 60%, transparent);
-    --nav-mobile-btn-hover-bg: color-mix(in srgb, white 60%, transparent);
+    // 导航栏按钮 hover / 移动端背景色（默认用 color-mix 跟随 --header-bg 自动适配；
+    // --header-bg 未设置时 fallback 到 --color-primary 主题色）
+    --header-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
+    --nav-drawer-close-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
+    --nav-mobile-btn-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 30%, transparent);
+    --nav-mobile-btn-border: color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent);
+    --nav-mobile-btn-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent);
     --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
     --shadow-btn-pill: 0 2px 6px rgba(0, 0, 0, 0.12);
@@ -85,12 +86,12 @@
         --glass-white-60: rgba(245, 245, 245, 0.3);
         // 遮罩背景（深色模式下更深的遮罩，提升对比）
         --overlay-bg: rgba(0, 0, 0, 0.5);
-        // 导航栏按钮 hover / 移动端背景色（默认用 color-mix 跟随 header-bg 自动适配）
-        --header-hover-bg: color-mix(in srgb, white 15%, transparent);
-        --nav-drawer-close-hover-bg: color-mix(in srgb, white 15%, transparent);
-        --nav-mobile-btn-bg: color-mix(in srgb, white 30%, transparent);
-        --nav-mobile-btn-border: color-mix(in srgb, white 60%, transparent);
-        --nav-mobile-btn-hover-bg: color-mix(in srgb, white 60%, transparent);
+        // 导航栏按钮 hover / 移动端背景色（深色模式：用 dark color-mix 跟随 header-bg）
+        --header-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
+        --nav-drawer-close-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
+        --nav-mobile-btn-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 30%, transparent);
+        --nav-mobile-btn-border: color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent);
+        --nav-mobile-btn-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent);
         --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
         --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.6);
         --shadow-btn-pill: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -131,12 +132,12 @@ html[data-theme="dark"] {
     --glass-white-60: rgba(245, 245, 245, 0.3);
     // 遮罩背景（手动深色）
     --overlay-bg: rgba(0, 0, 0, 0.5);
-    // 导航栏按钮 hover / 移动端背景色（默认用 color-mix 跟随 header-bg 自动适配）
-    --header-hover-bg: color-mix(in srgb, white 15%, transparent);
-    --nav-drawer-close-hover-bg: color-mix(in srgb, white 15%, transparent);
-    --nav-mobile-btn-bg: color-mix(in srgb, white 30%, transparent);
-    --nav-mobile-btn-border: color-mix(in srgb, white 60%, transparent);
-    --nav-mobile-btn-hover-bg: color-mix(in srgb, white 60%, transparent);
+    // 导航栏按钮 hover / 移动端背景色（手动深色：跟随 header-bg）
+    --header-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
+    --nav-drawer-close-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
+    --nav-mobile-btn-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 30%, transparent);
+    --nav-mobile-btn-border: color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent);
+    --nav-mobile-btn-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent);
     --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
     --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.6);
     --shadow-btn-pill: 0 2px 6px rgba(0, 0, 0, 0.3);

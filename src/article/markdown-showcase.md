@@ -329,6 +329,11 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 
 header 导航栏支持两种方式自定义背景颜色，颜色会通过 `--header-bg` CSS 变量设置在 `<header>` 元素上。未设置时使用主题色（`--color-primary`）。
 
+**优先级（从高到低）**：
+1. **njk 模板 set 标签** —— 在 layout 里通过 `set headerBg = "..."` 后 include header。因为 Nunjucks set 是在 include 之前求值，会**覆盖**下方 front matter 的设置
+2. **markdown front matter** —— `headerBg: "#xxx"`（次高优先级）
+3. **主题色兜底** —— 未设置时使用 `--color-primary`（跟随深浅色主题）
+
 #### 方式 1：在 markdown 的 front matter 中定义
 
 在 markdown 文件的 front matter 里写：
@@ -344,7 +349,7 @@ headerBg: "#c92a2a"
 
 这样这个页面的导航栏背景就会变成红色。
 
-#### 方式 2：在 njk 模板中定义（在 layout 中）
+#### 方式 2：在 njk 模板中定义（在 layout 中）—— 优先级最高
 
 在 layout 模板中通过 Nunjucks 的 set 标签设置 `headerBg` 变量，再 include 引入 header 组件：
 
@@ -354,6 +359,8 @@ headerBg: "#c92a2a"
 {% include "components/header.njk" %}
 ```
 {% endraw %}
+
+> 该 set 会**覆盖** markdown front matter 中的 `headerBg` 设置。适用于「整批页面统一换 header 底色但不想改每个 md」的场景。
 
 #### 实现原理
 
@@ -366,11 +373,11 @@ headerBg: "#c92a2a"
 
 | 变量 | 作用 | 默认值 |
 |---|---|---|
-| `--header-hover-bg` | 桌面端导航按钮 hover 背景 | `color-mix(in srgb, white 15%, transparent)` |
+| `--header-hover-bg` | 桌面端导航按钮 hover 背景 | `color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent)` |
 | `--nav-drawer-close-hover-bg` | 移动端关闭按钮 hover 背景 | 同上 |
-| `--nav-mobile-btn-bg` | 移动端菜单默认背景 | `color-mix(in srgb, white 30%, transparent)` |
-| `--nav-mobile-btn-border` | 移动端菜单边框 | `color-mix(in srgb, white 60%, transparent)` |
-| `--nav-mobile-btn-hover-bg` | 移动端菜单 hover 背景 | `color-mix(in srgb, white 60%, transparent)` |
+| `--nav-mobile-btn-bg` | 移动端菜单默认背景 | `color-mix(in srgb, var(--header-bg, var(--color-primary)) 30%, transparent)` |
+| `--nav-mobile-btn-border` | 移动端菜单边框 | `color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent)` |
+| `--nav-mobile-btn-hover-bg` | 移动端菜单 hover 背景 | `color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent)` |
 
 默认值用 `color-mix` 自动跟随 `--header-bg` 计算：只设置 `headerBg` 时 hover 也会给出协调的对比色。若需统一替换某一处（例如所有页面的移动端菜单都改成黑色半透明），直接在 `_theme-vars.scss` 的浅色 / 深色 `:root` 中改对应变量即可。
 
