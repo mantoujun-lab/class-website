@@ -144,38 +144,40 @@ html[data-theme="dark"] {
     --shadow-btn-pill-hover: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-.nav-btns a[href="/"] {
-    --header-hover-bg: rgba(255, 255, 255, 0.5);
-    --nav-mobile-btn-bg: rgba(255, 255, 255, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(255, 255, 255, 0.5);
-}
+.nav-btns a {
+    &[href="/"] {
+        --header-hover-bg: rgba(255, 255, 255, 0.5);
+        --nav-mobile-btn-bg: rgba(255, 255, 255, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(255, 255, 255, 0.5);
+    }
 
-.nav-btns a[href="/article/"] {
-    --header-hover-bg: rgba(76, 175, 80, 0.5);
-    --nav-mobile-btn-bg: rgba(76, 175, 80, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(76, 175, 80, 0.5);
-}
+    &[href="/article/"] {
+        --header-hover-bg: rgba(76, 175, 80, 0.5);
+        --nav-mobile-btn-bg: rgba(76, 175, 80, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(76, 175, 80, 0.5);
+    }
 
-.nav-btns a[href="/wiki/"] {
-    --header-hover-bg: rgba(0, 132, 255, 0.5);
-    --nav-mobile-btn-bg: rgba(0, 132, 255, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(0, 132, 255, 0.5);
-}
+    &[href="/wiki/"] {
+        --header-hover-bg: rgba(0, 132, 255, 0.5);
+        --nav-mobile-btn-bg: rgba(0, 132, 255, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(0, 132, 255, 0.5);
+    }
 
-.nav-btns a[href="/zone/"] {
-    --header-hover-bg: rgba(255, 0, 255, 0.5);
-    --nav-mobile-btn-bg: rgba(255, 0, 255, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(255, 0, 255, 0.5);
-}
+    &[href="/zone/"] {
+        --header-hover-bg: rgba(255, 0, 255, 0.5);
+        --nav-mobile-btn-bg: rgba(255, 0, 255, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(255, 0, 255, 0.5);
+    }
 
-.nav-btns a[href="/astro"] {
-    --header-hover-bg: rgba(255, 93, 1, 0.5);
-    --nav-mobile-btn-bg: rgba(255, 93, 1, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(255, 93, 1, 0.5);
-}
+    &[href="/astro"] {
+        --header-hover-bg: rgba(255, 93, 1, 0.5);
+        --nav-mobile-btn-bg: rgba(255, 93, 1, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(255, 93, 1, 0.5);
+    }
 
-.nav-btns a[href="https://github.com/hjx-25pc1/hjx-25pc1.github.io"] {
-    --header-hover-bg: rgba(150, 0, 255, 0.5);
-    --nav-mobile-btn-bg: rgba(150, 0, 255, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(150, 0, 255, 0.5);
+    &[href="https://github.com/hjx-25pc1/hjx-25pc1.github.io"] {
+        --header-hover-bg: rgba(150, 0, 255, 0.5);
+        --nav-mobile-btn-bg: rgba(150, 0, 255, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(150, 0, 255, 0.5);
+    }
 }
