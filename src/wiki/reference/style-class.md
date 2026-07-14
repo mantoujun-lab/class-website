@@ -60,7 +60,7 @@ wikiCategoryOrder: 2
 
 ```jinja2
 {% from "macros/button.njk" import button %}
-{{ button("fa-solid fa-arrow-right", "了解更多", "/about.html", btnColor="rgba(200, 255, 200)") }}
+{{ button("fa-solid fa-arrow-right", "了解更多", "/about/", btnColor="rgba(200, 255, 200)") }}
 {{ button("fa-solid fa-pen", "编辑", "#", btnColor="#fff0f0", btnBorder="#e03131") }}
 ```
 
@@ -132,7 +132,7 @@ wikiCategoryOrder: 2
 ```jinja2
 {% from "macros/card.njk" import card %}
 
-{{ card("文档中心", "查阅完整的 API 文档和使用指南", "/docs.html") }}
+{{ card("文档中心", "查阅完整的 API 文档和使用指南", "#") }}
 
 {{ card("自定义卡片", "淡绿色背景 + 深绿色边框", "#", bgColor="#f0fdf4", borderColor="#22c55e", hoverBorderColor="#16a34a") }}
 
@@ -187,9 +187,9 @@ wikiCategoryOrder: 2
 ```jinja2
 {% from "macros/card.njk" import cardFull %}
 
-{{ cardFull("新版本发布", "v2.0 带来了全新的设计语言和性能优化，立即了解更新内容。", "/changelog.html", btnText="查看更新日志") }}
+{{ cardFull("新版本发布", "v2.0 带来了全新的设计语言和性能优化，立即了解更新内容。", "/changelog/", btnText="查看更新日志") }}
 
-{{ cardFull("限时活动", "夏日特惠活动进行中，所有商品 8 折起，点击下方按钮立即参与！", "/event/summer.html", bgColor="#fffbeb", borderColor="#f59e0b", btnColor="#f59e0b", btnHover="#d97706") }}
+{{ cardFull("限时活动", "夏日特惠活动进行中，所有商品 8 折起，点击下方按钮立即参与！", "/event/summer/", bgColor="#fffbeb", borderColor="#f59e0b", btnColor="#f59e0b", btnHover="#d97706") }}
 ```
 
 ---
@@ -295,7 +295,7 @@ headerBg: "#c92a2a"
 
 ```scss
 // 例：让"文章"按钮 hover 显示绿色
-.nav-btns a[href="/article.html"]:hover {
+.nav-btns a[href="/article/"]:hover {
     --header-hover-bg: rgba(76, 175, 80, 0.3);
 }
 

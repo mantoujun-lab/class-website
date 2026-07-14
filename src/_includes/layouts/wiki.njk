@@ -11,8 +11,8 @@ layout: layouts/main
         <h3 class="wiki-sidebar-title">📚 Wiki</h3>
         <nav class="wiki-nav">
             <ul>
-                <li><a href="{{ '/wiki.html' | url }}"
-                        class="wiki-nav-home {%- if page.url == '/wiki.html' %} active{% endif %}">📖 全部</a></li>
+                <li><a href="{{ '/wiki/' | url }}"
+                        class="wiki-nav-home {%- if page.url == '/wiki/' %} active{% endif %}">📖 全部</a></li>
             </ul>
 
             {#- 独立导航：基于 collections.wikiByCategory，不依赖 eleventyNavigation -#}

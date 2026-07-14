@@ -40,25 +40,25 @@ eleventyNavigation:
 {{ card(
     "📚 班级 Wiki",
     "沉淀学习资料、写作规范、API 参考、部署指南等知识文档。",
-    "/wiki.html",
+    "/wiki/",
     "浏览 Wiki"
 ) }}
 {{ card(
     "🔔 事件记录",
     "记录班级里的重要事件、活动与日常。",
-    "/event.html",
+    "/event/",
     "查看事件"
 ) }}
 {{ card(
     "📰 文章分享",
     "同学撰写的技术笔记、随笔与心得。",
-    "/article.html",
+    "/article/",
     "阅读文章"
 ) }}
 {{ card(
     "💬 讨论区",
     "基于 GitHub Issues / Giscus 的开放讨论空间。",
-    "/discussion.html",
+    "/discussion/",
     "前往讨论"
 ) }}
 {{ card(
