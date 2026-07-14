@@ -5,11 +5,6 @@ description: 演示本站支持的所有 Markdown 语法、宏、图片画廊与
 layout: layouts/article
 date: 2026-07-09 00:00:00
 headerBg: green
-eleventyNavigation:
-    key: article-markdown-showcase
-    title: 📝 Markdown & 组件展示示例
-    order: 1
-    parent: article
 ---
 
 {% from "macros/button.njk" import button %}
