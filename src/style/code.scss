@@ -5,11 +5,6 @@
 // 配合 @11ty/eleventy-plugin-syntaxhighlight + Prism 主题使用
 // 提供：等宽字体、圆角、阴影、行号间距、复制按钮样式统一
 
-// 等宽字体栈：优先用常见代码字体，跨平台兜底
-$font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code',
-    'Source Code Pro', 'Consolas', 'Monaco',
-    'SF Mono', 'Menlo', monospace;
-
 // 代码块容器
 pre[class*="language-"],
 pre.line-numbers {

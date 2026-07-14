@@ -72,3 +72,13 @@ $breakpoint-phone: 480px; // 手机
 // 模糊
 $blur-basic: blur(12px);
 $blur-small: blur(4px);
+
+// 字体栈
+// 等宽字体：优先用常见代码字体，跨平台兜底（用于 code 块、行内 code）
+$font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code',
+    'Source Code Pro', 'Consolas', 'Monaco',
+    'SF Mono', 'Menlo', monospace;
+
+// 悬停展开动画专属时长（用于 .hover-show：展开略快于收起，符合"响应迅速"的交互直觉）
+$dur-hover-in: 0.32s;
+$dur-hover-out: 0.22s;

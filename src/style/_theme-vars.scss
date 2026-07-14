@@ -53,54 +53,10 @@
 
 // 系统深色模式（自动跟随，且用户未手动设置时生效）
 // CSS 层兜底：即使 JS 失败或加载慢，也能正确显示深色
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]):not([data-theme="dark"]) {
-        --color-primary: #6b85fa;
-        --color-primary-dark: #8aa0fc;
-        --color-text: #e0e0e0;
-        --color-text-light: #aaa;
-        --color-white: #f5f5f5;
-        --color-bg: #1a1a1a;
-        --color-card-bg: #2a2a2a;
-        --color-card-border: rgba(255, 255, 255, 0.08);
-        --color-border-light: rgba(255, 255, 255, 0.12);
-        --border-solid-white: 2px solid rgba(245, 245, 245, 0.12);
-        --border-solid-blue: 2px solid rgba(138, 160, 252, 0.4);
-        --border-color-blue: rgba(138, 160, 252, 0.4);
-        --card-border-color: rgba(245, 245, 245, 0.12);
-        --color-nav-accent: #ffa726;
-        --color-footer-bg: #1f1f1f;
-        --color-inline-code-bg: rgba(107, 133, 250, 0.15);
-        --color-inline-code-text: #8aa0fc;
-        --color-wiki-sidebar-bg: rgba(107, 133, 250, 0.08);
-        --color-wiki-list-item-bg: rgba(107, 133, 250, 0.08);
-        --color-white-half: rgba(245, 245, 245, 0.08);
-        --color-white-fifteen: rgba(245, 245, 245, 0.12);
-        --color-primary-five: rgba(107, 133, 250, 0.1);
-        --color-primary-eight: rgba(107, 133, 250, 0.15);
-        --color-black-six: rgba(0, 0, 0, 0.2);
-        // 玻璃态半透明白色（深色模式：改用白色系的低透明度，避免浅玻璃在深色背景上扎眼）
-        --glass-white-15: rgba(245, 245, 245, 0.12);
-        --glass-white-20: rgba(245, 245, 245, 0.15);
-        --glass-white-30: rgba(245, 245, 245, 0.18);
-        --glass-white-60: rgba(245, 245, 245, 0.3);
-        // 遮罩背景（深色模式下更深的遮罩，提升对比）
-        --overlay-bg: rgba(0, 0, 0, 0.5);
-        // 导航栏按钮 hover / 移动端背景色（深色模式：用 dark color-mix 跟随 header-bg）
-        --header-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
-        --nav-drawer-close-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
-        --nav-mobile-btn-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 30%, transparent);
-        --nav-mobile-btn-border: color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent);
-        --nav-mobile-btn-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 60%, transparent);
-        --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
-        --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.6);
-        --shadow-btn-pill: 0 2px 6px rgba(0, 0, 0, 0.3);
-        --shadow-btn-pill-hover: 0 4px 10px rgba(0, 0, 0, 0.4);
-    }
-}
 
-// 用户手动指定深色（最高优先级）
-html[data-theme="dark"] {
+// 暗色变量集合：被系统深色和手动深色复用，避免 40+ 行重复
+// 用 @mixin 而非 %placeholder：@extend 不能跨 @media 查询，@mixin 可以跨任意上下文
+@mixin dark-vars {
     --color-primary: #6b85fa;
     --color-primary-dark: #8aa0fc;
     --color-text: #e0e0e0;
@@ -125,14 +81,14 @@ html[data-theme="dark"] {
     --color-primary-five: rgba(107, 133, 250, 0.1);
     --color-primary-eight: rgba(107, 133, 250, 0.15);
     --color-black-six: rgba(0, 0, 0, 0.2);
-    // 玻璃态半透明白色（手动深色：与系统深色保持一致）
+    // 玻璃态半透明白色（深色模式：改用白色系的低透明度，避免浅玻璃在深色背景上扎眼）
     --glass-white-15: rgba(245, 245, 245, 0.12);
     --glass-white-20: rgba(245, 245, 245, 0.15);
     --glass-white-30: rgba(245, 245, 245, 0.18);
     --glass-white-60: rgba(245, 245, 245, 0.3);
-    // 遮罩背景（手动深色）
+    // 遮罩背景（深色模式下更深的遮罩，提升对比）
     --overlay-bg: rgba(0, 0, 0, 0.5);
-    // 导航栏按钮 hover / 移动端背景色（手动深色：跟随 header-bg）
+    // 导航栏按钮 hover / 移动端背景色（深色模式：用 dark color-mix 跟随 header-bg）
     --header-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
     --nav-drawer-close-hover-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 15%, transparent);
     --nav-mobile-btn-bg: color-mix(in srgb, var(--header-bg, var(--color-primary)) 30%, transparent);
@@ -144,38 +100,51 @@ html[data-theme="dark"] {
     --shadow-btn-pill-hover: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-.nav-btns a[href="/"] {
-    --header-hover-bg: rgba(255, 255, 255, 0.5);
-    --nav-mobile-btn-bg: rgba(255, 255, 255, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(255, 255, 255, 0.5);
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]):not([data-theme="dark"]) {
+        @include dark-vars;
+    }
 }
 
-.nav-btns a[href="/article/"] {
-    --header-hover-bg: rgba(76, 175, 80, 0.5);
-    --nav-mobile-btn-bg: rgba(76, 175, 80, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(76, 175, 80, 0.5);
+// 用户手动指定深色（最高优先级）
+html[data-theme="dark"] {
+    @include dark-vars;
 }
 
-.nav-btns a[href="/wiki/"] {
-    --header-hover-bg: rgba(0, 132, 255, 0.5);
-    --nav-mobile-btn-bg: rgba(0, 132, 255, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(0, 132, 255, 0.5);
-}
+.nav-btns a {
+    &[href="/"] {
+        --header-hover-bg: rgba(255, 255, 255, 0.5);
+        --nav-mobile-btn-bg: rgba(255, 255, 255, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(255, 255, 255, 0.5);
+    }
 
-.nav-btns a[href="/zone/"] {
-    --header-hover-bg: rgba(255, 0, 255, 0.5);
-    --nav-mobile-btn-bg: rgba(255, 0, 255, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(255, 0, 255, 0.5);
-}
+    &[href="/article/"] {
+        --header-hover-bg: rgba(76, 175, 80, 0.5);
+        --nav-mobile-btn-bg: rgba(76, 175, 80, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(76, 175, 80, 0.5);
+    }
 
-.nav-btns a[href="/astro"] {
-    --header-hover-bg: rgba(255, 93, 1, 0.5);
-    --nav-mobile-btn-bg: rgba(255, 93, 1, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(255, 93, 1, 0.5);
-}
+    &[href="/wiki/"] {
+        --header-hover-bg: rgba(0, 132, 255, 0.5);
+        --nav-mobile-btn-bg: rgba(0, 132, 255, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(0, 132, 255, 0.5);
+    }
 
-.nav-btns a[href="https://github.com/hjx-25pc1/hjx-25pc1.github.io"] {
-    --header-hover-bg: rgba(150, 0, 255, 0.5);
-    --nav-mobile-btn-bg: rgba(150, 0, 255, 0.3);
-    --nav-mobile-btn-hover-bg: rgba(150, 0, 255, 0.5);
+    &[href="/zone/"] {
+        --header-hover-bg: rgba(255, 0, 255, 0.5);
+        --nav-mobile-btn-bg: rgba(255, 0, 255, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(255, 0, 255, 0.5);
+    }
+
+    &[href="/astro"] {
+        --header-hover-bg: rgba(255, 93, 1, 0.5);
+        --nav-mobile-btn-bg: rgba(255, 93, 1, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(255, 93, 1, 0.5);
+    }
+
+    &[href="https://github.com/hjx-25pc1/hjx-25pc1.github.io"] {
+        --header-hover-bg: rgba(150, 0, 255, 0.5);
+        --nav-mobile-btn-bg: rgba(150, 0, 255, 0.3);
+        --nav-mobile-btn-hover-bg: rgba(150, 0, 255, 0.5);
+    }
 }
