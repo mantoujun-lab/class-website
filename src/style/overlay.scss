@@ -11,7 +11,7 @@
 
 .overlay {
     @include fixed-overlay(99);
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--overlay-bg);
     opacity: 0;
     visibility: hidden;
     -webkit-backdrop-filter: $blur-small;

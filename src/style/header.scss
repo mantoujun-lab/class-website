@@ -46,7 +46,7 @@ header {
         transition: background $transition-fast;
 
         &:hover {
-            background: var(--header-hover-bg, rgba(255, 255, 255, 0.15));
+            background: var(--header-hover-bg, var(--glass-white-15));
         }
 
         &:focus {
@@ -88,7 +88,7 @@ header {
         left: 0;
         width: $sidebar-width;
         height: 100vh;
-        background: rgba($color-primary, 0.04);
+        background: var(--color-wiki-sidebar-bg);
         backdrop-filter: $blur-basic;
         -webkit-backdrop-filter: $blur-basic;
         box-shadow: $shadow-sidebar;
@@ -120,7 +120,7 @@ header {
         transition: background $transition-fast, color $transition-fast;
 
         &:hover {
-            background: var(--nav-drawer-close-hover-bg, rgba(255, 255, 255, 0.15));
+            background: var(--nav-drawer-close-hover-bg, var(--glass-white-15));
             color: $color-white;
         }
 
@@ -144,8 +144,8 @@ header {
         a {
             padding: 14px;
             margin: $spacing-sm 0;
-            background: var(--nav-mobile-btn-bg, rgba(255, 255, 255, 0.3));
-            border: 2px solid var(--nav-mobile-btn-border, rgba(255, 255, 255, 0.6));
+            background: var(--nav-mobile-btn-bg, var(--glass-white-30));
+            border: $border-width-md solid var(--nav-mobile-btn-border, var(--glass-white-60));
             border-radius: $radius-btn;
             transition: $transition-fast;
 
@@ -154,7 +154,7 @@ header {
             }
 
             &:hover {
-                background-color: var(--nav-mobile-btn-hover-bg, rgba(255, 255, 255, 0.6));
+                background-color: var(--nav-mobile-btn-hover-bg, var(--glass-white-60));
             }
         }
 

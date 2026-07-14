@@ -46,6 +46,10 @@ $border-solid-blue: var(--border-solid-blue);
 $border-color-blue: var(--border-color-blue);
 $card-border-color: var(--card-border-color);
 
+// 边框宽度（统一样式，避免散乱魔数）
+$border-width-sm: 1px; // 细腻描边（content 表格、hero 内分割线）
+$border-width-md: 2px; // 卡片/按钮/移动端按钮（占绝大多数）
+
 // 卡片专属（统一三种卡片 .three-column-card / .card-full / .card-standalone 的视觉基线）
 $card-padding: 16px; // 卡片内边距（与 $spacing-md 一致，方便后续调整）
 $card-inner-gap: 8px; // 卡片内层（标题/正文/按钮）之间的间距
@@ -57,6 +61,9 @@ $btn-pill-gap: 6px; // 胶囊按钮内图标与文字间距
 // 过渡（动画时长曲线）
 $transition-fast: 0.25s ease; // 大多数 hover、颜色过渡
 $transition-sidebar: 0.3s ease; // 侧边栏抽屉的滑动
+
+// 动画曲线（Material Standard 风格：柔顺起步 + 优雅收尾）
+$cubic-ease: cubic-bezier(0.4, 0, 0.2, 1);
 
 // 响应式断点（max-width 使用）
 $breakpoint-tablet: 768px; // 平板及以下

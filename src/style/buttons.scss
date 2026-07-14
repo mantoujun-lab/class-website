@@ -15,7 +15,7 @@
     column-gap: $btn-pill-gap;
     border-radius: $radius-btn;
     background: var(--btn-bg, $color-primary);
-    border: 2px solid var(--btn-border, $border-color-blue);
+    border: $border-width-md solid var(--btn-border, $border-color-blue);
     box-shadow: $shadow-btn-pill;
     padding: 6px 18px;
     margin: 4px 0;

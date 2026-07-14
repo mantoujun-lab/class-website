@@ -67,7 +67,7 @@ pre.line-numbers {
 :not(pre)>code {
     font-family: $font-mono;
     font-size: 0.9em;
-    background: rgba(74, 108, 247, 0.08); // 用主题色淡背景
+    background: var(--color-inline-code-bg);
     color: $color-primary-dark;
     padding: 2px 6px;
     border-radius: $radius-sm;
