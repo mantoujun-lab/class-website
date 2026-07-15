@@ -7,16 +7,17 @@ eleventyNavigation:
   order: 2
 ---
 
-{% from "macros/button.njk" import button %}
-{% from "macros/card.njk" import card, cardFull, cardStandalone %}
+{% from "macros/card.njk" import cardEntry %}
 
 <div class="card-full-list">
     {%- for entry in collections.article %}
-    {{ cardFull(
+    {{ cardEntry(
         entry.data.title,
         entry.data.description or "",
         entry.url | url,
-        "查看详细信息"
+        "查看详细信息",
+        entry.data.date,
+        entry.data.author
     ) }}
     {%- endfor %}
 </div>

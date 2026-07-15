@@ -167,6 +167,36 @@ module.exports = function (eleventyConfig) {
         return dt.isValid ? dt.toFormat("yyyy-MM-dd HH:mm") : String(date);
     });
 
+    // 仅日期格式化 filter（同 bjDate 逻辑，但只输出 yyyy-MM-dd）
+    // 用法：{{ entry.data.date | bjDateOnly }}
+    eleventyConfig.addFilter("bjDateOnly", (date) => {
+        const { DateTime } = require("luxon");
+        if (!date) return "";
+
+        if (typeof date.toFormat === "function") {
+            return date.setZone("Asia/Shanghai").toFormat("yyyy-MM-dd");
+        }
+
+        let dt;
+        if (date instanceof Date) {
+            dt = DateTime.fromObject({
+                year: date.getUTCFullYear(),
+                month: date.getUTCMonth() + 1,
+                day: date.getUTCDate(),
+                hour: date.getUTCHours(),
+                minute: date.getUTCMinutes(),
+                second: date.getUTCSeconds(),
+            }, { zone: "Asia/Shanghai" });
+        } else if (typeof date === "string") {
+            const iso = date.includes("T") ? date : date.replace(" ", "T");
+            dt = DateTime.fromISO(iso, { zone: "Asia/Shanghai" });
+        } else {
+            return "";
+        }
+
+        return dt.isValid ? dt.toFormat("yyyy-MM-dd") : String(date);
+    });
+
     // Image shortcode for responsive images
     // 行为：按 srcWidths 生成多分辨率文件（如 [1280, 1920]），
     //      但 <img> 的渲染尺寸由 displayWidths 控制（默认 [300, 600]），

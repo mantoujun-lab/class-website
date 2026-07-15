@@ -9,7 +9,7 @@ eleventyNavigation:
 ---
 
 {% from "macros/button.njk" import button %}
-{% from "macros/card.njk" import card, cardFull, cardStandalone %}
+{% from "macros/card.njk" import card, cardFull, cardStandalone, cardEntry %}
 
 ## 📌 分区
 
@@ -29,22 +29,30 @@ eleventyNavigation:
 
 ## 🔔 事件
 
-<div class="card-full-list">
+<div class="card-entry-list">
 {%- for entry in collections.event %}
 {%- if loop.index <= 5 %}
-{{ cardFull(entry.data.title,entry.data.description or "",entry.url | url,"查看详细信息") }}
+{{ cardEntry(entry.data.title, entry.data.description or "", entry.url | url, "查看详细信息", entry.data.date, entry.data.author) }}
 {%- endif %}
 {%- endfor %}
 </div>
 
+<div align="right">
+{{ button("fa-solid fa-arrow-right", "查看更多事件", "/event/") }}
+</div>
+
 ## 📰 文章
 
-<div class="card-full-list">
+<div class="card-entry-list">
 {%- for entry in collections.article %}
 {%- if loop.index <= 15 %}
-{{ cardFull(entry.data.title,entry.data.description or "",entry.url | url,"查看详细信息") }}
+{{ cardEntry(entry.data.title, entry.data.description or "", entry.url | url, "查看详细信息", entry.data.date, entry.data.author) }}
 {%- endif %}
 {%- endfor %}
+</div>
+
+<div align="right">
+{{ button("fa-solid fa-arrow-right", "查看更多文章", "/event/") }}
 </div>
 
 ## 👥 贡献者

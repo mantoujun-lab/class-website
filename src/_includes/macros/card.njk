@@ -126,3 +126,44 @@
     </div>
 </div>
 {% endmacro %}
+
+{# --- 文章 / 事件专属卡片（含日期 + 作者） --------------------
+参数：
+- title       : 标题（必填）
+- content     : 描述正文（必填）
+- url         : 跳转链接（选填）
+- btnText     : 按钮文字，默认 "查看详细信息"
+- date        : 发布日期（选填，传入后会在元信息行渲染，只显示 yyyy-MM-dd）
+- author      : 作者名（选填，传入后显示 "作者：XXX"）
+- bgColor / textColor / borderColor / hoverBgColor / hoverBorderColor : 卡片级自定义颜色（选填）
+- btnColor / btnTextColor / btnHover / btnBorder / btnBorderHover     : 按钮级自定义颜色（选填）
+- target      : HTML 原生 target 属性（选填，_blank 自动追加 rel="noopener"）
+用法：
+{{ cardEntry(entry.data.title, entry.data.description or "", entry.url | url, "查看详细信息", entry.data.date, entry.data.author) }}
+#}
+{% macro cardEntry(title, content, url="", btnText="查看详细信息", date="", author="", bgColor="", textColor="", borderColor="", hoverBgColor="", hoverBorderColor="", btnColor="", btnTextColor="", btnHover="", btnBorder="", btnBorderHover="", target="") %}
+{%- set _hasCardCustom = (bgColor or textColor or borderColor or hoverBgColor or hoverBorderColor) -%}
+{%- set _hasBtnCustom = (btnColor or btnTextColor or btnHover or btnBorder or btnBorderHover) -%}
+{%- set _cardStyle = cardStyle(bgColor, textColor, borderColor, hoverBgColor, hoverBorderColor) if _hasCardCustom else "" -%}
+{%- set _btnStyle = btnStyle(btnColor, btnTextColor, btnHover, btnBorder, btnBorderHover) if _hasBtnCustom else "" -%}
+{%- set _rel = ' rel="noopener"' if target == "_blank" else "" -%}
+{%- set _dateStr = "" -%}
+{%- if date -%}
+    {%- set _dateStr = date | bjDateOnly -%}
+{%- endif -%}
+<div class="card-entry" {% if _cardStyle %}style="{{ _cardStyle }}"{% endif %}>
+    <a class="card-entry-title" href="{{ url }}"{% if target %} target="{{ target }}"{% endif %}{{ _rel | safe }}>{{ title }}</a>
+    {%- if _dateStr or author %}
+    <div class="card-entry-meta">
+        {%- if _dateStr %}
+        <span>{{ _dateStr }}</span>
+        {%- endif %}
+        {%- if author %}
+        <span>作者：{{ author }}</span>
+        {%- endif %}
+    </div>
+    {%- endif %}
+    <div class="card-entry-content">{{ content }}</div>
+    <a class="card-entry-btn" href="{{ url }}"{% if target %} target="{{ target }}"{% endif %}{{ _rel | safe }} {% if _btnStyle %}style="{{ _btnStyle }}"{% endif %}>{{ btnText }}</a>
+</div>
+{% endmacro %}
