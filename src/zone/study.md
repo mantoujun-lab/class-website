@@ -19,3 +19,4 @@ eleventyNavigation:
 - [MDN Web 文档](https://developer.mozilla.org/)
 - [W3School](https://www.w3school.com.cn/)
 - [GitHub 学习](https://learn.github.com/)
+- [3小时前端入门教程（HTML+CSS+JS](https://b23.tv/9DqSTOb)
