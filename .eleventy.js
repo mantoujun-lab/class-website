@@ -235,7 +235,7 @@ module.exports = function (eleventyConfig) {
 
     // 将资源文件原样复制到输出目录
     eleventyConfig.addPassthroughCopy('src/assets');
-    eleventyConfig.addPassthroughCopy('src/js');
+    eleventyConfig.addPassthroughCopy('src/script');
 
     // 构建前编译 Sass
     eleventyConfig.on("beforeBuild", compileSass);

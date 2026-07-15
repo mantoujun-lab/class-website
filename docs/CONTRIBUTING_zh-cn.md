@@ -57,42 +57,6 @@
 
 ---
 
-## 项目结构
-
-仓库主要目录如下：
-
-```
-src/                  # 站点源码（页面、模板、样式、脚本、资源）
-├── _includes/        # Nunjucks 布局与组件
-│   ├── layouts/      # 页面骨架（main / home / article / wiki / zone）
-│   ├── components/   # 可复用组件（head-assets / header / nav / footer / styles）
-│   └── macros/       # Nunjucks 宏（button / card）
-├── _data/            # 全局数据（如 buildDate.js）
-├── style/            # SCSS 源码（入口由 .eleventy.js 自动扫描）
-│   ├── _variables.scss   # 公共变量
-│   ├── _theme-vars.scss  # 主题变量
-│   ├── _mixins.scss      # 公共 mixin
-│   └── *.scss            # 各模块样式（base / buttons / cards / ...）
-├── js/               # 原生 ES Modules（main / popup / drawer / focus-trap / ...）
-├── wiki/             # 知识库源文件（自动同步到 GitHub Wiki）
-├── article/          # 文章
-├── event/            # 事件
-├── zone/             # 专区入口
-├── assets/           # 静态资源（images / audios / videos）
-├── index.md          # 首页
-├── about.md          # 关于页
-└── ...               # 其他页面（article / wiki / zone 等）
-
-docs/                 # 中文文档主源（README / CONTRIBUTING / CODE_OF_CONDUCT / SECURITY / SUPPORT）
-scripts/              # Node.js 工具脚本（bump-version / release / sync-wiki / update-contributors）
-.github/              # GitHub 配置（workflows / ISSUE_TEMPLATE / CODEOWNERS / dependabot / SECURITY）
-_site/                # Eleventy 构建产物（请勿手动修改）
-```
-
-> 💡 添加新内容时，把 **Markdown 文件放到对应内容目录**（如 `src/event/`、`src/article/`、`src/wiki/`），把 **样式 / 脚本放到对应职责目录**（`src/style/`、`src/js/`），并复用 `_includes/` 里已有的组件或宏。新页面默认会被 Eleventy 自动渲染到 `_site/` 下。
-
----
-
 ## 提交 Issue
 
 提交 Issue 之前，请先**搜索现有 Issue**，避免重复。
@@ -333,8 +297,8 @@ git push origin main
 
 ### 脚本
 
-- 前端脚本以**原生 ES Modules** 形式组织在 `src/js/` 目录下，按功能域拆分（_dom / focus-trap / history-stack / popup / drawer / main 等），无需打包器。
-- 入口 `main.js` 通过 `import` 引入其他模块；HTML 模板中必须以 `<script type="module" src="{{ '/js/main.js' | url }}">` 形式加载，否则模块导入会失败。
+- 前端脚本以**原生 ES Modules** 形式组织在 `src/script/` 目录下，按功能域拆分（_dom / focus-trap / history-stack / popup / drawer / main 等），无需打包器。
+- 入口 `main.js` 通过 `import` 引入其他模块；HTML 模板中必须以 `<script type="module" src="{{ '/script/main.js' | url }}">` 形式加载，否则模块导入会失败。
 - 新增脚本时遵循同一拆分粒度：纯工具函数独立成文件，业务模块封装为 `initXxx(deps)` 形式由 `main.js` 编排入口注入依赖。
 - 保持 `var` 而非 `const` / `let`（兼容性考虑），除非确有块级作用域需要。
 - 不要使用内联脚本（`onclick="..."` 等），防范 XSS。
