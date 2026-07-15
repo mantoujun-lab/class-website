@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title or "页面" }}</title>
     {% include "components/head-assets.njk" %}
-    <!-- 引入官方按钮库 -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
 </head>
 
 <body>
@@ -18,14 +16,14 @@
     {# ==================== Hero 横幅 ==================== #}
     <section class="hero-banner">
         <div class="hero-inner">
-            <div class="hero-tag"><i class="fa-solid fa-school"></i> 25级计算机应用1班</div>
+            <div class="hero-tag"><i class="fa-solid fa-graduation-cap"></i> 25级计算机应用1班</div>
             <h1 class="hero-title">
                 欢迎来到我们的<br>
                 <span class="hero-title-accent">班级网站</span>
             </h1>
             <p class="hero-subtitle">
                 基于 <strong class="Eleventy">Eleventy</strong> 构建的静态站点,由同学们共同维护。<br>
-                记录学习心得、笔记、事件与项目,欢迎常回来看看～
+                记录学习心得、笔记、事件与项目～
             </p>
             <div class="hero-actions">
                 {{ button("fa-solid fa-book-open", "快速开始", "/wiki/getting-started/") }}
@@ -84,7 +82,7 @@
         </div>
     </article>
     {% include "components/footer.njk" %}
-    <script type="module" src="{{ '/js/main.js' | url }}"></script>
+    <script type="module" src="{{ '/script/main.js' | url }}"></script>
 </body>
 
 </html>

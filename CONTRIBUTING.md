@@ -296,8 +296,8 @@ To keep the codebase consistent, please follow these conventions:
 
 ### Scripts
 
-- Front-end scripts are organized as **native ES Modules** under `src/js/`, split by domain (e.g. `_dom`, `focus-trap`, `history-stack`, `popup`, `drawer`, `main`). No bundler is required.
-- The entry `main.js` imports other modules via `import`. HTML templates **must** load it with `<script type="module" src="{{ '/js/main.js' | url }}">`, otherwise module imports will fail.
+- Front-end scripts are organized as **native ES Modules** under `src/script/`, split by domain (e.g. `_dom`, `focus-trap`, `history-stack`, `popup`, `drawer`, `main`). No bundler is required.
+- The entry `main.js` imports other modules via `import`. HTML templates **must** load it with `<script type="module" src="{{ '/script/main.js' | url }}">`, otherwise module imports will fail.
 - When adding new scripts, follow the same granularity: pure utilities live in their own files; business modules are exposed as `initXxx(deps)` and orchestrated from `main.js` with dependencies injected at the entry point.
 - Prefer `var` over `const` / `let` (for compatibility) unless you genuinely need block scope.
 - Do not use inline scripts (e.g. `onclick="..."`) — they open the door to XSS.

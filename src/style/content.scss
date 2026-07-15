@@ -10,7 +10,7 @@ article {
     min-width: $content-min-width;
     box-shadow: $shadow-card;
     margin: 16px auto;
-    padding: $spacing-xl $spacing-lg;
+    padding: $spacing-md $spacing-lg;
     flex: 1;
     text-align: justify;
 
@@ -99,8 +99,10 @@ article {
     }
 
     @include respond-to($breakpoint-phone) {
-        // 手机端：完全撑满，不做封顶（小屏没有过宽问题）
-        max-width: 100%;
+        // 手机端：用 margin 居中 + max-width 减去左右外边距,跟 .hero-banner 节奏一致
+        // 元素本身到屏幕两侧各留 $spacing-lg(24px)空白,不再让 padding 单独承担间距
+        margin: $spacing-md auto;
+        max-width: calc(100% - #{$spacing-lg * 2});
         padding: $spacing-md $spacing-lg;
     }
 }

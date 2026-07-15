@@ -1,0 +1,114 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+// ==================== 文章 / 事件专属卡片 ====================
+// 命名空间：.card-entry-*
+// 完全独立于 cards.scss 的卡片体系，不影响 .three-column-card / .card-full / .card-standalone
+// 包含：
+//   .card-entry              — 卡片容器
+//   .card-entry-title        — 标题（蓝色链接样式）
+//   .card-entry-meta         — 元信息行（日期 + 作者）
+//   .card-entry-content      — 描述文本
+//   .card-entry-btn          — 操作按钮
+//   .card-entry-list         — 纵向堆叠容器
+
+// ==================== 卡片容器 ====================
+.card-entry {
+    width: 100%;
+    max-width: $content-max-width;
+    margin: 0 auto;
+    border-radius: $radius-md;
+    background: var(--card-bg, transparent);
+    backdrop-filter: $blur-basic;
+    -webkit-backdrop-filter: $blur-basic;
+    border: $border-width-md solid var(--card-border, $card-border-color);
+    box-shadow: $shadow-card;
+    padding: $spacing-md $spacing-lg;
+    color: var(--card-fg, $color-text);
+    @include flex(column, flex-start);
+    @include hover-lift;
+    gap: $spacing-sm;
+    transition: background $transition-fast, border-color $transition-fast, transform $transition-fast, box-shadow $transition-fast;
+
+    &:hover {
+        background: var(--card-bg-hover, var(--card-bg, transparent));
+        border-color: var(--card-border-hover, var(--card-border, $card-border-color));
+    }
+
+    @include respond-to($breakpoint-phone) {
+        padding: $spacing-md;
+    }
+}
+
+// ==================== 标题（蓝色链接） ====================
+.card-entry-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: $color-primary;
+    text-decoration: none;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
+    transition: color $transition-fast;
+
+    &:hover {
+        color: $color-primary-dark;
+    }
+}
+
+// ==================== 元信息行（日期 + 作者） ====================
+.card-entry-meta {
+    font-size: .85rem;
+    color: $color-text-light;
+    line-height: 1.4;
+    @include flex(row, flex-start, center);
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+}
+
+// ==================== 描述文本 ====================
+.card-entry-content {
+    font-size: .9rem;
+    color: var(--card-content-fg, var(--card-fg, $color-text-light));
+    line-height: 1.5;
+    text-align: justify;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+// ==================== 操作按钮（蓝色胶囊） ====================
+.card-entry-btn {
+    display: inline-block;
+    font-size: .85rem;
+    background: var(--btn-bg, $color-primary);
+    cursor: pointer;
+    padding: 10px 22px;
+    border: $border-width-md solid var(--btn-border, $border-color-blue);
+    border-radius: $radius-btn;
+    box-shadow: $shadow-btn;
+    color: var(--btn-fg, $color-white);
+    text-decoration: none;
+    min-width: 140px;
+    text-align: center;
+    margin-top: $spacing-sm;
+    transition: background $transition-fast, box-shadow $transition-fast, border-color $transition-fast;
+
+    &:hover {
+        color: var(--btn-fg, $color-white);
+        background: var(--btn-hover, var(--btn-bg, $color-primary-dark));
+        border-color: var(--btn-border-hover, var(--btn-border, $border-color-blue));
+    }
+
+    i {
+        padding: 0 4px;
+    }
+}
+
+// ==================== 纵向堆叠容器 ====================
+.card-entry-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    margin: $spacing-lg auto;
+    max-width: $content-max-width;
+}

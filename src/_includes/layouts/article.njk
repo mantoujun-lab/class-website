@@ -14,10 +14,10 @@
     <article>
         <h1>{{ title or "文章" }}</h1>
         {% if author %}
-        <p class="author">作者: {{ author }}</p>
+        <p class="author"><i class="fa-solid fa-user"></i> {{ author }}</p>
         {% endif %}
         {% if date %}
-        <p class="author">日期: {{ date | bjDate }}</p>
+        <p class="author"><i class="fa-solid fa-calendar"></i> {{ date | bjDate }}</p>
         {% endif %}
         {%- if description %}
         <p class="wiki-description">{{ description }}</p>
@@ -25,7 +25,7 @@
         {{ content | safe }}
     </article>
     {% include "components/footer.njk" %}
-    <script type="module" src="{{ '/js/main.js' | url }}"></script>
+    <script type="module" src="{{ '/script/main.js' | url }}"></script>
 </body>
 
 </html>

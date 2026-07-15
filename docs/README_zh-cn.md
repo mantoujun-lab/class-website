@@ -46,7 +46,7 @@
 - **PostCSS + Autoprefixer** — 自动添加浏览器前缀，兼容主流浏览器
 - **[@11ty/eleventy-img](https://www.11ty.dev/docs/plugins/image/)** — 响应式图片处理，自动生成 `webp` 与 `jpeg` 多尺寸
 - **[@11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Markdown 代码块语法高亮
-- **原生 JavaScript（ES Modules）** — 少量交互逻辑；脚本以原生 ES Modules 形式组织在 `src/js/` 下，无需前端框架或打包器；入口 `main.js` 通过 `<script type="module">` 加载
+- **原生 JavaScript（ES Modules）** — 少量交互逻辑；脚本以原生 ES Modules 形式组织在 `src/script/` 下，无需前端框架或打包器；入口 `main.js` 通过 `<script type="module">` 加载
 - **GitHub Actions** — 自动化 CI/CD，推送 `main` 分支即触发构建与部署
 - **GitHub Pages** — 静态站点托管平台
 
