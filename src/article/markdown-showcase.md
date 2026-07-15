@@ -269,7 +269,18 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 
 {{ cardStandalone("fa-solid fa-circle-check", "成功", "这是一条成功信息卡片。", bgColor="#e7f8ee", textColor="#1a6e3a") }}
 
-#### 12.2.4 card 自定义颜色
+#### 12.2.4 `cardStandalone` 三列网格版
+
+通过传入 `grid=true` 参数（等价于在卡片元素上叠加 `.card-standalone-grid` 类），`cardStandalone` 即可在 `.cardzone-three-columns` 容器中以三列布局展示，最大宽度限制被取消，卡片会填满网格单元。
+
+<div class="cardzone-three-columns">
+{{ cardStandalone("fa-solid fa-handshake", "开放共享", "班级资料、学习笔记默认对所有人可见。", grid=true) }}
+{{ cardStandalone("fa-solid fa-language", "中文优先", "文档以中文为主要维护语言,再翻译为英文。", grid=true) }}
+{{ cardStandalone("fa-solid fa-flask", "动手实践", "在真实项目中学习 Web 开发,不做「只看不写」。", grid=true) }}
+{{ cardStandalone("fa-solid fa-shield-halved", "友好社区", "遵守行为准则,营造尊重、包容的讨论氛围。", grid=true) }}
+</div>
+
+#### 12.2.5 card 自定义颜色
 
 卡片宏支持 `bgColor` / `textColor` / `borderColor` / `hoverBgColor` / `hoverBorderColor` 等参数自定义卡片样式，同时也支持按钮相关的颜色参数（`btnColor` / `btnTextColor` / `btnHover` / `btnBorder` / `btnBorderHover`）。未传的字段继续走默认主题色。
 
