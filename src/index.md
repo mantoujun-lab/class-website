@@ -9,7 +9,7 @@ eleventyNavigation:
 ---
 
 {% from "macros/button.njk" import button %}
-{% from "macros/card.njk" import card, cardFull, cardStandalone, cardEntry %}
+{% from "macros/card.njk" import card, cardEntry %}
 
 ## 📌 分区
 

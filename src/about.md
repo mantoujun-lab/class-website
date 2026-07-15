@@ -8,7 +8,7 @@ eleventyNavigation:
     order: 7
 ---
 
-{% from "macros/card.njk" import card, cardFull, cardStandalone %}
+{% from "macros/card.njk" import card, cardStandalone %}
 {% from "macros/button.njk" import button %}
 
 # 关于我们

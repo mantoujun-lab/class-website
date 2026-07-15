@@ -14,7 +14,7 @@ eleventyNavigation:
 
 {% from "macros/card.njk" import cardEntry %}
 
-<div class="card-full-list">
+<div class="card-entry-list">
     {%- for entry in collections.event %}
     {{ cardEntry(
         entry.data.title,
