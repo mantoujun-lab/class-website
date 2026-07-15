@@ -45,7 +45,7 @@ This project is a fully static site built with the following technologies:
 - **PostCSS + Autoprefixer** — Automatically adds vendor prefixes for broad browser compatibility
 - **[@11ty/eleventy-img](https://www.11ty.dev/docs/plugins/image/)** — Responsive image processing, auto-generates `webp` and `jpeg` at multiple sizes
 - **[@11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Syntax highlighting for Markdown code blocks
-- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/js/` with no front-end framework or bundler dependency. The entry `main.js` is loaded via `<script type="module">`
+- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency. The entry `main.js` is loaded via `<script type="module">`
 - **GitHub Actions** — Automated CI/CD; pushing to the `main` branch triggers a build and deployment
 - **GitHub Pages** — Static site hosting platform
 
