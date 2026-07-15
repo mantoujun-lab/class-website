@@ -9,7 +9,7 @@ eleventyNavigation:
 ---
 
 {% from "macros/button.njk" import button %}
-{% from "macros/card.njk" import card, cardFull, cardStandalone %}
+{% from "macros/card.njk" import card %}
 
 <div class="cardzone-three-columns">
 {%- for entry in collections.zone %}

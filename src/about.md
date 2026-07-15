@@ -8,7 +8,7 @@ eleventyNavigation:
     order: 7
 ---
 
-{% from "macros/card.njk" import card, cardFull, cardStandalone %}
+{% from "macros/card.njk" import card, cardStandalone %}
 {% from "macros/button.njk" import button %}
 
 # 关于我们
@@ -83,29 +83,35 @@ eleventyNavigation:
 
 ## 🌟 我们倡导
 
+<div class="cardzone-three-columns">
 {{ cardStandalone(
     "fa-solid fa-handshake",
     "开放共享",
-    "班级资料、学习笔记默认对所有人可见。"
+    "班级资料、学习笔记默认对所有人可见。",
+    grid=true
 ) }}
 
 {{ cardStandalone(
     "fa-solid fa-language",
     "中文优先",
-    "文档以中文为主要维护语言,再翻译为英文。"
+    "文档以中文为主要维护语言,再翻译为英文。",
+    grid=true
 ) }}
 
 {{ cardStandalone(
     "fa-solid fa-flask",
     "动手实践",
-    "在真实项目中学习 Web 开发,不做「只看不写」。"
+    "在真实项目中学习 Web 开发,不做「只看不写」。",
+    grid=true
 ) }}
 
 {{ cardStandalone(
     "fa-solid fa-shield-halved",
     "友好社区",
-    "遵守行为准则,营造尊重、包容的讨论氛围。"
+    "遵守行为准则,营造尊重、包容的讨论氛围。",
+    grid=true
 ) }}
+</div>
 
 ## 📬 加入协作
 

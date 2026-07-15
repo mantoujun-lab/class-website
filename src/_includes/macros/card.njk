@@ -113,10 +113,12 @@
 - textColor : 文本色，可选
 用法：
 {{ cardStandalone("fa-solid fa-circle-info", "Title", "Body text...") }}
-{{ cardStandalone("fa-solid fa-circle-info", "Title", "Body", bgColor="#fffbe6", textColor="#5a4a00") }} #}
-{% macro cardStandalone(icon, title, content, bgColor="", textColor="") %}
+{{ cardStandalone("fa-solid fa-circle-info", "Title", "Body", bgColor="#fffbe6", textColor="#5a4a00") }}
+{{ cardStandalone("fa-solid fa-handshake", "Title", "Body", grid=true) }} #}
+{% macro cardStandalone(icon, title, content, bgColor="", textColor="", grid=false) %}
 {%- set _style = colorStyle(bgColor, textColor) -%}
-<div class="card-standalone" {% if _style %}style="{{ _style }}" {% endif %}>
+{%- set _class = "card-standalone" + (" card-standalone-grid" if grid) -%}
+<div class="{{ _class }}" {% if _style %}style="{{ _style }}" {% endif %}>
     <div class="card-info">
         <i class="{{ icon }} card-info-icon"></i>
     </div>

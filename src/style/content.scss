@@ -27,12 +27,22 @@ article {
 
     blockquote {
         margin: 1.5em 0;
-        padding: $spacing-md $spacing-lg;
-        border-left: 4px solid $color-primary;
-        background: var(--color-inline-code-bg);
-        border-radius: 0 $radius-sm $radius-sm 0;
+        padding: $spacing-sm $spacing-lg;
+        border-left: 4px solid var(--color-primary);
+        background: none;
+        border-radius: $radius-lg;
         color: $color-text-light;
-        font-style: italic;
+        transition: $transition-fast;
+
+        &:hover {
+            background: var(--color-primary);
+            color: $color-white;
+        }
+
+        p {
+            margin: $spacing-sm 0;
+        }
+
     }
 
     table {
@@ -104,5 +114,62 @@ article {
         margin: $spacing-md auto;
         max-width: calc(100% - #{$spacing-lg * 2});
         padding: $spacing-md $spacing-lg;
+    }
+
+    // ==================== 折叠 / 详情（details） ====================
+    // 视觉样式：箭头 + 容器背景 + hover
+    // 展开/收起使用浏览器原生行为（瞬时切换，无动画）
+    details {
+        margin: $spacing-md 0;
+        padding: $spacing-sm $spacing-md;
+        border: $border-solid-white;
+        border-radius: $radius-md;
+        background: var(--color-white-half);
+        transition: background $transition-fast, border-color $transition-fast;
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: $color-text;
+            padding: $spacing-sm 0;
+            list-style: none; // 隐藏默认三角箭头
+            position: relative;
+            padding-left: $spacing-lg;
+            transition: color $transition-fast;
+
+            // 自定义箭头：用 ::before 画一个 ▶ 符号
+            &::before {
+                content: "▶";
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: .8em;
+                color: $color-primary;
+                transition: transform $transition-fast;
+            }
+
+            // 隐藏不同浏览器的默认 marker
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &:hover {
+                color: $color-primary;
+            }
+        }
+
+        // 展开时：箭头旋转 90°
+        &[open] summary::before {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        &:hover {
+            background: var(--color-primary-eight);
+        }
+
+        &[open]:hover {
+            background: var(--color-white-half);
+        }
     }
 }

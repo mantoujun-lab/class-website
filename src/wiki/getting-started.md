@@ -23,5 +23,5 @@ order: 1
 ## 注意事项
 
 - 中文与英文之间加一个空格
-- 图片上传到 `src/assets/img/`
+- 图片上传到 `src/assets/images/`
 - 提交前先本地构建验证

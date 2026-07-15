@@ -145,7 +145,7 @@
     column-gap: $spacing-lg;
     row-gap: $spacing-md;
     width: 100%;
-    max-width: 440px;
+    max-width: $content-max-width;
     margin: 0 auto;
     padding: $card-padding;
     backdrop-filter: $blur-basic;
@@ -194,5 +194,24 @@
         color: $color-text-light;
         word-break: break-word;
         overflow-wrap: break-word;
+    }
+}
+
+// ==================== 三列网格版独立卡片 ====================
+// 用法：
+//   1. 在 .cardzone-three-columns 容器内，给 .card-standalone 叠加此类（手写 HTML）
+//   2. 或在 cardStandalone 宏里传 grid=true（推荐用法，由宏自动叠加此类）
+// 作用：重置 max-width 和 margin，让卡片填满网格单元（而非单卡片居中显示）
+// 视觉与 .card-standalone 在图标大小、颜色、间距上保持一致，
+// 但改为竖向布局（图标在上、文本在下），避免三列网格下 flex-wrap
+// 因列宽和文本长度不同导致的不可预期换行。
+.card-standalone-grid {
+    max-width: 100%;
+    margin: 0;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .card-info {
+        align-self: flex-start;
     }
 }
