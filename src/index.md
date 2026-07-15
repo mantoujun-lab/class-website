@@ -52,7 +52,7 @@ eleventyNavigation:
 </div>
 
 <div align="right">
-{{ button("fa-solid fa-arrow-right", "查看更多文章", "/event/") }}
+{{ button("fa-solid fa-arrow-right", "查看更多文章", "/article/") }}
 </div>
 
 ## 👥 贡献者
