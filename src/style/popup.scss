@@ -19,40 +19,52 @@
 // 使用类 .modal-open 挂在 <body> 上控制显示，与 nav-popup-open 风格保持一致
 .modal-open {
     overflow: hidden; // 弹窗打开时禁止 body 滚动
-
-    .modal-backdrop {
-        opacity: 1;
-        visibility: visible;
-        transition: opacity $transition-fast, visibility 0s 0s;
-    }
-
-    .modal[data-modal-state="closed"] {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0) scale(1);
-        transition: opacity $transition-fast, visibility 0s 0s, transform $transition-fast;
-    }
 }
 
-// 关闭态：遮罩淡出 + 弹窗向下缩小并隐藏
+// 关闭态：默认隐藏。ease 缓动 + 缩放淡入淡出，无下沉偏移
 .modal-backdrop {
     @include fixed-overlay(200);
-    background: var(--overlay-bg);
-    -webkit-backdrop-filter: $blur-small;
-    backdrop-filter: $blur-small;
+    // 模糊 + 半透明遮罩（blur 半径小一些可显著降低 GPU 合成开销）
+    background: rgba(0, 0, 0, 0.1);
     opacity: 0;
     visibility: hidden;
+    // 单独层：避免与页面内容共用合成层，减少整页重绘
+    will-change: opacity;
     transition: opacity $transition-fast, visibility 0s 0.25s;
-    cursor: pointer;
+    cursor: default;
 }
 
 .modal[data-modal-state="closed"] {
     opacity: 0;
     visibility: hidden;
-    transform: translateY(8px) scale(0.98);
+    // translate(-50%,-50%) 是居中用的基础变换，必须保留；
+    // scale 只是叠加在 translate 之后，矩阵乘法合并为一次
+    transform: translate(-50%, -50%) scale(0.95);
+    // 提示浏览器把弹窗提到独立合成层；仅在动画期间持有，结束后由 :not([open]) 还原
+    will-change: auto;
     transition:
         opacity $transition-fast,
         visibility 0s 0.25s,
+        transform $transition-fast;
+}
+
+// 开启态：body.modal-open 时遮罩淡入 + modal 缩放淡入
+body.modal-open .modal-backdrop {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity $transition-fast, visibility 0s 0s;
+}
+
+body.modal-open .modal[data-modal-state="open"] {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+    // 动画期间锁定 GPU 合成层；动画结束后（属性变化触发 transition 完成后），
+    // 切到 closed 态时会被覆盖为 auto，自动释放显存
+    will-change: transform, opacity;
+    transition:
+        opacity $transition-fast,
+        visibility 0s 0s,
         transform $transition-fast;
 }
 

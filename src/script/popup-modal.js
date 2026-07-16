@@ -6,7 +6,7 @@
 //   2. 委托式事件绑定（document 级）：
 //        - [data-modal-open="<id>"]   点击 → 打开对应弹窗
 //        - [data-modal-close="<id>"]  点击 → 关闭对应弹窗
-//        - [data-modal-backdrop]      点击遮罩 → 关闭（除非 backdrop 节点带 data-modal-no-backdrop）
+//        - [data-modal-backdrop]      点击 → 不响应（关闭只走 close 触发器 / ESC / popstate）
 //   3. 焦点陷阱：复用 focus-trap.js 的工具（Tab 循环 + 焦点归还）
 //   4. 多弹窗互斥：打开新弹窗时关闭当前已打开的弹窗（栈语义，最新的最上层）
 //   5. 与现有菜单互斥：弹窗打开时静默关闭 nav-popup / drawer / wiki
@@ -177,15 +177,9 @@ export function initModal(deps) {
             closeModal(id, true);
             return;
         }
-        // 遮罩点击：默认关闭，除非该 backdrop 节点带 data-modal-no-backdrop
+        // 遮罩点击：永远不响应（弹窗关闭只走 [data-modal-close] / ESC / popstate）
         const backdrop = e.target.closest('[data-modal-backdrop]');
-        if (backdrop && !backdrop.hasAttribute('data-modal-no-backdrop')) {
-            const id = backdrop.getAttribute('data-modal-backdrop');
-            // 只有当该弹窗确实是栈顶时，点击遮罩才关闭（避免点遮罩把底层也关了）
-            if (openStack.length > 0 && openStack[openStack.length - 1] === id) {
-                closeModal(id, true);
-            }
-        }
+        if (backdrop) return;
     });
 
     // ---- 全局键盘：ESC 关闭栈顶 + Tab 焦点陷阱 ----
@@ -193,6 +187,12 @@ export function initModal(deps) {
         if (openStack.length === 0) return;
 
         if (e.key === 'Escape') {
+            const topId = openStack[openStack.length - 1];
+            const topEntry = findModal(topId);
+            // 栈顶 modal 标记 data-modal-no-escape 时，ESC 不关闭（强制操作场景）
+            if (topEntry && topEntry.modal.hasAttribute('data-modal-no-escape')) {
+                return;
+            }
             e.stopPropagation(); // 避免 main.js 的 ESC 处理器重复关闭其它菜单
             closeTopModal();
             return;

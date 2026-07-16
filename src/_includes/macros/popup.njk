@@ -13,7 +13,7 @@
      - icon       : 标题前缀 Font Awesome 类名（选填，例 "fa-solid fa-circle-info"）
      - showClose  : 是否显示右上角关闭按钮（默认 true；纯展示型可传 false）
      - footer     : 页脚 HTML（选填，传则渲染 .modal-footer；不传则隐藏）
-     - closeOnBackdrop : 点击遮罩是否关闭（默认 true；false 则只能按 ESC / 关闭按钮）
+     - closeOnEscape   : 按 ESC 是否关闭（默认 true；false 用于"强制操作"场景，配合 showClose=false 后只能点页脚按钮）
 
    触发方式（任选其一即可）：
      1. 按钮式：任意元素加属性 data-modal-open="<modalId>"
@@ -41,16 +41,16 @@
      {% endraw %}
    ============================================================ #}
 
-{% macro popup(modalId, title, content, size="md", icon="", showClose=true, footer="", closeOnBackdrop=true) %}
-{# --- 防御：modalId 是定位的唯一锚点，必须有 --- #}
+{% macro popup(modalId, title, content, size="md", icon="", showClose=true, footer="", closeOnEscape=true) %}
+{# --- 防御：modalId 是定位的唯一锚点，必须有 --- %}
 {%- if not modalId -%}
 {{- "<!-- popup 宏错误：modalId 必填 -->" | safe -}}
 {%- else -%}
 {%- set _size = size if size in ["sm", "md", "lg"] else "md" -%}
-{%- set _closeAttr = "" if closeOnBackdrop else 'data-modal-no-backdrop="1"' -%}
+{%- set _escAttr = "" if closeOnEscape else 'data-modal-no-escape="1"' -%}
 {# data-modal-state="closed" 由 JS 切换为 "open" 触发动画（避免首屏闪烁） #}
-<div class="modal-backdrop" data-modal-backdrop="{{ modalId }}" {{ _closeAttr | safe }}></div>
-<div class="modal" id="modal-{{ modalId }}" data-modal-id="{{ modalId }}" data-modal-size="{{ _size }}" data-modal-state="closed" role="dialog" aria-modal="true" aria-labelledby="modal-{{ modalId }}-title" tabindex="-1">
+<div class="modal-backdrop" data-modal-backdrop="{{ modalId }}"></div>
+<div class="modal" id="modal-{{ modalId }}" data-modal-id="{{ modalId }}" data-modal-size="{{ _size }}" data-modal-state="closed" role="dialog" aria-modal="true" aria-labelledby="modal-{{ modalId }}-title" {{ _escAttr | safe }} tabindex="-1">
     {%- if title or showClose %}
     <div class="modal-header">
         <div class="modal-header-text">
@@ -73,5 +73,4 @@
     </div>
     {%- endif %}
 </div>
-{%- endif -%}
 {% endmacro %}
