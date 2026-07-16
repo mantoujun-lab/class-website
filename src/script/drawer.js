@@ -3,8 +3,8 @@
 // ------------------------------------------------------------
 // 职责：
 //   1. 监听 #nav-toggle checkbox change 事件，同步 CSS/状态
-//   2. 暴露 openDrawer()/closeDrawer() 供程序化触发
-//   3. 与其他菜单互斥：抽屉打开时若弹窗/wiki 正打开则静默关闭
+//   2. 暴露 closeDrawer() 供程序化触发（关闭按钮、遮罩、ESC、popstate）
+//   3. 与弹窗互斥：抽屉打开时若弹窗正打开则静默关闭
 //
 // 关键 bug 修复（2026-07）：
 //   navToggle.checked = false 不会触发 change 事件，
@@ -13,8 +13,8 @@
 //
 // 依赖：
 //   - _dom.js: navToggle / drawerCloseBtn / header 引用
-//   - history-stack.js: acquireSlot / releaseSlot / markReleased / getSlotOwner
-//   - onPopupClose / onWikiClose（由 main.js 注入）：打开抽屉时互斥关闭其他菜单
+//   - history-stack.js: acquireSlot / releaseSlot / markReleased
+//   - onPopupClose（由 main.js 注入）：抽屉打开时关闭弹窗的回调
 // ============================================================
 
 import { dom } from './_dom.js';
@@ -24,7 +24,7 @@ import { acquireSlot, releaseSlot, markReleased, getSlotOwner } from './history-
 let drawerOpen = false;
 
 // ---- 公共 API ----
-// 打开抽屉（checkbox 由用户点击时调用，其他模块也可程序化调用）
+// 打开抽屉（程序化调用场景预留，checkbox 由用户点击触发时无需调用）
 function openDrawer() {
     console.debug('[drawer] 打开抽屉');
     // 互斥：若弹窗正打开，静默关闭（复用 history 槽位，不 back）
@@ -32,17 +32,10 @@ function openDrawer() {
         console.debug('[drawer] 互斥关闭弹窗');
         onPopupClose(false); // 由 main.js 注入
     }
-    // 互斥：若 wiki 侧边栏正打开，静默关闭（复用 history 槽位，不 back）
-    if (getSlotOwner() === 'wiki') {
-        console.debug('[drawer] 互斥关闭 wiki');
-        onWikiClose(false); // 由 main.js 注入
-    }
     header.classList.add('nav-drawer-open');
     drawerOpen = true;
     acquireSlot('drawer');
 }
-
-export { openDrawer };
 
 // 关闭抽屉
 // 参数 manageHistory：true（默认）= 主动 back 清理 history 栈；
@@ -69,16 +62,12 @@ var header = dom.header;
 var navToggle = dom.navToggle;
 var drawerCloseBtn = dom.drawerCloseBtn;
 var onPopupClose = function () {}; // 默认 no-op
-var onWikiClose = function () {}; // 默认 no-op
 
-// 初始化入口：由 main.js 调用，注入其他模块互斥回调
+// 初始化入口：由 main.js 调用，注入弹窗互斥回调
 export function initDrawer(deps) {
     console.debug('[drawer] 初始化');
     if (deps && typeof deps.onPopupClose === 'function') {
         onPopupClose = deps.onPopupClose;
-    }
-    if (deps && typeof deps.onWikiClose === 'function') {
-        onWikiClose = deps.onWikiClose;
     }
 
     // 监听 checkbox change 事件（用户点击汉堡图标 / 切换触发）

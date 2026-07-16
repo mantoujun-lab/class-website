@@ -99,10 +99,10 @@
     transition: transform $transition-sidebar, opacity $transition-sidebar, margin $transition-sidebar;
 
     .wiki-sidebar-title {
-        // background: var(--color-white-half);
+        background: var(--color-white-half);
         padding: $spacing-md;
-        // border: $border-solid-white;
-        // border-radius: $radius-btn;
+        border: $border-solid-white;
+        border-radius: $radius-btn;
         margin: 0 0 $spacing-md;
         font-size: 1.1em;
         color: $color-primary;
@@ -240,10 +240,7 @@
 // 索引页列表
 .wiki-list {
     list-style: none;
-    padding: $spacing-md;
-    background: var(--color-wiki-sidebar-bg);
-    border: $border-solid-white;
-    border-radius: $radius-lg;
+    padding: 0;
 
     li {
         padding: $spacing-md;

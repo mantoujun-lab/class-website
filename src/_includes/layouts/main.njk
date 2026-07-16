@@ -2,6 +2,10 @@
 <html lang="en">
 
 <head>
+    {#- wiki.njk 是嵌套模板：layout 会被覆盖为 layouts/wiki，在这里自动注入 wiki icon -#}
+    {%- if layout == "layouts/wiki" %}
+        {%- set layoutIcon = "/assets/images/icon/wiki.png" %}
+    {%- endif %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title or "页面" }}</title>

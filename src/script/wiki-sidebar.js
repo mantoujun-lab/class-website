@@ -1,21 +1,18 @@
 /**
  * Wiki 侧边栏折叠控制
- * - PC 端：默认展开，可点击收起（不参与菜单互斥，独立管理）
+ * - PC 端：默认展开，可点击收起
  * - 移动端：默认收起（抽屉），点击按钮从左侧滑出
- *   · 与 popup/drawer 互斥：打开前关闭其他菜单
- *   · 占用 history 槽位（系统返回键可关闭）
+ * - 状态保存到 localStorage
+ * - 移动端展开时给 <body> 加 .wiki-sidebar-open，复用 header 的统一遮罩
  *
  * 由 main.js 在检测到 .wiki-sidebar-toggle 后按需调用
  */
 
 import { dom } from './_dom.js';
-import { acquireSlot, releaseSlot, markReleased, getSlotOwner } from './history-stack.js';
 
+const STORAGE_KEY = 'wiki-sidebar-collapsed';
 const MOBILE_BREAKPOINT = 769;
 const OPEN_CLASS = 'wiki-sidebar-open';
-
-// 模块状态：移动端抽屉是否打开（PC 端折叠状态由 .wiki-sidebar-collapsed 类承担，不计入此标志）
-let wikiMobileOpen = false;
 
 // 防抖工具函数
 function debounce(fn, delay) {
@@ -36,40 +33,12 @@ function isMobile() {
     return window.innerWidth < MOBILE_BREAKPOINT;
 }
 
-// 公共 API：供其他模块互斥调用
-// manageHistory：true（默认）= 主动 back 清理 history 栈；
-//                 false = 不触碰（用于互斥关闭或 popstate 回调内）
-function openWiki() {
-    console.debug('[wiki-sidebar] 打开');
-    // 互斥：弹窗打开中 → 静默关闭弹窗
-    if (getSlotOwner() === 'popup') {
-        console.debug('[wiki-sidebar] 互斥关闭弹窗');
-        onPopupClose(false);
-    }
-    // 互斥：抽屉打开中 → 静默关闭抽屉
-    if (getSlotOwner() === 'drawer') {
-        console.debug('[wiki-sidebar] 互斥关闭抽屉');
-        onDrawerClose(false);
-    }
-    setLayoutCollapsed(false);
-    if (header) header.classList.add(OPEN_CLASS);
-    wikiMobileOpen = true;
-    acquireSlot('wiki');
-}
-
-function closeWiki(manageHistory = true) {
-    if (isMobile() && !wikiMobileOpen) {
-        console.debug('[wiki-sidebar] 已关闭，跳过');
-        return;
-    }
-    console.debug('[wiki-sidebar] 关闭, manageHistory=' + manageHistory);
-    setLayoutCollapsed(true);
-    if (header) header.classList.remove(OPEN_CLASS);
-    wikiMobileOpen = false;
-    if (manageHistory) {
-        releaseSlot();
+function syncOverlay(layout) {
+    if (isMobile()) {
+        const open = !layout.classList.contains('wiki-sidebar-collapsed');
+        document.body.classList.toggle(OPEN_CLASS, open);
     } else {
-        markReleased();
+        document.body.classList.remove(OPEN_CLASS);
     }
 }
 
@@ -81,19 +50,6 @@ function scrollToActive(sidebar) {
     requestAnimationFrame(() => {
         active.scrollIntoView({ block: 'center', behavior: 'smooth' });
     });
-}
-
-// ---- 依赖注入（由 main.js 调用时传入） ----
-var layout = dom.wikiLayout;
-var sidebar = dom.wikiSidebar;
-var toggle = dom.wikiSidebarToggle;
-var header = dom.header;
-var onPopupClose = function () { }; // 默认 no-op
-var onDrawerClose = function () { }; // 默认 no-op
-
-// ---- 内部工具：layout 在非 wiki 页面为 null，需防御 ----
-function setLayoutCollapsed(collapsed) {
-    if (layout) layout.classList.toggle('wiki-sidebar-collapsed', !!collapsed);
 }
 
 export function initWikiSidebar() {
@@ -109,6 +65,9 @@ export function initWikiSidebar() {
     // 贡献者若需重构本模块，建议保留这四条日志以延续可调试性。
     // ============================================================
     console.debug('[wiki-sidebar] initWikiSidebar 被调用');
+    const layout = dom.wikiLayout;
+    const sidebar = dom.wikiSidebar;
+    const toggle = dom.wikiSidebarToggle;
     console.debug('[wiki-sidebar] 元素检查:',
         'layout=' + !!layout,
         'sidebar=' + !!sidebar,
@@ -122,27 +81,43 @@ export function initWikiSidebar() {
 
     // 初始化状态：
     // - 移动端：默认折叠（抽屉藏在屏幕外）
-    // - PC 端：默认展开（不参与菜单互斥，独立管理）
+    // - PC 端：读取用户偏好
     if (isMobile()) {
-        setLayoutCollapsed(true);
+        layout.classList.add('wiki-sidebar-collapsed');
+    } else {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        console.debug('[wiki-sidebar] 读取本地存储状态: ' + saved);
+        if (saved === 'true') {
+            layout.classList.add('wiki-sidebar-collapsed');
+        }
     }
+    syncOverlay(layout);
 
     // 切换按钮
     toggle.addEventListener('click', (e) => {
         e.stopPropagation();
-        console.debug('[wiki-sidebar] 切换按钮点击, isMobile=' + isMobile());
-        if (isMobile()) {
-            // 移动端：抽屉模式，受菜单互斥管理
-            if (wikiMobileOpen) {
-                closeWiki(true);
-            } else {
-                openWiki();
-            }
-        } else {
-            // PC 端：纯折叠面板，独立 toggle，不进入互斥/history 栈
-            if (layout) layout.classList.toggle('wiki-sidebar-collapsed');
-        }
+        const collapsed = layout.classList.toggle('wiki-sidebar-collapsed');
+        console.debug('[wiki-sidebar] 切换状态: collapsed=' + collapsed);
+        localStorage.setItem(STORAGE_KEY, String(collapsed));
+        console.debug('[wiki-sidebar] 保存状态到本地存储: ' + collapsed);
+        syncOverlay(layout);
     });
+
+    // 移动端：点击统一遮罩（.overlay）关闭
+    const overlay = dom.overlay;
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (!isMobile()) return;
+            if (layout.classList.contains('wiki-sidebar-collapsed')) return;
+            if (!document.body.classList.contains(OPEN_CLASS)) return;
+            e.stopPropagation();
+            console.debug('[wiki-sidebar] 遮罩点击关闭侧边栏');
+            layout.classList.add('wiki-sidebar-collapsed');
+            localStorage.setItem(STORAGE_KEY, 'true');
+            console.debug('[wiki-sidebar] 保存状态到本地存储: true');
+            syncOverlay(layout);
+        });
+    }
 
     // 监听窗口大小变化，跨设备时同步状态
     let lastMobile = isMobile();
@@ -152,46 +127,26 @@ export function initWikiSidebar() {
         if (nowMobile !== lastMobile) {
             lastMobile = nowMobile;
             if (nowMobile) {
-                // 切到移动端：强制收起（抽屉模式），清掉移动端抽屉的所有状态
-                setLayoutCollapsed(true);
-                if (header) header.classList.remove(OPEN_CLASS);
-                wikiMobileOpen = false;
-                if (getSlotOwner() === 'wiki') {
-                    markReleased();
-                }
-            } else {
-                // 切到 PC 端：清理移动端抽屉状态，避免再次切回移动端时状态错乱
-                if (header) header.classList.remove(OPEN_CLASS);
-                wikiMobileOpen = false;
-                if (getSlotOwner() === 'wiki') {
-                    markReleased();
-                }
-                // PC 端默认展开：移除 collapsed 类（用户下次切换可手动收）
-                setLayoutCollapsed(false);
+                layout.classList.add('wiki-sidebar-collapsed');
             }
+            syncOverlay(layout);
         }
     }, 150);
     window.addEventListener('resize', handleResize);
 
+    // ESC 键收起（仅 PC）
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' &&
+            !layout.classList.contains('wiki-sidebar-collapsed') &&
+            !isMobile()) {
+            console.debug('[wiki-sidebar] ESC 键收起侧边栏');
+            layout.classList.add('wiki-sidebar-collapsed');
+            localStorage.setItem(STORAGE_KEY, 'true');
+            console.debug('[wiki-sidebar] 保存状态到本地存储: true');
+            syncOverlay(layout);
+        }
+    });
+
     // 自动滚动到当前活跃项
     scrollToActive(sidebar);
 }
-
-// ---- 公共 API 供 main.js 注入互斥与统一事件 ----
-
-// 供 main.js 在初始化时注入其他模块的关闭回调
-export function setWikiDeps(deps) {
-    if (deps && typeof deps.onPopupClose === 'function') {
-        onPopupClose = deps.onPopupClose;
-    }
-    if (deps && typeof deps.onDrawerClose === 'function') {
-        onDrawerClose = deps.onDrawerClose;
-    }
-}
-
-// 供 main.js 在统一遮罩点击 / ESC / popstate 路由中调用
-export function getWikiMobileOpen() {
-    return wikiMobileOpen;
-}
-
-export { closeWiki };

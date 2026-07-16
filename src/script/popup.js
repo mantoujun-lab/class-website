@@ -4,7 +4,7 @@
 // 职责：
 //   1. 站点导航弹窗（.nav-popup）的打开/关闭与 ARIA 状态同步
 //   2. 弹窗内的焦点陷阱（Tab/Shift+Tab 循环，关闭后归还焦点）
-//   3. 与其他菜单互斥：弹窗打开时若抽屉/wiki 正打开则静默关闭
+//   3. 与抽屉互斥：弹窗打开时若抽屉正打开则静默关闭
 //
 // 关键行为：
 //   - ARIA 状态：aria-expanded 同步切换
@@ -16,7 +16,7 @@
 //   - _dom.js: header / popupBtn / popup / closeBtn 引用
 //   - focus-trap.js: rememberFocus / restoreFocus / focusFirst / trapFocus
 //   - history-stack.js: acquireSlot / releaseSlot / markReleased / getSlotOwner
-//   - onDrawerClose / onWikiClose（由 main.js 注入）：弹窗打开时互斥关闭其他菜单
+//   - onDrawerClose（由 main.js 注入）：弹窗打开时关闭抽屉的回调
 // ============================================================
 
 import { dom } from './_dom.js';
@@ -33,11 +33,6 @@ function openPopup() {
     if (getSlotOwner() === 'drawer') {
         console.debug('[popup] 互斥关闭抽屉');
         onDrawerClose(false); // 由 main.js 注入
-    }
-    // 互斥：若 wiki 侧边栏正打开，静默关闭它（不触碰 history，复用槽位）
-    if (getSlotOwner() === 'wiki') {
-        console.debug('[popup] 互斥关闭 wiki');
-        onWikiClose(false); // 由 main.js 注入
     }
     header.classList.add('nav-popup-open');
     popupBtn.setAttribute('aria-expanded', 'true');
@@ -76,16 +71,12 @@ var popupBtn = dom.popupBtn;
 var popup = dom.popup;
 var closeBtn = dom.closeBtn;
 var onDrawerClose = function () { }; // 默认 no-op
-var onWikiClose = function () { }; // 默认 no-op
 
 // 初始化入口
 export function initPopup(deps) {
     console.debug('[popup] 初始化');
     if (deps && typeof deps.onDrawerClose === 'function') {
         onDrawerClose = deps.onDrawerClose;
-    }
-    if (deps && typeof deps.onWikiClose === 'function') {
-        onWikiClose = deps.onWikiClose;
     }
 
     // 导航按钮点击：切换弹窗
