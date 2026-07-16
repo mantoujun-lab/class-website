@@ -65,13 +65,6 @@ export async function initPrism() {
             document.body.setAttribute('data-toolbar-order', 'copy-to-clipboard');
         }
 
-        // 打印插件状态（用于排查）
-        console.log('[Prism] 插件状态:', {
-            lineNumbers: !!window.Prism.plugins.lineNumbers,
-            toolbar: !!window.Prism.plugins.toolbar,
-            'copy-to-clipboard': !!window.Prism.plugins['copy-to-clipboard'],
-        });
-
         // 显式注册 copy-to-clipboard 按钮（双保险）
         // copy-to-clipboard 插件会自动注册，但保险起见手动注册一次
         if (window.Prism.plugins.toolbar && window.Prism.plugins['copy-to-clipboard']) {
@@ -87,18 +80,6 @@ export async function initPrism() {
         }
 
         window.Prism.highlightAll();
-
-        // 延迟打印：toolbar 在 highlightAll 之后才会注入 DOM
-        setTimeout(function () {
-            var pres = document.querySelectorAll('pre.line-numbers');
-            console.debug('[Prism] 共', pres.length, '个代码块');
-            pres.forEach(function (pre, i) {
-                var hasLineRows = !!pre.querySelector('.line-numbers-rows');
-                var hasToolbar = !!pre.querySelector('.toolbar');
-                var hasCopyBtn = !!pre.querySelector('.copy-to-clipboard-button');
-                console.debug('  [' + i + '] 行号:', hasLineRows, '工具栏:', hasToolbar, '复制按钮:', hasCopyBtn);
-            });
-        }, 500);
     } catch (err) {
         console.error('[Prism] 加载链失败:', err);
     }
