@@ -44,7 +44,7 @@ export function initTheme() {
     const menu = dom.themeMenu;
     if (!btn || !menu) return;
 
-    // 读取初始主题
+    // 读取初始主题（仅设缓存；data-theme 已由 head-assets.njk 内联脚本在 CSS 前设置，无需再应用）
     let saved = null;
     try {
         saved = localStorage.getItem(STORAGE_KEY);
