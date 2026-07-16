@@ -1,0 +1,74 @@
+{# ============================================================
+   通用模态弹窗宏（Modal）
+   ------------------------------------------------------------
+   用途：渲染一段"浮在页面上方"的内容型弹窗（公告、说明、确认框、富文本展示等），
+   与导航弹窗（nav-popup / macros/card 不相关）职责完全分离。
+
+   参数：
+     - modalId    : 全局唯一 id（必填，触发器 data-modal-open 与 JS 函数都靠它定位）
+     - title      : 弹窗标题文字（必填；空字符串则只显示关闭按钮）
+     - content    : 弹窗主体内容（必填；HTML 字符串，支持富文本 / 嵌套 macro）
+     - size       : 尺寸档位（选填）："sm" / "md"（默认） / "lg"
+                    也可通过 CSS 变量 --modal-size 在外层 / 内联 style 覆盖
+     - icon       : 标题前缀 Font Awesome 类名（选填，例 "fa-solid fa-circle-info"）
+     - showClose  : 是否显示右上角关闭按钮（默认 true；纯展示型可传 false）
+     - footer     : 页脚 HTML（选填，传则渲染 .modal-footer；不传则隐藏）
+
+   触发方式（任选其一即可）：
+     1. 按钮式：任意元素加属性 data-modal-open="<modalId>"
+                 也可加 data-modal-close="<modalId>" 作为关闭触发器
+     2. JS 函数：window.openModal("<modalId>")  /  window.closeModal("<modalId>")
+
+   用法：
+     {% raw %}
+     {% from "macros/popup.njk" import popup %}
+     {{ popup("hello", "你好", "<p>世界</p>", size="sm", icon="fa-solid fa-circle-info") }}
+
+     多个按钮共用同一个弹窗：
+     <button data-modal-open="terms">查看条款</button>
+     <a data-modal-open="terms" href="#">我也想看</a>
+     {{ popup("terms", "服务条款", termsContent, size="lg") }}
+
+     页脚放按钮（典型场景：确认对话框）：
+     {{ popup(
+         "confirm-delete",
+         "确认删除？",
+         "<p>此操作不可恢复。</p>",
+         size="sm",
+         footer='<button class="btn-pill" onclick="handleDelete()">确认删除</button>'
+     ) }}
+     {% endraw %}
+   ============================================================ #}
+
+{% macro popup(modalId, title, content, size="md", icon="", showClose=true, footer="") %}
+{# --- 防御：modalId 是定位的唯一锚点，必须有 --- %}
+{%- if not modalId -%}
+{{- "<!-- popup 宏错误：modalId 必填 -->" | safe -}}
+{%- else -%}
+{%- set _size = size if size in ["sm", "md", "lg"] else "md" -%}
+{# data-modal-state="closed" 由 JS 切换为 "open" 触发动画（避免首屏闪烁） #}
+<div class="modal-backdrop" data-modal-backdrop="{{ modalId }}"></div>
+<div class="modal" id="modal-{{ modalId }}" data-modal-id="{{ modalId }}" data-modal-size="{{ _size }}" data-modal-state="closed" role="dialog" aria-modal="true" aria-labelledby="modal-{{ modalId }}-title" tabindex="-1">
+    {%- if title or showClose %}
+    <div class="modal-header">
+        <div class="modal-header-text">
+            {%- if icon %}<i class="{{ icon }} modal-icon" aria-hidden="true"></i>{%- endif %}
+            {%- if title %}<h3 class="modal-title" id="modal-{{ modalId }}-title">{{ title }}</h3>{%- endif %}
+        </div>
+        {%- if showClose %}
+        <button type="button" class="modal-close" data-modal-close="{{ modalId }}" aria-label="关闭弹窗">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+        {%- endif %}
+    </div>
+    {%- endif %}
+    <div class="modal-body">
+        {{ content | safe }}
+    </div>
+    {%- if footer %}
+    <div class="modal-footer">
+        {{ footer | safe }}
+    </div>
+    {%- endif %}
+</div>
+{% endmacro %}
