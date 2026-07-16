@@ -96,6 +96,7 @@ export function openModal(id) {
     rememberFocus();
     // 等动画结束后再聚焦，避免 transition 与 focus 抢资源
     requestAnimationFrame(function () {
+        if (!isModalOpen(id)) return; // 弹窗可能已在 rAF 前关闭
         focusFirst(entry.modal);
     });
 
