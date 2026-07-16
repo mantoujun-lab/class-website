@@ -32,7 +32,7 @@ import { initDrawer, closeDrawer, getDrawerOpen } from './drawer.js';
 import { initPrism } from './prism.js';
 import { initTheme } from './theme.js';
 import { initWikiSidebar, setWikiDeps, getWikiMobileOpen, closeWiki } from './wiki-sidebar.js';
-import { initModal, isModalOpen, closeModal, closeTopModal } from './popup-modal.js';
+import { initModal, isModalOpen, closeTopModal } from './popup-modal.js';
 
 (function () {
     'use strict';
