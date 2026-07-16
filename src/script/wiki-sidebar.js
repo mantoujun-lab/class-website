@@ -51,7 +51,7 @@ function openWiki() {
         console.debug('[wiki-sidebar] 互斥关闭抽屉');
         onDrawerClose(false);
     }
-    layout.classList.remove('wiki-sidebar-collapsed');
+    setLayoutCollapsed(false);
     if (header) header.classList.add(OPEN_CLASS);
     wikiMobileOpen = true;
     acquireSlot('wiki');
@@ -63,7 +63,7 @@ function closeWiki(manageHistory = true) {
         return;
     }
     console.debug('[wiki-sidebar] 关闭, manageHistory=' + manageHistory);
-    layout.classList.add('wiki-sidebar-collapsed');
+    setLayoutCollapsed(true);
     if (header) header.classList.remove(OPEN_CLASS);
     wikiMobileOpen = false;
     if (manageHistory) {
@@ -90,6 +90,11 @@ var toggle = dom.wikiSidebarToggle;
 var header = dom.header;
 var onPopupClose = function () { }; // 默认 no-op
 var onDrawerClose = function () { }; // 默认 no-op
+
+// ---- 内部工具：layout 在非 wiki 页面为 null，需防御 ----
+function setLayoutCollapsed(collapsed) {
+    if (layout) layout.classList.toggle('wiki-sidebar-collapsed', !!collapsed);
+}
 
 export function initWikiSidebar() {
     // ============================================================
@@ -119,7 +124,7 @@ export function initWikiSidebar() {
     // - 移动端：默认折叠（抽屉藏在屏幕外）
     // - PC 端：默认展开（不参与菜单互斥，独立管理）
     if (isMobile()) {
-        layout.classList.add('wiki-sidebar-collapsed');
+        setLayoutCollapsed(true);
     }
 
     // 切换按钮
@@ -135,7 +140,7 @@ export function initWikiSidebar() {
             }
         } else {
             // PC 端：纯折叠面板，独立 toggle，不进入互斥/history 栈
-            layout.classList.toggle('wiki-sidebar-collapsed');
+            if (layout) layout.classList.toggle('wiki-sidebar-collapsed');
         }
     });
 
@@ -148,7 +153,7 @@ export function initWikiSidebar() {
             lastMobile = nowMobile;
             if (nowMobile) {
                 // 切到移动端：强制收起（抽屉模式），清掉移动端抽屉的所有状态
-                layout.classList.add('wiki-sidebar-collapsed');
+                setLayoutCollapsed(true);
                 if (header) header.classList.remove(OPEN_CLASS);
                 wikiMobileOpen = false;
                 if (getSlotOwner() === 'wiki') {
@@ -162,7 +167,7 @@ export function initWikiSidebar() {
                     markReleased();
                 }
                 // PC 端默认展开：移除 collapsed 类（用户下次切换可手动收）
-                layout.classList.remove('wiki-sidebar-collapsed');
+                setLayoutCollapsed(false);
             }
         }
     }, 150);

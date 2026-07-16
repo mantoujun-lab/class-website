@@ -1,0 +1,207 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ==================== 通用模态弹窗（Modal） ====================
+// 用途：内容型弹窗（如公告、确认框、富文本说明），与导航弹窗（nav-popup）职责分离。
+// 使用方式：
+//   1. 在模板里通过 {{ modal(id, title, content, size, icon, showClose) }} 渲染结构
+//   2. 通过 [data-modal-open="<id>"] 触发，或 window.openModal(id)
+// 依赖：focus-trap.js（焦点陷阱）、history-stack.js（多槽位管理）
+
+// ---- 尺寸变量（可由内联 style --modal-size 覆盖） ----
+:root {
+    --modal-size-sm: 360px;
+    --modal-size-md: 560px;
+    --modal-size-lg: 800px;
+}
+
+// ---- 弹窗遮罩层 ----
+// 使用类 .modal-open 挂在 <body> 上控制显示，与 nav-popup-open 风格保持一致
+.modal-open {
+    overflow: hidden; // 弹窗打开时禁止 body 滚动
+}
+
+// 关闭态：默认隐藏。ease 缓动 + 缩放淡入淡出，无下沉偏移
+.modal-backdrop {
+    @include fixed-overlay(200);
+    // 模糊 + 半透明遮罩（blur 半径小一些可显著降低 GPU 合成开销）
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    // 单独层：避免与页面内容共用合成层，减少整页重绘
+    will-change: opacity;
+    transition: opacity $transition-fast, visibility 0s 0.25s;
+    cursor: default;
+}
+
+.modal[data-modal-state="closed"] {
+    opacity: 0;
+    visibility: hidden;
+    // translate(-50%,-50%) 是居中用的基础变换，必须保留；
+    // scale 只是叠加在 translate 之后，矩阵乘法合并为一次
+    transform: translate(-50%, -50%) scale(0.95);
+    // 提示浏览器把弹窗提到独立合成层；仅在动画期间持有，结束后由 :not([open]) 还原
+    will-change: auto;
+    transition:
+        opacity $transition-fast,
+        visibility 0s 0.25s,
+        transform $transition-fast;
+}
+
+// 开启态：body.modal-open 时遮罩淡入 + modal 缩放淡入
+body.modal-open .modal-backdrop {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity $transition-fast, visibility 0s 0s;
+}
+
+body.modal-open .modal[data-modal-state="open"] {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+    // 动画期间锁定 GPU 合成层；动画结束后（属性变化触发 transition 完成后），
+    // 切到 closed 态时会被覆盖为 auto，自动释放显存
+    will-change: transform, opacity;
+    transition:
+        opacity $transition-fast,
+        visibility 0s 0s,
+        transform $transition-fast;
+}
+
+// ---- 弹窗本体 ----
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(var(--modal-size, var(--modal-size-md)), calc(100vw - 32px));
+    max-height: calc(100vh - 64px);
+    z-index: 201;
+    @include flex(column, flex-start, stretch);
+    background: var(--color-card-bg);
+    border: $border-solid-white;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-card-hover;
+    overflow: hidden;
+    outline: none;
+
+    // 三档尺寸：sm / md / lg，由宏通过 --modal-size 注入
+    &[data-modal-size="sm"] {
+        --modal-size: var(--modal-size-sm);
+    }
+    &[data-modal-size="md"] {
+        --modal-size: var(--modal-size-md);
+    }
+    &[data-modal-size="lg"] {
+        --modal-size: var(--modal-size-lg);
+    }
+
+    // ---- 头部 ----
+    .modal-header {
+        @include flex(row, space-between, center);
+        gap: $spacing-sm;
+        padding: $spacing-md $spacing-lg;
+        border-bottom: $border-width-sm solid var(--color-border-light);
+        flex-shrink: 0;
+    }
+
+    .modal-header-text {
+        @include flex(row, flex-start, center);
+        gap: $spacing-sm;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .modal-icon {
+        color: $color-primary;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .modal-title {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: $color-text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .modal-close {
+        @include flex(row, center, center);
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        border-radius: $radius-sm;
+        color: $color-text-light;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background $transition-fast, color $transition-fast;
+
+        &:hover {
+            background: var(--color-black-six);
+            color: $color-text;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $color-primary;
+            outline-offset: 2px;
+        }
+    }
+
+    // ---- 主体（可滚动） ----
+    .modal-body {
+        padding: $spacing-lg;
+        overflow-y: auto;
+        color: $color-text;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        // 让 prose 风格的元素也好看一点（覆盖文章内 <p>/<ul> 默认边距）
+        > :first-child {
+            margin-top: 0;
+        }
+
+        > :last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    // ---- 页脚（可选：按钮组） ----
+    .modal-footer {
+        @include flex(row, flex-end, center);
+        gap: $spacing-sm;
+        padding: $spacing-md $spacing-lg;
+        border-top: $border-width-sm solid var(--color-border-light);
+        background: var(--color-bg);
+        flex-shrink: 0;
+
+        // 没有页脚时不渲染占位空间（由宏条件渲染）
+        &:empty {
+            display: none;
+        }
+    }
+}
+
+// ---- 平板及以下：弹窗占满宽度的 92%，留 4% 边距 ----
+@include respond-to($breakpoint-tablet) {
+    .modal {
+        width: calc(100vw - 32px);
+        max-height: calc(100vh - 32px);
+
+        .modal-header,
+        .modal-body,
+        .modal-footer {
+            padding-left: $spacing-md;
+            padding-right: $spacing-md;
+        }
+    }
+}
+
+// ---- 防止多个弹窗堆叠时点击穿透 ----
+.modal-open .modal {
+    pointer-events: auto;
+}

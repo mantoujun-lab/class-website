@@ -438,5 +438,173 @@ headerBg: "#c92a2a"
 | `.theme-menu-open` | 桌面端主题菜单 | 菜单展开 + 遮罩显示 |
 | `.wiki-sidebar-open` | Wiki 侧边栏抽屉 | 抽屉滑入 + 遮罩显示（移动端生效） |
 | `.wiki-sidebar-collapsed` | 桌面端 Wiki 侧边栏 | 侧边栏隐藏 + 按钮左移（**注意**：此为布局容器上的类，非 `<body>`） |
+| `.modal-open` | 任意模态弹窗 | 弹窗淡入 + 遮罩显示 + body 禁止滚动（多个弹窗共存直到全部关闭） |
 | `.nav-popup-open .nav-popup-btn::after` | 导航按钮打开态 | 下划线常驻 |
 | `.nav-active` | 当前激活的导航项 | 文字加粗 + 主色淡背景 |
+
+---
+
+## 十三、通用模态弹窗（popup.scss）
+
+与「导航弹窗」（`.nav-popup`）不同，模态弹窗是面向**任意内容**的通用弹窗：公告、确认框、富文本说明等。完整示例见 [Markdown 展示示例](/article/markdown-showcase/) 第 14.5 节。
+
+### 13.1 容器
+
+| 类名 | 作用 | 备注 |
+|---|---|---|
+| `.modal` | 弹窗本体 | 居中定位置顶、垂直三段结构（header / body / footer） |
+| `.modal-backdrop` | 遮罩层 | 固定全屏 + 模糊背景 |
+
+**尺寸（通过宏的 `size` 参数或 `[data-modal-size]` 切换）**
+
+| 值 | 宽度 | 典型场景 |
+|---|---|---|
+| `sm` | 360px | 确认对话框、简短提示 |
+| `md`（默认） | 560px | 一般说明、富文本展示 |
+| `lg` | 800px | 长篇内容、条款说明 |
+
+> 通过 CSS 变量 `--modal-size` 也可自定义任意宽度（例如 `style="--modal-size: 480px"`）。
+
+### 13.2 内部结构
+
+| 类名 | 作用 | 备注 |
+|---|---|---|
+| `.modal-header` | 顶部标题栏 | 左侧 icon + title + 右侧关闭按钮 |
+| `.modal-header-text` | 标题文字容器 | flex 横向，溢出省略 |
+| `.modal-icon` | 标题前缀 Font Awesome 图标 | 主色，1.2rem |
+| `.modal-title` | 弹窗标题（`<h3>`） | 1.1rem、加粗 |
+| `.modal-close` | 右上角 X 按钮 | hover 加深背景 |
+| `.modal-body` | 主体可滚动区域 | padding 24px，行高 1.6 |
+| `.modal-footer` | 页脚（按钮组） | 主背景色，flex 右对齐；未传 footer 时自动隐藏 |
+
+### 13.3 状态类 / 属性（由 JS 切换）
+
+| 选择器 | 触发场景 | 副作用 |
+|---|---|---|
+| `body.modal-open` | 任意 modal 打开 | body 加 `overflow: hidden` + 遮罩显示 |
+| `.modal[data-modal-state="open"]` | modal 打开 | 缩放淡入（Material dialog 风格，225ms 带回弹） |
+| `.modal[data-modal-state="closed"]` | modal 关闭 | 缩放淡出（120ms，scale 1→0.9） |
+| `body.modal-open .modal-backdrop` | 遮罩显示 | 半透明黑（rgba(0,0,0,0.5)），200ms 淡入 |
+
+**动效**：
+- 入场 / 离场：`$transition-fast`（`0.25s ease`，经典 ease 缓动）+ opacity 淡入淡出 + scale 0.95↔1 缩放
+- 遮罩：`rgba(0, 0, 0, 0.4)` 半透明黑 + `backdrop-filter: blur(6px)` 模糊背景
+
+### 13.4 触发器属性（写在任意元素上）
+
+| 属性 | 作用 |
+|---|---|
+| `data-modal-open="<id>"` | 点击元素打开对应 modal |
+| `data-modal-close="<id>"` | 点击元素关闭对应 modal |
+| `data-modal-backdrop="<id>"` | 遮罩节点自带的标记位（宏自动渲染） |
+
+### 13.5 JS API
+
+通过 `src/script/popup-modal.js` 暴露到 `window` 上的全局函数：
+
+| 函数 | 作用 |
+|---|---|
+| `window.openModal(id)` | 打开指定 id 的 modal |
+| `window.closeModal(id)` | 关闭指定 id 的 modal |
+| `window.closeTopModal()` | 关闭栈顶 modal（栈空时无操作） |
+| `window.isModalOpen(id?)` | 查询是否打开了某个 / 任意 modal |
+
+同时触发两个自定义事件：`modalopen` / `modalclose`（事件对象上 `event.detail.id` 携带弹窗 id）。
+
+### 13.6 宏签名（macros/popup.njk）
+
+{% raw %}
+```jinja2
+{% from "macros/popup.njk" import popup %}
+{{ popup(
+    modalId,                  # 必填，全局唯一
+    title,                    # 必填，标题文字
+    content,                  # 必填，主体内容（HTML 字符串）
+    size="md",                # 选填："sm" / "md" / "lg"
+    icon="",                  # 选填，FA 图标类名
+    showClose=true,           # 选填，是否显示右上角 X
+    footer=""                 # 选填，页脚 HTML（典型为按钮组）
+) }}
+```
+{% endraw %}
+
+完整示例与演示见 [Markdown 展示示例](/article/markdown-showcase/) 第 14.5 节。
+
+---
+
+## 十四、模态弹窗触发器宏（modal-trigger.njk）
+
+`button.njk` 渲染的是 `<a>`，用于跳转到链接，**不适合**直接拿来做"打开弹窗"的按钮：它既没有 `data-modal-open` 属性，又因为 `href="#"` 而在点击时跳到页面顶部。`modalTrigger` 是为弹窗场景专门设计的等价宏，**默认渲染 `<button type="button">`**，并自动绑定正确的 `data-modal-open` / `data-modal-close` 属性。
+
+### 14.1 与 button.njk 的区别
+
+| 对比项 | `button.njk` | `modalTrigger.njk` |
+|---|---|---|
+| 标签 | `<a href="...">` | `<button type="button">` |
+| 默认动作 | 跳转 URL | 触发弹窗（`data-modal-open` / `data-modal-close`） |
+| 点击副作用 | 可能跳转页面 | 不会跳转（无 `href`） |
+| 必填参数 | icon / label / url | modalId / icon / label |
+| 可选参数 | url / target / 颜色系列 | action / 颜色系列（无 url / target） |
+| 颜色变量 | 同 `button.njk` | 同 `button.njk` |
+
+### 14.2 宏签名
+
+{% raw %}
+```jinja2
+{% from "macros/modal-trigger.njk" import modalTrigger %}
+{{ modalTrigger(
+    modalId,              # 必填，对应 popup 宏的 modalId
+    icon,                 # 必填，FA 图标类名
+    label,                # 必填，按钮文字
+    action="open",        # 选填："open"（默认）打开弹窗 / "close" 关闭弹窗
+    btnColor="",          # 选填，背景色（沿用 .btn-pill 的 CSS 变量）
+    textColor="",         # 选填，文字色
+    btnHover="",          # 选填，hover 背景色
+    btnBorder="",         # 选填，边框色
+    btnBorderHover=""     # 选填，hover 边框色
+) }}
+```
+{% endraw %}
+
+### 14.3 渲染产物示例
+
+```html
+<!-- action="open"（默认） -->
+<button type="button" class="btn-pill" data-modal-open="announcement"
+    style="--btn-bg:#74c0fc; --btn-hover:#1c7ed6;" data-bhover="1">
+    <i class="fa-solid fa-circle-info btn-pill-icon"></i>
+    <span class="btn-pill-label">查看公告</span>
+</button>
+
+<!-- action="close" -->
+<button type="button" class="btn-pill" data-modal-close="js-demo">
+    <i class="fa-solid fa-xmark btn-pill-icon"></i>
+    <span class="btn-pill-label">JS 关闭弹窗</span>
+</button>
+```
+
+### 14.4 完整用法示例
+
+{% raw %}
+```jinja2
+{% from "macros/popup.njk" import popup %}
+{% from "macros/modal-trigger.njk" import modalTrigger %}
+
+{{ modalTrigger("hello", "fa-solid fa-circle-info", "打个招呼") }}
+
+{{ popup(
+    "hello",
+    "你好",
+    "<p>这是一段普通的弹窗内容。</p>"
+) }}
+```
+{% endraw %}
+
+### 14.5 为什么不用 button.njk
+
+很多项目里第一个直觉是直接写 `{{ button("...", "...", "#") }}` 当弹窗触发器，但有两个隐藏问题：
+
+1. **不会触发**：button 宏只渲染 `<a href="#">`，没有 `data-modal-open`，`popup-modal.js` 的事件委托根本捕获不到点击。
+2. **页面跳到顶部**：`href="#"` 是锚点，点击会把页面滚到顶部，破坏阅读位置。
+
+`modalTrigger` 一次性解决这两个问题：渲染成 `<button type="button">`（无 `href`，点击不跳转）+ 自动绑定 `data-modal-open="<modalId>"`（事件委托能识别）。
