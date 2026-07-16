@@ -58,7 +58,7 @@ function openWiki() {
 }
 
 function closeWiki(manageHistory = true) {
-    if (isMobile() && !wikiMobileOpen) {
+    if (!wikiMobileOpen) {
         console.debug('[wiki-sidebar] 已关闭，跳过');
         return;
     }
