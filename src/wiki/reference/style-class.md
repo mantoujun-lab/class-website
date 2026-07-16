@@ -351,7 +351,7 @@ headerBg: "#c92a2a"
 | `.nav-drawer-open` | 移动端导航抽屉 | 通用场景 |
 | `.nav-popup-open` | 桌面端站点导航弹窗 | 通用场景 |
 | `.theme-menu-open` | 桌面端主题切换菜单 | 仅桌面端 |
-| `.wiki-sidebar-open` | 移动端 Wiki 侧边栏 | 仅移动端（≤768px） |
+| `.wiki-sidebar-open` | 移动端 Wiki 侧边栏 | 通用场景（挂在 `<header>` 上） |
 
 ---
 
@@ -409,7 +409,7 @@ headerBg: "#c92a2a"
 | 类名 | 作用 | 备注 |
 |---|---|---|
 | `.wiki-sidebar-collapsed` | 折叠侧边栏 | 桌面端隐藏 + 按钮左移 |
-| `.wiki-sidebar-open` | 触发遮罩 | 仅移动端，详见第九节 |
+| `.wiki-sidebar-open` | 触发遮罩 | 通用场景，详见第九节 |
 
 ### 12.3 主内容区
 
@@ -436,7 +436,7 @@ headerBg: "#c92a2a"
 | `.nav-drawer-open` | 移动端导航抽屉 | 抽屉滑入 + 遮罩显示 |
 | `.nav-popup-open` | 桌面端导航弹窗 | 弹窗淡入 + 遮罩显示 |
 | `.theme-menu-open` | 桌面端主题菜单 | 菜单展开 + 遮罩显示 |
-| `.wiki-sidebar-open` | 移动端 Wiki 侧边栏 | 抽屉滑入 + 遮罩显示 |
+| `.wiki-sidebar-open` | Wiki 侧边栏抽屉 | 抽屉滑入 + 遮罩显示（移动端生效） |
 | `.wiki-sidebar-collapsed` | 桌面端 Wiki 侧边栏 | 侧边栏隐藏 + 按钮左移（**注意**：此为布局容器上的类，非 `<body>`） |
 | `.nav-popup-open .nav-popup-btn::after` | 导航按钮打开态 | 下划线常驻 |
 | `.nav-active` | 当前激活的导航项 | 文字加粗 + 主色淡背景 |
