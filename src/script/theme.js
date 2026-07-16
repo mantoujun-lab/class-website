@@ -9,7 +9,7 @@ let cachedTheme = null;
 function applyTheme(mode) {
     console.debug('[theme] 应用主题:', mode);
     if (mode === 'auto') {
-        delete document.documentElement.dataset.theme;
+        document.documentElement.removeAttribute('data-theme');
     } else {
         document.documentElement.dataset.theme = mode;
     }
@@ -101,7 +101,7 @@ export function initTheme() {
             if (mq.matches) {
                 document.documentElement.dataset.theme = 'dark';
             } else {
-                delete document.documentElement.dataset.theme;
+                document.documentElement.removeAttribute('data-theme');
             }
         }
     });
