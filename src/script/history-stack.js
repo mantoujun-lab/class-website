@@ -23,6 +23,10 @@ if (!supportsHistory) {
 // null = 未占用；'popup' = 弹窗占用；'drawer' = 抽屉占用；'wiki' = wiki 侧边栏占用
 let slot = null;
 
+// ---- 释放序号：防止 releaseSlot 的异步 back 竞态 ----
+// releaseSlot 时递增并捕获，popstate 里比对，序号不匹配则忽略
+let releaseSeq = 0;
+
 // ---- popstate 回调列表 ----
 // 调用方通过 onPopState 注册，popstate 触发时按注册顺序逆序调用（栈语义）
 const popHandlers = [];
@@ -33,6 +37,8 @@ export function acquireSlot(owner) {
     if (!supportsHistory) return;
     if (slot) {
         console.debug('[history-stack] 槽位已被 ' + slot + ' 占用，复用');
+        releaseSeq++; // 复用槽位时使旧的 pendingRelease 失效
+        pendingRelease = null;
         return; // 槽位已被占用，复用即可
     }
     console.debug('[history-stack] 占用槽位: ' + owner);
@@ -49,9 +55,18 @@ export function releaseSlot() {
         return;
     }
     console.debug('[history-stack] 释放槽位，主动 back');
+    const owner = slot;
     slot = null;
-    history.back(); // 异步触发 popstate，但 slot 已是 null，回调不会再处理
+    releaseSeq++; // 标记本次释放，防止 back 异步触发后误关新占用者
+    const seq = releaseSeq;
+    history.back(); // 异步触发 popstate
+    // 若 back 之前有新 acquireSlot，seq 将不匹配，popstate 忽略
+    // 将 owner 存入闭包，供 popstate 在 seq 匹配时使用
+    pendingRelease = { owner: owner, seq: seq };
 }
+
+// 记录最近一次 releaseSlot 的信息，供 popstate 比对
+let pendingRelease = null;
 
 // 仅标记释放：用于 popstate 回调内（history 已自动回退，无需再 back）
 export function markReleased() {
@@ -77,7 +92,14 @@ export function onPopState(handler) {
 // ---- 内部：注册全局 popstate 监听 ----
 if (supportsHistory) {
     window.addEventListener('popstate', function () {
-        const owner = slot;
+        // 竞态防护：若 releaseSlot 后有新的 acquireSlot，序号不匹配则忽略
+        if (pendingRelease && pendingRelease.seq !== releaseSeq) {
+            console.debug('[history-stack] popstate 忽略：序号不匹配（已有新占用者）');
+            pendingRelease = null;
+            return;
+        }
+        const owner = pendingRelease ? pendingRelease.owner : slot;
+        pendingRelease = null;
         console.debug('[history-stack] popstate 触发，原槽位: ' + owner);
         slot = null; // popstate 已回退，槽位强制释放
         // 倒序调用：后注册先处理（栈语义）
