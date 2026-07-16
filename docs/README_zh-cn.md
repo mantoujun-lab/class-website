@@ -12,7 +12,7 @@
 [![Stars](https://img.shields.io/github/stars/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io)
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-181717?style=for-the-badge&logo=github)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/codespaces)
 [![Eleventy](https://img.shields.io/badge/Eleventy-000000?style=for-the-badge&logo=eleventy&logoColor=white)](https://www.11ty.dev)
-[![Nunjunks](https://img.shields.io/badge/nunjunks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
+[![Nunjucks](https://img.shields.io/badge/nunjucks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
@@ -174,7 +174,7 @@
 
 ## 👋 贡献指南
 
-欢迎完善这个网站！提交之前请阅读 [CONTRIBUTING.md](CONTRIBUTING_zh-cn.md)。
+欢迎完善这个网站！提交之前请阅读 [CONTRIBUTING_zh-cn.md](CONTRIBUTING_zh-cn.md)。
 
 简要流程：
 
