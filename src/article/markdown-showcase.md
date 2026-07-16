@@ -10,6 +10,7 @@ headerBg: green
 {% from "macros/button.njk" import button %}
 {% from "macros/card.njk" import card, cardFull, cardStandalone %}
 {% from "macros/popup.njk" import popup %}
+{% from "macros/modal-trigger.njk" import modalTrigger %}
 
 这是一篇"展示型"文章，会尽可能地把本站支持的 **Markdown 语法**、**宏组件**、**图片画廊**、**按钮** 等都演示一遍，方便你写自己的内容时直接参考 (´▽`)
 
@@ -425,8 +426,10 @@ graph LR
 
 只需给任意元素加 `data-modal-open="<id>"` 属性即可触发对应弹窗。
 
-{{ button("fa-solid fa-circle-info", "查看公告", "#", btnColor="#74c0fc", btnHover="#1c7ed6") }}
-{{ button("fa-solid fa-bell", "查看通知", "#") }}
+推荐使用 `modalTrigger` 宏（自动绑定 `data-modal-open` 属性，渲染为 `<button type="button">`，避免点击跳转到页面顶部）：
+
+{{ modalTrigger("announcement", "fa-solid fa-circle-info", "查看公告", btnColor="#74c0fc", btnHover="#1c7ed6") }}
+{{ modalTrigger("notice", "fa-solid fa-bell", "查看通知") }}
 
 {{ popup(
     "announcement",
@@ -436,12 +439,20 @@ graph LR
     icon="fa-solid fa-circle-info"
 ) }}
 
+{{ popup(
+    "notice",
+    "🔔 通知",
+    "<p>来自 <code>modalTrigger</code> 的第二个示例。</p>",
+    size="md",
+    icon="fa-solid fa-bell"
+) }}
+
 ### 14.5.2 三种尺寸
 
 <div>
-{{ button("fa-solid fa-compress", "小弹窗 (sm)", "#", btnColor="#d3f9d8", btnHover="#b2f2bb") }}
-{{ button("fa-solid fa-expand", "中弹窗 (md)", "#", btnColor="#fff3bf", btnHover="#ffe066") }}
-{{ button("fa-solid fa-up-right-and-down-left-from-center", "大弹窗 (lg)", "#", btnColor="#ffd8a8", btnHover="#ffa94d") }}
+{{ modalTrigger("size-sm", "fa-solid fa-compress", "小弹窗 (sm)", btnColor="#d3f9d8", btnHover="#b2f2bb") }}
+{{ modalTrigger("size-md", "fa-solid fa-expand", "中弹窗 (md)", btnColor="#fff3bf", btnHover="#ffe066") }}
+{{ modalTrigger("size-lg", "fa-solid fa-up-right-and-down-left-from-center", "大弹窗 (lg)", btnColor="#ffd8a8", btnHover="#ffa94d") }}
 </div>
 
 {{ popup("size-sm", "小尺寸弹窗", "<p>适用于简短通知、确认对话框。</p>", size="sm", icon="fa-solid fa-compress") }}
@@ -452,8 +463,10 @@ graph LR
 
 通过 `window.openModal(id)` / `window.closeModal(id)` 可在任何 JS 代码中触发。
 
-{{ button("fa-solid fa-code", "JS 打开弹窗", "#", btnColor="#222831", textColor="#ffd369") }}
-{{ button("fa-solid fa-xmark", "JS 关闭弹窗", "#") }}
+使用 `modalTrigger` 渲染两个按钮，分别演示 `action="open"` 与 `action="close"`：
+
+{{ modalTrigger("js-demo", "fa-solid fa-code", "JS 打开弹窗", btnColor="#222831", textColor="#ffd369") }}
+{{ modalTrigger("js-demo", "fa-solid fa-xmark", "JS 关闭弹窗", action="close") }}
 
 ```html
 <button onclick="window.openModal('js-demo')">JS 打开</button>
@@ -471,7 +484,7 @@ graph LR
 
 通过 `footer` 参数传入按钮组 HTML，典型场景是确认对话框。
 
-{{ button("fa-solid fa-trash", "删除（带确认）", "#", btnColor="#fff5f5", textColor="#c92a2a", btnBorder="#ff8787", btnHover="#ffc9c9") }}
+{{ modalTrigger("confirm-delete", "fa-solid fa-trash", "删除（带确认）", btnColor="#fff5f5", textColor="#c92a2a", btnBorder="#ff8787", btnHover="#ffc9c9") }}
 
 {{ popup(
     "confirm-delete",
@@ -486,7 +499,7 @@ graph LR
 
 通过 `closeOnBackdrop=false` 禁止点击遮罩关闭弹窗，常用于必须做出选择的场景。
 
-{{ button("fa-solid fa-shield-halved", "强制确认", "#", btnColor="#5f3dc4", textColor="#fff") }}
+{{ modalTrigger("must-ack", "fa-solid fa-shield-halved", "强制确认", btnColor="#5f3dc4", textColor="#fff") }}
 
 {{ popup(
     "must-ack",
@@ -502,7 +515,7 @@ graph LR
 
 弹窗主体支持任意 HTML 与宏组件嵌套。
 
-{{ button("fa-solid fa-gift", "查看特性", "#", btnColor="#fa5252", textColor="#fff") }}
+{{ modalTrigger("rich-content", "fa-solid fa-gift", "查看特性", btnColor="#fa5252", textColor="#fff") }}
 
 {% set _body %}
 <p>模态弹窗的主体可以是任意 HTML，包括：</p>
@@ -517,8 +530,8 @@ graph LR
 
 新弹窗打开时会自动关闭已打开的弹窗（互斥）。
 
-{{ button("fa-solid fa-layer-group", "打开第一层", "#") }}
-{{ button("fa-solid fa-layer-group", "打开第二层", "#") }}
+{{ modalTrigger("layer-1", "fa-solid fa-layer-group", "打开第一层") }}
+{{ modalTrigger("layer-2", "fa-solid fa-layer-group", "打开第二层") }}
 
 {{ popup("layer-1", "第一层", "<p>点击「打开第二层」可切换。</p>", size="sm") }}
 {{ popup("layer-2", "第二层", "<p>第二个弹窗。打开时会自动关闭第一个。</p>", size="sm") }}

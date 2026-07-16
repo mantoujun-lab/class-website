@@ -526,3 +526,82 @@ headerBg: "#c92a2a"
 {% endraw %}
 
 完整示例与演示见 [Markdown 展示示例](/article/markdown-showcase/) 第 14.5 节。
+
+---
+
+## 十四、模态弹窗触发器宏（modal-trigger.njk）
+
+`button.njk` 渲染的是 `<a>`，用于跳转到链接，**不适合**直接拿来做"打开弹窗"的按钮：它既没有 `data-modal-open` 属性，又因为 `href="#"` 而在点击时跳到页面顶部。`modalTrigger` 是为弹窗场景专门设计的等价宏，**默认渲染 `<button type="button">`**，并自动绑定正确的 `data-modal-open` / `data-modal-close` 属性。
+
+### 14.1 与 button.njk 的区别
+
+| 对比项 | `button.njk` | `modalTrigger.njk` |
+|---|---|---|
+| 标签 | `<a href="...">` | `<button type="button">` |
+| 默认动作 | 跳转 URL | 触发弹窗（`data-modal-open` / `data-modal-close`） |
+| 点击副作用 | 可能跳转页面 | 不会跳转（无 `href`） |
+| 必填参数 | icon / label / url | modalId / icon / label |
+| 可选参数 | url / target / 颜色系列 | action / 颜色系列（无 url / target） |
+| 颜色变量 | 同 `button.njk` | 同 `button.njk` |
+
+### 14.2 宏签名
+
+{% raw %}
+```jinja2
+{% from "macros/modal-trigger.njk" import modalTrigger %}
+{{ modalTrigger(
+    modalId,              # 必填，对应 popup 宏的 modalId
+    icon,                 # 必填，FA 图标类名
+    label,                # 必填，按钮文字
+    action="open",        # 选填："open"（默认）打开弹窗 / "close" 关闭弹窗
+    btnColor="",          # 选填，背景色（沿用 .btn-pill 的 CSS 变量）
+    textColor="",         # 选填，文字色
+    btnHover="",          # 选填，hover 背景色
+    btnBorder="",         # 选填，边框色
+    btnBorderHover=""     # 选填，hover 边框色
+) }}
+```
+{% endraw %}
+
+### 14.3 渲染产物示例
+
+```html
+<!-- action="open"（默认） -->
+<button type="button" class="btn-pill" data-modal-open="announcement"
+    style="--btn-bg:#74c0fc; --btn-hover:#1c7ed6;" data-bhover="1">
+    <i class="fa-solid fa-circle-info btn-pill-icon"></i>
+    <span class="btn-pill-label">查看公告</span>
+</button>
+
+<!-- action="close" -->
+<button type="button" class="btn-pill" data-modal-close="js-demo">
+    <i class="fa-solid fa-xmark btn-pill-icon"></i>
+    <span class="btn-pill-label">JS 关闭弹窗</span>
+</button>
+```
+
+### 14.4 完整用法示例
+
+{% raw %}
+```jinja2
+{% from "macros/popup.njk" import popup %}
+{% from "macros/modal-trigger.njk" import modalTrigger %}
+
+{{ modalTrigger("hello", "fa-solid fa-circle-info", "打个招呼") }}
+
+{{ popup(
+    "hello",
+    "你好",
+    "<p>这是一段普通的弹窗内容。</p>"
+) }}
+```
+{% endraw %}
+
+### 14.5 为什么不用 button.njk
+
+很多项目里第一个直觉是直接写 `{{ button("...", "...", "#") }}` 当弹窗触发器，但有两个隐藏问题：
+
+1. **不会触发**：button 宏只渲染 `<a href="#">`，没有 `data-modal-open`，`popup-modal.js` 的事件委托根本捕获不到点击。
+2. **页面跳到顶部**：`href="#"` 是锚点，点击会把页面滚到顶部，破坏阅读位置。
+
+`modalTrigger` 一次性解决这两个问题：渲染成 `<button type="button">`（无 `href`，点击不跳转）+ 自动绑定 `data-modal-open="<modalId>"`（事件委托能识别）。
