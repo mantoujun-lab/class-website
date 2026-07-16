@@ -2,20 +2,22 @@
 // main.js — 移动端导航交互编排入口
 // ------------------------------------------------------------
 // 职责：
-//   1. 初始化各功能模块（popup / drawer / wiki-sidebar）
-//   2. 注入模块间的互斥回调（弹窗关抽屉/wiki / 抽屉关弹窗/wiki / wiki 关弹窗/抽屉）
+//   1. 初始化各功能模块（popup / drawer / wiki-sidebar / modal）
+//   2. 注入模块间的互斥回调（弹窗关抽屉/wiki / 抽屉关弹窗/wiki / wiki 关弹窗/抽屉 / modal 关抽屉/wiki/弹窗）
 //   3. 绑定全局事件：统一遮罩点击、ESC 关闭、文档外部点击
-//   4. 路由 popstate：按优先级关闭对应菜单
+//   4. 路由 popstate：按优先级关闭对应菜单（modal: 优先于 nav 类）
 //
 // 模块拆分（参考 SCSS 的 @use 分文件组织）：
 //   - _dom.js          DOM 元素引用集中
 //   - focus-trap.js    焦点陷阱工具
-//   - history-stack.js History API 单槽位管理
-//   - popup.js         弹窗模块
+//   - history-stack.js History API 单槽位管理（modal 使用 owner='modal:<id>'）
+//   - popup.js         导航弹窗模块
 //   - drawer.js        抽屉模块
 //   - wiki-sidebar.js  Wiki 侧边栏模块（仅 wiki 页生效）
+//   - popup-modal.js   通用模态弹窗模块（公告、确认框、富文本展示）
 //
-// 互斥约定（优先级：弹窗 > 抽屉 > wiki）：
+// 互斥约定（优先级：modal > 弹窗 > 抽屉 > wiki）：
+//   - modal 打开时若弹窗/抽屉/wiki 正打开 → 静默关闭（复用槽位）
 //   - 弹窗打开时若抽屉/wiki 正打开 → 静默关闭（复用槽位）
 //   - 抽屉打开时若弹窗/wiki 正打开 → 静默关闭（复用槽位）
 //   - wiki 打开时若弹窗/抽屉正打开 → 静默关闭（复用槽位）
@@ -30,6 +32,7 @@ import { initDrawer, closeDrawer, openDrawer, getDrawerOpen } from './drawer.js'
 import { initPrism } from './prism.js';
 import { initTheme } from './theme.js';
 import { initWikiSidebar, setWikiDeps, getWikiMobileOpen, closeWiki } from './wiki-sidebar.js';
+import { initModal, isModalOpen, closeModal, closeTopModal } from './popup-modal.js';
 
 (function () {
     'use strict';
@@ -89,9 +92,13 @@ import { initWikiSidebar, setWikiDeps, getWikiMobileOpen, closeWiki } from './wi
 
     // 键盘事件：ESC 关闭 + Tab 焦点陷阱
     document.addEventListener('keydown', function (e) {
-        // ESC：优先关弹窗 > 抽屉 > wiki
-        if (e.key === 'Escape') {
-            if (getPopupOpen()) {
+        // ESC：优先关 modal > 弹窗 > 抽屉 > wiki
+        // （modal 自身监听器已 stopPropagation 时跳过本分支）
+        if (e.key === 'Escape' && !e.defaultPrevented) {
+            if (isModalOpen()) {
+                // 由 popup-modal.js 的 stopPropagation 提前截获，这里理论走不到
+                closeTopModal();
+            } else if (getPopupOpen()) {
                 closePopup(true);
             } else if (getDrawerOpen()) {
                 closeDrawer(true);

@@ -438,5 +438,91 @@ headerBg: "#c92a2a"
 | `.theme-menu-open` | 桌面端主题菜单 | 菜单展开 + 遮罩显示 |
 | `.wiki-sidebar-open` | Wiki 侧边栏抽屉 | 抽屉滑入 + 遮罩显示（移动端生效） |
 | `.wiki-sidebar-collapsed` | 桌面端 Wiki 侧边栏 | 侧边栏隐藏 + 按钮左移（**注意**：此为布局容器上的类，非 `<body>`） |
+| `.modal-open` | 任意模态弹窗 | 弹窗淡入 + 遮罩显示 + body 禁止滚动（多个弹窗共存直到全部关闭） |
 | `.nav-popup-open .nav-popup-btn::after` | 导航按钮打开态 | 下划线常驻 |
 | `.nav-active` | 当前激活的导航项 | 文字加粗 + 主色淡背景 |
+
+---
+
+## 十三、通用模态弹窗（popup.scss）
+
+与「导航弹窗」（`.nav-popup`）不同，模态弹窗是面向**任意内容**的通用弹窗：公告、确认框、富文本说明等。完整示例见 [Markdown 展示示例](/article/markdown-showcase/) 第 14.5 节。
+
+### 13.1 容器
+
+| 类名 | 作用 | 备注 |
+|---|---|---|
+| `.modal` | 弹窗本体 | 居中定位置顶、垂直三段结构（header / body / footer） |
+| `.modal-backdrop` | 遮罩层 | 固定全屏 + 模糊背景 |
+
+**尺寸（通过宏的 `size` 参数或 `[data-modal-size]` 切换）**
+
+| 值 | 宽度 | 典型场景 |
+|---|---|---|
+| `sm` | 360px | 确认对话框、简短提示 |
+| `md`（默认） | 560px | 一般说明、富文本展示 |
+| `lg` | 800px | 长篇内容、条款说明 |
+
+> 通过 CSS 变量 `--modal-size` 也可自定义任意宽度（例如 `style="--modal-size: 480px"`）。
+
+### 13.2 内部结构
+
+| 类名 | 作用 | 备注 |
+|---|---|---|
+| `.modal-header` | 顶部标题栏 | 左侧 icon + title + 右侧关闭按钮 |
+| `.modal-header-text` | 标题文字容器 | flex 横向，溢出省略 |
+| `.modal-icon` | 标题前缀 Font Awesome 图标 | 主色，1.2rem |
+| `.modal-title` | 弹窗标题（`<h3>`） | 1.1rem、加粗 |
+| `.modal-close` | 右上角 X 按钮 | hover 加深背景 |
+| `.modal-body` | 主体可滚动区域 | padding 24px，行高 1.6 |
+| `.modal-footer` | 页脚（按钮组） | 主背景色，flex 右对齐；未传 footer 时自动隐藏 |
+
+### 13.3 状态类 / 属性（由 JS 切换）
+
+| 选择器 | 触发场景 | 副作用 |
+|---|---|---|
+| `body.modal-open` | 任意 modal 打开 | body 加 `overflow: hidden` + 遮罩显示 |
+| `.modal[data-modal-state="open"]` | modal 打开 | 淡入 + 居中 |
+| `.modal[data-modal-state="closed"]` | modal 关闭 | 淡出 + 下沉缩小 |
+| `.modal-backdrop` 节点 `[data-modal-no-backdrop]` | 禁止点击遮罩关闭 | 标记位，宏的 `closeOnBackdrop=false` 会输出 |
+
+### 13.4 触发器属性（写在任意元素上）
+
+| 属性 | 作用 |
+|---|---|
+| `data-modal-open="<id>"` | 点击元素打开对应 modal |
+| `data-modal-close="<id>"` | 点击元素关闭对应 modal |
+| `data-modal-backdrop="<id>"` | 遮罩节点自带的标记位（宏自动渲染） |
+
+### 13.5 JS API
+
+通过 `src/script/popup-modal.js` 暴露到 `window` 上的全局函数：
+
+| 函数 | 作用 |
+|---|---|
+| `window.openModal(id)` | 打开指定 id 的 modal |
+| `window.closeModal(id)` | 关闭指定 id 的 modal |
+| `window.closeTopModal()` | 关闭栈顶 modal（栈空时无操作） |
+| `window.isModalOpen(id?)` | 查询是否打开了某个 / 任意 modal |
+
+同时触发两个自定义事件：`modalopen` / `modalclose`（事件对象上 `event.detail.id` 携带弹窗 id）。
+
+### 13.6 宏签名（macros/popup.njk）
+
+{% raw %}
+```jinja2
+{% from "macros/popup.njk" import popup %}
+{{ popup(
+    modalId,                  # 必填，全局唯一
+    title,                    # 必填，标题文字
+    content,                  # 必填，主体内容（HTML 字符串）
+    size="md",                # 选填："sm" / "md" / "lg"
+    icon="",                  # 选填，FA 图标类名
+    showClose=true,           # 选填，是否显示右上角 X
+    footer="",                # 选填，页脚 HTML（典型为按钮组）
+    closeOnBackdrop=true      # 选填，是否允许点击遮罩关闭
+) }}
+```
+{% endraw %}
+
+完整示例与演示见 [Markdown 展示示例](/article/markdown-showcase/) 第 14.5 节。

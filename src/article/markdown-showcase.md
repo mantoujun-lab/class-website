@@ -9,6 +9,7 @@ headerBg: green
 
 {% from "macros/button.njk" import button %}
 {% from "macros/card.njk" import card, cardFull, cardStandalone %}
+{% from "macros/popup.njk" import popup %}
 
 这是一篇"展示型"文章，会尽可能地把本站支持的 **Markdown 语法**、**宏组件**、**图片画廊**、**按钮** 等都演示一遍，方便你写自己的内容时直接参考 (´▽`)
 
@@ -415,6 +416,114 @@ graph LR
     C --> E[首页]
     D --> E
 ```
+
+## 14.5 模态弹窗（popup.njk）
+
+与导航弹窗（`nav-popup`）不同，**模态弹窗**是内容型弹窗：公告、确认框、富文本说明等。它有独立的遮罩、焦点陷阱、ESC 关闭逻辑，且支持多个弹窗互斥堆叠。
+
+### 14.5.1 基础用法（按钮触发）
+
+只需给任意元素加 `data-modal-open="<id>"` 属性即可触发对应弹窗。
+
+{{ button("fa-solid fa-circle-info", "查看公告", "#", btnColor="#74c0fc", btnHover="#1c7ed6") }}
+{{ button("fa-solid fa-bell", "查看通知", "#") }}
+
+{{ popup(
+    "announcement",
+    "📢 站点公告",
+    "<p>这是一段普通的文字内容。</p><p>模态弹窗支持 <strong>富文本</strong>、<em>斜体</em>、<a href=\"#\">链接</a> 以及嵌套的 <code>macro</code>。</p>",
+    size="md",
+    icon="fa-solid fa-circle-info"
+) }}
+
+### 14.5.2 三种尺寸
+
+<div>
+{{ button("fa-solid fa-compress", "小弹窗 (sm)", "#", btnColor="#d3f9d8", btnHover="#b2f2bb") }}
+{{ button("fa-solid fa-expand", "中弹窗 (md)", "#", btnColor="#fff3bf", btnHover="#ffe066") }}
+{{ button("fa-solid fa-up-right-and-down-left-from-center", "大弹窗 (lg)", "#", btnColor="#ffd8a8", btnHover="#ffa94d") }}
+</div>
+
+{{ popup("size-sm", "小尺寸弹窗", "<p>适用于简短通知、确认对话框。</p>", size="sm", icon="fa-solid fa-compress") }}
+{{ popup("size-md", "中尺寸弹窗（默认）", "<p>默认尺寸，适用于一般说明、富文本展示。</p>", size="md", icon="fa-solid fa-expand") }}
+{{ popup("size-lg", "大尺寸弹窗", "<p>宽度最大，适用于长篇内容、条款说明。</p><p>主体内容超过最大高度时会自动出现滚动条。</p>", size="lg", icon="fa-solid fa-up-right-and-down-left-from-center") }}
+
+### 14.5.3 JS 函数触发
+
+通过 `window.openModal(id)` / `window.closeModal(id)` 可在任何 JS 代码中触发。
+
+{{ button("fa-solid fa-code", "JS 打开弹窗", "#", btnColor="#222831", textColor="#ffd369") }}
+{{ button("fa-solid fa-xmark", "JS 关闭弹窗", "#") }}
+
+```html
+<button onclick="window.openModal('js-demo')">JS 打开</button>
+<button onclick="window.closeModal('js-demo')">JS 关闭</button>
+```
+
+{{ popup(
+    "js-demo",
+    "由 JavaScript 触发",
+    "<p>本弹窗由 <code>window.openModal('js-demo')</code> 触发。</p>",
+    icon="fa-solid fa-code"
+) }}
+
+### 14.5.4 自定义页脚（确认对话框）
+
+通过 `footer` 参数传入按钮组 HTML，典型场景是确认对话框。
+
+{{ button("fa-solid fa-trash", "删除（带确认）", "#", btnColor="#fff5f5", textColor="#c92a2a", btnBorder="#ff8787", btnHover="#ffc9c9") }}
+
+{{ popup(
+    "confirm-delete",
+    "确认删除",
+    "<p>此操作不可恢复，是否继续？</p>",
+    size="sm",
+    icon="fa-solid fa-triangle-exclamation",
+    footer='<button class="btn-pill" data-modal-close="confirm-delete" style="--btn-bg:#e9ecef; --btn-fg:#495057; --btn-border:transparent;">取消</button> <button class="btn-pill" onclick="window.closeModal(\'confirm-delete\');" style="--btn-bg:#fa5252; --btn-fg:#fff5f5; --btn-border:#c92a2a;">确认删除</button>'
+) }}
+
+### 14.5.5 不可点击遮罩关闭（强制操作）
+
+通过 `closeOnBackdrop=false` 禁止点击遮罩关闭弹窗，常用于必须做出选择的场景。
+
+{{ button("fa-solid fa-shield-halved", "强制确认", "#", btnColor="#5f3dc4", textColor="#fff") }}
+
+{{ popup(
+    "must-ack",
+    "重要提示",
+    "<p>你必须点击「我已知晓」才能继续。点击遮罩或按 ESC 都不会关闭。</p>",
+    size="sm",
+    icon="fa-solid fa-shield-halved",
+    footer='<button class="btn-pill" data-modal-close="must-ack">我已知晓</button>',
+    closeOnBackdrop=false
+) }}
+
+### 14.5.6 富文本 / 嵌套宏
+
+弹窗主体支持任意 HTML 与宏组件嵌套。
+
+{{ button("fa-solid fa-gift", "查看特性", "#", btnColor="#fa5252", textColor="#fff") }}
+
+{% set _body %}
+<p>模态弹窗的主体可以是任意 HTML，包括：</p>
+<ul>
+    <li>列表、表格、代码块</li>
+    <li>嵌套的 <code>card</code>、<code>button</code> 等宏</li>
+</ul>
+{% endset %}
+{{ popup("rich-content", "富文本支持", _body, icon="fa-solid fa-gift") }}
+
+### 14.5.7 多弹窗互斥
+
+新弹窗打开时会自动关闭已打开的弹窗（互斥）。
+
+{{ button("fa-solid fa-layer-group", "打开第一层", "#") }}
+{{ button("fa-solid fa-layer-group", "打开第二层", "#") }}
+
+{{ popup("layer-1", "第一层", "<p>点击「打开第二层」可切换。</p>", size="sm") }}
+{{ popup("layer-2", "第二层", "<p>第二个弹窗。打开时会自动关闭第一个。</p>", size="sm") }}
+
+---
 
 ## 15. 结束语
 
