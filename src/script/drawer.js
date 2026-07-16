@@ -48,14 +48,14 @@ export { openDrawer };
 // 参数 manageHistory：true（默认）= 主动 back 清理 history 栈；
 //                     false = 不触碰（用于 popstate 回调内 / 互斥关闭时复用槽位）
 function closeDrawer(manageHistory = true) {
-    if (!drawerOpen && !navToggle.checked) {
+    if (!drawerOpen && !(navToggle && navToggle.checked)) {
         console.debug('[drawer] 已关闭，跳过');
         return; // 已关闭，跳过
     }
     console.debug('[drawer] 关闭抽屉, manageHistory=' + manageHistory);
     header.classList.remove('nav-drawer-open');
     drawerOpen = false;
-    navToggle.checked = false; // 同步 checkbox 状态（无副作用：change 不会重入）
+    if (navToggle) navToggle.checked = false; // 同步 checkbox 状态（无副作用：change 不会重入）
     if (manageHistory) {
         releaseSlot();
     } else {
