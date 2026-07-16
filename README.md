@@ -11,13 +11,13 @@ Class 1, Computer Application, Grade 2025
 [![Stars](https://img.shields.io/github/stars/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io)
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-181717?style=for-the-badge&logo=github)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/codespaces)
 [![Eleventy](https://img.shields.io/badge/Eleventy-000000?style=for-the-badge&logo=eleventy&logoColor=white)](https://www.11ty.dev)
-[![Nunjunks](https://img.shields.io/badge/nunjunks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
+[![Nunjucks](https://img.shields.io/badge/nunjucks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 **English** | [简体中文](docs/README_zh-cn.md)
 
-This is a Class Website. You can Find some intersting contents.
+This is a Class Website. You can find some interesting content.
 
 📖 [Documentation](CONTRIBUTING.md) · 🛡️ [Security Policy](SECURITY.md) · 💬 [Support](SUPPORT.md) · 📜 [Code of Conduct](CODE_OF_CONDUCT.md)
 
@@ -25,7 +25,7 @@ This is a Class Website. You can Find some intersting contents.
 
 ## 🔭 Overview
 
-This repository hosts the source code of the official class website for **Class 1, Computer Application, Grade 2025**. It is used to showcase the class, share learning materials, document everyday class life, and serve as a hands-on project for classmates learning web development.
+This repository hosts the source code of the official class website for **Class 1, Computer Application, Grade 2025**. It is used to showcase the class, share learning materials, document everyday[...]
 
 The site is organized into three main content sections — **Events / Articles / Wiki** — plus a handful of "Zone" entry points (discussion, study, activities, etc.).
 
@@ -45,7 +45,7 @@ This project is a fully static site built with the following technologies:
 - **PostCSS + Autoprefixer** — Automatically adds vendor prefixes for broad browser compatibility
 - **[@11ty/eleventy-img](https://www.11ty.dev/docs/plugins/image/)** — Responsive image processing, auto-generates `webp` and `jpeg` at multiple sizes
 - **[@11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Syntax highlighting for Markdown code blocks
-- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency. The entry `main.js` is loaded via `<script type="module">`
+- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependenc[...]
 - **GitHub Actions** — Automated CI/CD; pushing to the `main` branch triggers a build and deployment
 - **GitHub Pages** — Static site hosting platform
 
@@ -72,7 +72,7 @@ No local toolchain needed — fire up a full dev environment straight from your 
 5. Edit any file under `src/`; Eleventy will rebuild automatically and the browser will refresh — true WYSIWYG.
 6. When you're done, commit, push, and open a PR straight from the Source Control panel on the left — exactly like local development.
 
-> 💡 Each GitHub account gets a free monthly Codespace allowance (the 2-core machine type). That's plenty for writing articles and tweaking styles. If you need more horsepower, pick a 4-core (or larger) machine when creating the codespace.
+> 💡 Each GitHub account gets a free monthly Codespace allowance (the 2-core machine type). That's plenty for writing articles and tweaking styles. If you need more horsepower, pick a 4-core (or[...]
 
 ## 💻 Local Development
 
@@ -173,7 +173,7 @@ To trigger a deployment manually, go to the repository's **Actions** tab, select
 
 ## 👋 Contributing
 
-Welcome to Contributions this Project! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting.
+Welcome to contributing to this project! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting.
 
 A short version of the workflow:
 
@@ -207,9 +207,9 @@ Documentation in this repository follows a **Chinese-first → translate to Engl
 
 <a href="https://www.star-history.com/?repos=hjx-25pc1%2Fhjx-25pc1.github.io&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&theme=dark&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO1BAP1lC6rGqjaptq0hEm43RiPnW3KQeKq0kPyH7qVnJpEvae-ctMHWPgfxLy-L6r7A0nDJnOfxMyttVpAeB-MSl-3-IZ9bsb3EM_1yuD2pDPwrKzKwPfW0xMoVAcI79Jsi56oVn-WNeHuyIc6lHKj0MjurfPOQ_sHkgqtQJwg-" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO1BAP1lC6rGqjaptq0hEm43RiPnW3KQeKq0kPyH7qVnJpEvae-ctMHWPgfxLy-L6r7A0nDJnOfxMyttVpAeB-MSl-3-IZ9bsb3EM_1yuD2pDPwrKzKwPfW0xMoVAcI79Jsi56oVn-WNeHuyIc6lHKj0MjurfPOQ_sHkgqtQJwg-" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO1BAP1lC6rGqjaptq0hEm43RiPnW3KQeKq0kPyH7qVnJpEvae-ctMHWPgfxLy-L6r7A0nDJnOfxMyttVpAeB-MSl-3-IZ9bsb3EM_1yuD2pDPwrKzKwPfW0xMoVAcI79Jsi56oVn-WNeHuyIc6lHKj0MjurfPOQ_sHkgqtQJwg-" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&theme=dark&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO[...]">
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO1BAP1lC6rG[...]">
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO1BAP1lC6rGqjaptq0hEm43RiPnW3K[...]">
  </picture>
 </a>
 
@@ -217,4 +217,5 @@ Documentation in this repository follows a **Chinese-first → translate to Engl
 
 This project is open source under the [MIT License](LICENSE).
 
-> Some Content Generated by AI.(Project Infomation,Code...)
+> Some content generated by AI. (Project information, code...)
+
