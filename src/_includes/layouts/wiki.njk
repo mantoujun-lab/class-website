@@ -1,39 +1,48 @@
----
-layout: layouts/main
----
+<!DOCTYPE html>
+<html lang="en">
 
-<button class="wiki-sidebar-toggle" type="button" aria-label="切换侧边栏" aria-expanded="true">
-    <span class="wiki-sidebar-toggle-icon"></span>
-</button>
+<head>
+    {%- set layoutIcon = "/assets/images/icon/wiki.png" %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title or "页面" }}</title>
+    {% include "components/head-assets.njk" %}
+</head>
 
-<div class="wiki-layout">
-    <aside class="wiki-sidebar">
-        <h3 class="wiki-sidebar-title">📚 Wiki</h3>
-        <nav class="wiki-nav">
-            <ul>
-                <li><a href="{{ '/wiki/' | url }}"
-                        class="wiki-nav-home {%- if page.url == '/wiki/' %} active{% endif %}">📖 全部</a></li>
-            </ul>
+<body>
+    {% include "../components/header.njk" %}
 
-            {#- 独立导航：基于 collections.wikiByCategory，不依赖 eleventyNavigation -#}
-            {%- for group in collections.wikiByCategory %}
-            <div class="wiki-nav-group" data-category="{{ group.name }}">
-                <h4 class="wiki-nav-group-title">{{ group.label }}</h4>
-                <ul class="wiki-nav-group-list">
-                    {%- for entry in group.pages %}
-                    <li>
-                        <a href="{{ entry.url | url }}" {%- if entry.url==page.url %} class="active" {% endif %}>
-                            {{ entry.data.title }}
-                        </a>
-                    </li>
-                    {%- endfor %}
+    <button class="wiki-sidebar-toggle" type="button" aria-label="切换侧边栏" aria-expanded="true">
+        <span class="wiki-sidebar-toggle-icon"></span>
+    </button>
+
+    <div class="wiki-layout">
+        <aside class="wiki-sidebar">
+            <h3 class="wiki-sidebar-title">📚 Wiki</h3>
+            <nav class="wiki-nav">
+                <ul>
+                    <li><a href="{{ '/wiki/' | url }}"
+                            class="wiki-nav-home {%- if page.url == '/wiki/' %} active{% endif %}">📖 全部</a></li>
                 </ul>
-            </div>
-            {%- endfor %}
-        </nav>
-    </aside>
-    <main class="wiki-content">
-        <article class="wiki-article">
+
+                {#- 独立导航：基于 collections.wikiByCategory，不依赖 eleventyNavigation -#}
+                {%- for group in collections.wikiByCategory %}
+                <div class="wiki-nav-group" data-category="{{ group.name }}">
+                    <h4 class="wiki-nav-group-title">{{ group.label }}</h4>
+                    <ul class="wiki-nav-group-list">
+                        {%- for entry in group.pages %}
+                        <li>
+                            <a href="{{ entry.url | url }}" {%- if entry.url==page.url %} class="active" {% endif %}>
+                                {{ entry.data.title }}
+                            </a>
+                        </li>
+                        {%- endfor %}
+                    </ul>
+                </div>
+                {%- endfor %}
+            </nav>
+        </aside>
+        <main class="wiki-content wiki-article">
             {%- if description %}
             <p class="wiki-description">{{ description }}</p>
             {%- endif %}
@@ -45,8 +54,13 @@ layout: layouts/main
                     ✏️ 在 GitHub 上编辑此页
                 </a>
             </p>
-        </article>
-    </main>
-</div>
+        </main>
+    </div>
+
+    {% include "components/footer.njk" %}
+    <script type="module" src="{{ '/script/main.js' | url }}"></script>
+</body>
+
+</html>
 
 {# wiki 侧边栏逻辑已并入 main.js，由 type="module" 入口统一加载 #}
