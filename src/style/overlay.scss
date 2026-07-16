@@ -7,7 +7,7 @@
 //   1. .nav-drawer-open    — 移动端导航抽屉（drawer.js）
 //   2. .nav-popup-open     — PC 端站点导航弹窗（popup.js）
 //   3. .theme-menu-open    — PC 端主题切换菜单（theme.js，仅桌面端）
-//   4. .wiki-sidebar-open  — 移动端 Wiki 侧边栏（wiki-sidebar.js，仅移动端）
+//   4. .wiki-sidebar-open  — 移动端 Wiki 侧边栏（wiki-sidebar.js，挂在 <header> 上）
 //   所有 open 类统一挂在 <header> 上，便于遮罩样式书写一致。
 
 .overlay {

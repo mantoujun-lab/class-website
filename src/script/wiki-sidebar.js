@@ -4,7 +4,6 @@
  * - 移动端：默认收起（抽屉），点击按钮从左侧滑出
  *   · 与 popup/drawer 互斥：打开前关闭其他菜单
  *   · 占用 history 槽位（系统返回键可关闭）
- *   · 状态不再存 localStorage（避免与历史栈重复管理）
  *
  * 由 main.js 在检测到 .wiki-sidebar-toggle 后按需调用
  */
@@ -148,15 +147,23 @@ export function initWikiSidebar() {
         if (nowMobile !== lastMobile) {
             lastMobile = nowMobile;
             if (nowMobile) {
-                // 切到移动端：强制收起（抽屉模式），不占用 history 槽位
+                // 切到移动端：强制收起（抽屉模式），清掉移动端抽屉的所有状态
                 layout.classList.add('wiki-sidebar-collapsed');
                 if (header) header.classList.remove(OPEN_CLASS);
                 wikiMobileOpen = false;
                 if (getSlotOwner() === 'wiki') {
                     markReleased();
                 }
+            } else {
+                // 切到 PC 端：清理移动端抽屉状态，避免再次切回移动端时状态错乱
+                if (header) header.classList.remove(OPEN_CLASS);
+                wikiMobileOpen = false;
+                if (getSlotOwner() === 'wiki') {
+                    markReleased();
+                }
+                // PC 端默认展开：移除 collapsed 类（用户下次切换可手动收）
+                layout.classList.remove('wiki-sidebar-collapsed');
             }
-            // 切到 PC 端：保持当前折叠类即可（不再恢复打开，因为跨设备时交互模式已变）
         }
     }, 150);
     window.addEventListener('resize', handleResize);
