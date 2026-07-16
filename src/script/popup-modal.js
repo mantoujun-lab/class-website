@@ -10,8 +10,9 @@
 //   3. 焦点陷阱：复用 focus-trap.js 的工具（Tab 循环 + 焦点归还）
 //   4. 多弹窗互斥：打开新弹窗时关闭当前已打开的弹窗（栈语义，最新的最上层）
 //   5. 与现有菜单互斥：弹窗打开时静默关闭 nav-popup / drawer / wiki
-//   6. 历史栈：每个打开的弹窗占用一个 history 槽位（复用 history-stack 的 acquireSlot，
-//      把 owner 改为 'modal:<id>'，关闭时按 owner 精确释放）
+//   6. 历史栈：复用 history-stack 的单槽位机制，owner 为 'modal:<id>'。
+//      注意：history-stack 为单槽位设计，多 modal 实际是互斥的（openModal 会先
+//      关闭已有 modal），同一时间只有一个 modal 占用槽位。
 //   7. 暴露 window.openModal / window.closeModal 供外部 JS 调用
 //
 // 关键设计：
@@ -95,6 +96,7 @@ export function openModal(id) {
     rememberFocus();
     // 等动画结束后再聚焦，避免 transition 与 focus 抢资源
     requestAnimationFrame(function () {
+        if (!isModalOpen(id)) return; // 弹窗可能已在 rAF 前关闭
         focusFirst(entry.modal);
     });
 

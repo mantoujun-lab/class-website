@@ -11,7 +11,7 @@
 import { dom } from './_dom.js';
 import { acquireSlot, releaseSlot, markReleased, getSlotOwner } from './history-stack.js';
 
-const MOBILE_BREAKPOINT = 769;
+const MOBILE_BREAKPOINT = 768;
 const OPEN_CLASS = 'wiki-sidebar-open';
 
 // 模块状态：移动端抽屉是否打开（PC 端折叠状态由 .wiki-sidebar-collapsed 类承担，不计入此标志）
@@ -58,7 +58,7 @@ function openWiki() {
 }
 
 function closeWiki(manageHistory = true) {
-    if (isMobile() && !wikiMobileOpen) {
+    if (!wikiMobileOpen) {
         console.debug('[wiki-sidebar] 已关闭，跳过');
         return;
     }
@@ -157,14 +157,14 @@ export function initWikiSidebar() {
                 if (header) header.classList.remove(OPEN_CLASS);
                 wikiMobileOpen = false;
                 if (getSlotOwner() === 'wiki') {
-                    markReleased();
+                    releaseSlot(); // 主动 back 清理 history 记录，避免孤立
                 }
             } else {
                 // 切到 PC 端：清理移动端抽屉状态，避免再次切回移动端时状态错乱
                 if (header) header.classList.remove(OPEN_CLASS);
                 wikiMobileOpen = false;
                 if (getSlotOwner() === 'wiki') {
-                    markReleased();
+                    releaseSlot(); // 主动 back 清理 history 记录，避免孤立
                 }
                 // PC 端默认展开：移除 collapsed 类（用户下次切换可手动收）
                 setLayoutCollapsed(false);
