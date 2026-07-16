@@ -513,18 +513,64 @@ graph LR
 
 ### 14.5.6 富文本 / 嵌套宏
 
-弹窗主体支持任意 HTML 与宏组件嵌套。
+弹窗主体支持任意 HTML 与宏组件嵌套（标题、段落、列表、表格、代码块、`button` 宏、`cardStandalone` 宏都可以）。
 
 {{ modalTrigger("rich-content", "fa-solid fa-gift", "查看特性", btnColor="#fa5252", textColor="#fff") }}
 
 {% set _body %}
-<p>模态弹窗的主体可以是任意 HTML，包括：</p>
+<h4>这是一个四级标题</h4>
+<p>弹窗主体接受任意 HTML：<strong>加粗</strong>、<em>斜体</em>、<a href="#">链接</a>、行内 <code>code</code> 都可以。</p>
+<p>有序列表：</p>
+<ol>
+    <li>第一项</li>
+    <li>第二项</li>
+    <li>第三项</li>
+</ol>
+<p>无序列表：</p>
 <ul>
-    <li>列表、表格、代码块</li>
-    <li>嵌套的 <code>card</code>、<code>button</code> 等宏</li>
+    <li>列表项 A</li>
+    <li>列表项 B</li>
 </ul>
+<p>表格：</p>
+<table>
+    <thead>
+        <tr>
+            <th>字段</th>
+            <th>类型</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>id</code></td>
+            <td>string</td>
+            <td>弹窗全局唯一 id</td>
+        </tr>
+        <tr>
+            <td><code>size</code></td>
+            <td>"sm" | "md" | "lg"</td>
+            <td>弹窗尺寸档位</td>
+        </tr>
+        <tr>
+            <td><code>icon</code></td>
+            <td>string</td>
+            <td>FA 图标类名</td>
+        </tr>
+    </tbody>
+</table>
+<p>代码块：</p>
+<pre><code class="language-javascript">// 打开 / 关闭弹窗
+window.openModal('hello');
+window.closeModal('hello');</code></pre>
+<p>嵌套宏（<code>button</code>）：</p>
+<p>
+    {{ button("fa-solid fa-thumbs-up", "点赞", "#", btnColor="#fab005") }}
+    {{ button("fa-solid fa-share", "分享", "#", btnColor="#74c0fc") }}
+</p>
+<p>嵌套宏（<code>cardStandalone</code>）：</p>
+{{ cardStandalone("fa-solid fa-circle-info", "提示", "这是弹窗里嵌套的独立信息卡片。") }}
 {% endset %}
-{{ popup("rich-content", "富文本支持", _body, icon="fa-solid fa-gift") }}
+{{ popup("rich-content", "富文本支持", _body, icon="fa-solid fa-gift", size="lg") }}
 
 ### 14.5.7 多弹窗互斥
 
