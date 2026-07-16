@@ -47,8 +47,11 @@ export function getVisibleFocusable(container) {
     );
     const visible = [];
     for (let i = 0; i < candidates.length; i++) {
-        if (candidates[i].offsetParent !== null) {
-            visible.push(candidates[i]);
+        // offsetParent 对 position:fixed 元素返回 null（即使可见），
+        // 改用 getClientRects 判断可见性并排除 display:none/visibility:hidden
+        const el = candidates[i];
+        if (el.offsetParent !== null || (el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden')) {
+            visible.push(el);
         }
     }
     focusableCache.set(container, visible);
