@@ -11,7 +11,7 @@
 import { dom } from './_dom.js';
 import { acquireSlot, releaseSlot, markReleased, getSlotOwner } from './history-stack.js';
 
-const MOBILE_BREAKPOINT = 769;
+const MOBILE_BREAKPOINT = 768;
 const OPEN_CLASS = 'wiki-sidebar-open';
 
 // 模块状态：移动端抽屉是否打开（PC 端折叠状态由 .wiki-sidebar-collapsed 类承担，不计入此标志）
