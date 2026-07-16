@@ -495,21 +495,20 @@ graph LR
     footer="<button class='btn-pill' data-modal-close='confirm-delete' style='--btn-bg:#e9ecef; --btn-fg:#495057; --btn-border:transparent;'>取消</button> <button class='btn-pill' onclick='window.closeModal(`confirm-delete`)' style='--btn-bg:#fa5252; --btn-fg:#fff5f5; --btn-border:#c92a2a;'>确认删除</button>"
 ) }}
 
-### 14.5.5 强制操作（仅页脚按钮可关闭）
+### 14.5.5 强制操作（隐藏关闭按钮）
 
-通过 `showClose=false` 隐藏右上角 X、`closeOnEscape=false` 禁用 ESC 关闭，让用户**只能点击页脚按钮**继续。常用于必须做出选择、不能跳过的场景。
+通过 `showClose=false` 隐藏右上角 X，用户**只能点击页脚按钮**继续。常用于必须做出选择、不能跳过的场景。
 
 {{ modalTrigger("must-ack", "fa-solid fa-shield-halved", "强制确认", btnColor="#5f3dc4", textColor="#fff") }}
 
 {{ popup(
     "must-ack",
     "重要提示",
-    "<p>你必须点击「我已知晓」才能继续。右上角关闭按钮已隐藏，ESC 也不会关闭此弹窗。</p>",
+    "<p>你必须点击「我已知晓」才能继续。右上角关闭按钮已隐藏。</p>",
     size="sm",
     icon="fa-solid fa-shield-halved",
     showClose=false,
-    footer='<button class="btn-pill" data-modal-close="must-ack">我已知晓</button>',
-    closeOnEscape=false
+    footer='<button class="btn-pill" data-modal-close="must-ack">我已知晓</button>'
 ) }}
 
 ### 14.5.6 富文本 / 嵌套宏

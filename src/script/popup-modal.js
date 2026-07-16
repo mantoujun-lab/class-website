@@ -187,12 +187,6 @@ export function initModal(deps) {
         if (openStack.length === 0) return;
 
         if (e.key === 'Escape') {
-            const topId = openStack[openStack.length - 1];
-            const topEntry = findModal(topId);
-            // 栈顶 modal 标记 data-modal-no-escape 时，ESC 不关闭（强制操作场景）
-            if (topEntry && topEntry.modal.hasAttribute('data-modal-no-escape')) {
-                return;
-            }
             e.stopPropagation(); // 避免 main.js 的 ESC 处理器重复关闭其它菜单
             closeTopModal();
             return;

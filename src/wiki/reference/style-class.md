@@ -485,7 +485,6 @@ headerBg: "#c92a2a"
 | `.modal[data-modal-state="open"]` | modal 打开 | 缩放淡入（Material dialog 风格，225ms 带回弹） |
 | `.modal[data-modal-state="closed"]` | modal 关闭 | 缩放淡出（120ms，scale 1→0.9） |
 | `body.modal-open .modal-backdrop` | 遮罩显示 | 半透明黑（rgba(0,0,0,0.5)），200ms 淡入 |
-| `.modal` 节点 `[data-modal-no-escape]` | 禁止 ESC 关闭 | 标记位，宏的 `closeOnEscape=false` 会输出 |
 
 **动效**：
 - 入场 / 离场：`$transition-fast`（`0.25s ease`，经典 ease 缓动）+ opacity 淡入淡出 + scale 0.95↔1 缩放
@@ -524,8 +523,7 @@ headerBg: "#c92a2a"
     size="md",                # 选填："sm" / "md" / "lg"
     icon="",                  # 选填，FA 图标类名
     showClose=true,           # 选填，是否显示右上角 X
-    footer="",                # 选填，页脚 HTML（典型为按钮组）
-    closeOnEscape=true        # 选填，是否允许按 ESC 关闭
+    footer=""                 # 选填，页脚 HTML（典型为按钮组）
 ) }}
 ```
 {% endraw %}
