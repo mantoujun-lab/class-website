@@ -3,11 +3,12 @@
 
 // ==================== 统一遮罩 ====================
 // 全站唯一遮罩元素 <div class="overlay">，由 header.njk 引入
-// 互斥服务四个场景（同一时刻只能一个激活）：
+// 互斥服务四个场景（同一时刻只能一个激活，由 main.js 统一调度）：
 //   1. .nav-drawer-open    — 移动端导航抽屉（drawer.js）
 //   2. .nav-popup-open     — PC 端站点导航弹窗（popup.js）
 //   3. .theme-menu-open    — PC 端主题切换菜单（theme.js，仅桌面端）
 //   4. .wiki-sidebar-open  — 移动端 Wiki 侧边栏（wiki-sidebar.js，仅移动端）
+//   所有 open 类统一挂在 <header> 上，便于遮罩样式书写一致。
 
 .overlay {
     @include fixed-overlay(99);
@@ -20,20 +21,12 @@
     cursor: pointer;
 }
 
-// 桌面端 + 移动端通用场景：抽屉、弹窗、主题菜单
+// 任意一个菜单 open 即显示遮罩（互斥由 main.js 保证）
 .nav-drawer-open .overlay,
 .nav-popup-open .overlay,
-.theme-menu-open .overlay {
+.theme-menu-open .overlay,
+.wiki-sidebar-open .overlay {
     opacity: 1;
     visibility: visible;
     transition: opacity $transition-fast, background $transition-fast, visibility 0s 0s;
-}
-
-// 移动端专属：Wiki 侧边栏（避免 PC 端误触发）
-@include respond-to($breakpoint-tablet) {
-    .wiki-sidebar-open .overlay {
-        opacity: 1;
-        visibility: visible;
-        transition: opacity $transition-fast, background $transition-fast, visibility 0s 0s;
-    }
 }

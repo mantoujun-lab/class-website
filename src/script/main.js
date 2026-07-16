@@ -2,8 +2,8 @@
 // main.js — 移动端导航交互编排入口
 // ------------------------------------------------------------
 // 职责：
-//   1. 初始化各功能模块（popup / drawer）
-//   2. 注入模块间的互斥回调（弹窗关抽屉 / 抽屉关弹窗）
+//   1. 初始化各功能模块（popup / drawer / wiki-sidebar）
+//   2. 注入模块间的互斥回调（弹窗关抽屉/wiki / 抽屉关弹窗/wiki / wiki 关弹窗/抽屉）
 //   3. 绑定全局事件：统一遮罩点击、ESC 关闭、文档外部点击
 //   4. 路由 popstate：按优先级关闭对应菜单
 //
@@ -13,10 +13,12 @@
 //   - history-stack.js History API 单槽位管理
 //   - popup.js         弹窗模块
 //   - drawer.js        抽屉模块
+//   - wiki-sidebar.js  Wiki 侧边栏模块（仅 wiki 页生效）
 //
-// 互斥约定：
-//   - 弹窗打开时若抽屉正打开 → 调 drawer.closeDrawer(false) 静默关闭（复用槽位）
-//   - 抽屉打开时若弹窗正打开 → 调 popup.closePopup(false) 静默关闭（复用槽位）
+// 互斥约定（优先级：弹窗 > 抽屉 > wiki）：
+//   - 弹窗打开时若抽屉/wiki 正打开 → 静默关闭（复用槽位）
+//   - 抽屉打开时若弹窗/wiki 正打开 → 静默关闭（复用槽位）
+//   - wiki 打开时若弹窗/抽屉正打开 → 静默关闭（复用槽位）
 //   - history 槽位由 historyStack 统一管理，调用方不可直接操作
 // ============================================================
 
@@ -24,10 +26,10 @@ import { dom } from './_dom.js';
 import { trapFocus } from './focus-trap.js';
 import { onPopState } from './history-stack.js';
 import { initPopup, closePopup, getPopupOpen } from './popup.js';
-import { initDrawer, closeDrawer, getDrawerOpen } from './drawer.js';
+import { initDrawer, closeDrawer, openDrawer, getDrawerOpen } from './drawer.js';
 import { initPrism } from './prism.js';
 import { initTheme } from './theme.js';
-import { initWikiSidebar } from './wiki-sidebar.js';
+import { initWikiSidebar, setWikiDeps, getWikiMobileOpen, closeWiki } from './wiki-sidebar.js';
 
 (function () {
     'use strict';
@@ -41,13 +43,20 @@ import { initWikiSidebar } from './wiki-sidebar.js';
 
     console.debug('[main] 初始化各功能模块');
     // ---- 初始化模块 + 注入互斥回调 ----
-    // 弹窗互斥关闭抽屉：manageHistory=false 复用 history 槽位
+    // 弹窗互斥关闭抽屉 / wiki：manageHistory=false 复用 history 槽位
     initPopup({
-        onDrawerClose: function (manageHistory) { closeDrawer(manageHistory); }
+        onDrawerClose: function (manageHistory) { closeDrawer(manageHistory); },
+        onWikiClose: function (manageHistory) { closeWiki(manageHistory); }
     });
-    // 抽屉互斥关闭弹窗：manageHistory=false 复用 history 槽位
+    // 抽屉互斥关闭弹窗 / wiki：manageHistory=false 复用 history 槽位
     initDrawer({
-        onPopupClose: function (manageHistory) { closePopup(manageHistory); }
+        onPopupClose: function (manageHistory) { closePopup(manageHistory); },
+        onWikiClose: function (manageHistory) { closeWiki(manageHistory); }
+    });
+    // wiki 侧边栏互斥关闭弹窗 / 抽屉（仅 wiki 页生效）
+    setWikiDeps({
+        onPopupClose: function (manageHistory) { closePopup(manageHistory); },
+        onDrawerClose: function (manageHistory) { closeDrawer(manageHistory); }
     });
 
     const overlay = dom.overlay;
@@ -58,13 +67,15 @@ import { initWikiSidebar } from './wiki-sidebar.js';
     // 全局事件绑定
     // ============================================================
 
-    // 统一遮罩层点击关闭：按优先级关闭弹窗 > 抽屉
+    // 统一遮罩层点击关闭：按优先级关闭弹窗 > 抽屉 > wiki
     if (overlay) {
         overlay.addEventListener('click', function () {
             if (getPopupOpen()) {
                 closePopup(true);
             } else if (getDrawerOpen()) {
                 closeDrawer(true);
+            } else if (getWikiMobileOpen()) {
+                closeWiki(true);
             }
         });
     }
@@ -78,12 +89,14 @@ import { initWikiSidebar } from './wiki-sidebar.js';
 
     // 键盘事件：ESC 关闭 + Tab 焦点陷阱
     document.addEventListener('keydown', function (e) {
-        // ESC：优先关弹窗，其次关抽屉
+        // ESC：优先关弹窗 > 抽屉 > wiki
         if (e.key === 'Escape') {
             if (getPopupOpen()) {
                 closePopup(true);
             } else if (getDrawerOpen()) {
                 closeDrawer(true);
+            } else if (getWikiMobileOpen()) {
+                closeWiki(true);
             }
         }
         // Tab：弹窗打开时启用焦点陷阱
@@ -105,6 +118,8 @@ import { initWikiSidebar } from './wiki-sidebar.js';
             closePopup(false);
         } else if (e.owner === 'drawer') {
             closeDrawer(false);
+        } else if (e.owner === 'wiki') {
+            closeWiki(false);
         }
         // e.owner 为 null 时不处理（可能由其他代码 push 的 history）
     });
