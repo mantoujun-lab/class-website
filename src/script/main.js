@@ -28,7 +28,7 @@ import { dom } from './_dom.js';
 import { trapFocus } from './focus-trap.js';
 import { onPopState } from './history-stack.js';
 import { initPopup, closePopup, getPopupOpen } from './popup.js';
-import { initDrawer, closeDrawer, openDrawer, getDrawerOpen } from './drawer.js';
+import { initDrawer, closeDrawer, getDrawerOpen } from './drawer.js';
 import { initPrism } from './prism.js';
 import { initTheme } from './theme.js';
 import { initWikiSidebar, setWikiDeps, getWikiMobileOpen, closeWiki } from './wiki-sidebar.js';
