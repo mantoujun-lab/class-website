@@ -112,9 +112,15 @@ import { initModal, isModalOpen, closeTopModal } from './popup-modal.js';
                 closeWiki(true);
             }
         }
-        // Tab：弹窗打开时启用焦点陷阱
-        if (getPopupOpen() && e.key === 'Tab') {
-            trapFocus(e, dom.popup);
+        // Tab：菜单打开时启用焦点陷阱（modal 由 popup-modal.js 自行处理）
+        if (e.key === 'Tab' && !isModalOpen()) {
+            if (getPopupOpen()) {
+                trapFocus(e, dom.popup);
+            } else if (getDrawerOpen() && dom.header) {
+                trapFocus(e, dom.header);
+            } else if (getWikiMobileOpen() && dom.wikiSidebar) {
+                trapFocus(e, dom.wikiSidebar);
+            }
         }
     });
 
