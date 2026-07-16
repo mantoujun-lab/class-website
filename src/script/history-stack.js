@@ -20,7 +20,7 @@ if (!supportsHistory) {
 }
 
 // ---- 状态：当前槽位占用者 ----
-// null = 未占用；'popup' = 弹窗占用；'drawer' = 抽屉占用
+// null = 未占用；'popup' = 弹窗占用；'drawer' = 抽屉占用；'wiki' = wiki 侧边栏占用
 let slot = null;
 
 // ---- popstate 回调列表 ----
@@ -28,7 +28,7 @@ let slot = null;
 const popHandlers = [];
 
 // 占用槽位：未占用时才推入 history 记录；已占用则复用（不会重复 push）
-// owner: 'popup' | 'drawer'
+// owner: 'popup' | 'drawer' | 'wiki'
 export function acquireSlot(owner) {
     if (!supportsHistory) return;
     if (slot) {
