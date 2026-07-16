@@ -61,6 +61,12 @@ import { initModal, isModalOpen, closeModal, closeTopModal } from './popup-modal
         onPopupClose: function (manageHistory) { closePopup(manageHistory); },
         onDrawerClose: function (manageHistory) { closeDrawer(manageHistory); }
     });
+    // 通用模态弹窗：弹窗打开时互斥关闭 nav-popup / drawer / wiki
+    initModal({
+        onPopupClose: function (manageHistory) { closePopup(manageHistory); },
+        onDrawerClose: function (manageHistory) { closeDrawer(manageHistory); },
+        onWikiClose: function (manageHistory) { closeWiki(manageHistory); }
+    });
 
     const overlay = dom.overlay;
     const header = dom.header;
@@ -121,14 +127,17 @@ import { initModal, isModalOpen, closeModal, closeTopModal } from './popup-modal
 
     onPopState(function (e) {
         // historyStack 已自动释放槽位，manageHistory=false 避免重复 back
-        if (e.owner === 'popup') {
+        if (!e.owner) return;
+        if (e.owner.indexOf('modal:') === 0) {
+            // 通用模态弹窗：owner 形如 'modal:<id>'，调用 closeTopModal 关闭栈顶
+            closeTopModal();
+        } else if (e.owner === 'popup') {
             closePopup(false);
         } else if (e.owner === 'drawer') {
             closeDrawer(false);
         } else if (e.owner === 'wiki') {
             closeWiki(false);
         }
-        // e.owner 为 null 时不处理（可能由其他代码 push 的 history）
     });
 
     console.debug('[main] popstate 路由注册完成');
