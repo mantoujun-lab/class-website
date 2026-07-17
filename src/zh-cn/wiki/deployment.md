@@ -2,6 +2,7 @@
 title: 部署指南
 description: 如何部署班级网站
 layout: layouts/wiki
+permalink: /wiki/deployment/
 order: 3
 ---
 

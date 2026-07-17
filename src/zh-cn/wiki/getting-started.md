@@ -2,6 +2,7 @@
 title: 新手指南
 description: 第一次参与班级网站？这里教你如何贡献内容
 layout: layouts/wiki
+permalink: /wiki/getting-started/
 order: 1
 ---
 

@@ -1,6 +1,8 @@
 ---
 title: 文章
 layout: layouts/article
+permalink: /article/
+eleventyExcludeFromCollections: true
 eleventyNavigation:
   key: article
   title: 📰 文章

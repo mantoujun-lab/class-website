@@ -2,6 +2,7 @@
 title: 贡献流程
 description: 提交 Wiki 条目的流程
 layout: layouts/wiki
+permalink: /wiki/guide/contribution/
 order: 2
 wikiCategory: 📝 入门指南
 wikiCategoryOrder: 1

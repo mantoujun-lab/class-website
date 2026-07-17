@@ -3,6 +3,7 @@ title: Markdown & 组件展示示例
 author: 一张白纸
 description: 演示本站支持的所有 Markdown 语法、宏、图片画廊与按钮等组件
 layout: layouts/article
+permalink: /article/markdown-showcase/
 date: 2026-07-09 00:00:00
 headerBg: green
 ---

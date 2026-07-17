@@ -3,6 +3,7 @@ title: Wiki
 description: 25 级计算机应用 1 班的集体 Wiki
 layout: layouts/wiki
 permalink: /wiki/
+eleventyExcludeFromCollections: true
 eleventyNavigation:
   key: wiki
   title: 📚 Wiki
@@ -15,7 +16,7 @@ eleventyNavigation:
 
 ## 如何贡献
 
-在 <code>src/wiki/</code> 目录下新建 <code>.md</code> 文件，按以下模板填写：
+在 <code>src/{{ (locale or 'zh-cn') }}/wiki/</code> 目录下新建 <code>.md</code> 文件，按以下模板填写：
 
 ```
 ---

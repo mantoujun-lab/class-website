@@ -2,6 +2,7 @@
 title: API 参考
 description: 常用 API 速查
 layout: layouts/wiki
+permalink: /wiki/reference/api/
 order: 1
 wikiCategory: 📚 参考手册
 wikiCategoryOrder: 2
