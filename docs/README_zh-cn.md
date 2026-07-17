@@ -35,6 +35,60 @@
 - **在线访问**：<https://hjx-25pc1.github.io>
 - **源码仓库**：<https://github.com/hjx-25pc1/hjx-25pc1.github.io>
 
+## 📁 项目结构与多语言架构
+
+本站采用 **目录隔离** 的多语言架构，每种语言拥有独立的内容目录，由 Eleventy 的目录数据文件自动注入 locale 和 permalink 前缀：
+
+```
+src/
+├── _data/i18n.js              ← 翻译字典（zh-cn / en 两套）
+├── _includes/                 ← 布局、组件、宏（共享，非语言相关）
+├── _layouts/                  ← 布局模板
+├── _macros/                   ← 可复用宏
+├── style/                     ← SCSS 样式
+├── script/                    ← 前端 JS
+├── zh-cn/                     ← 中文内容（主语言）
+│   ├── zh-cn.11tydata.js      ← 注入 locale/permalink 前缀
+│   ├── zh-cn.json             ← 注入 locale/lang/dir 元数据
+│   ├── index.md               ← 中文首页
+│   ├── article/               ← 中文文章
+│   ├── wiki/                  ← 中文 Wiki
+│   ├── zone/                  ← 中文分区
+│   └── event/                 ← 中文事件
+├── en/                        ← 英文内容
+│   ├── en.11tydata.js         ← 同上，en 版本
+│   ├── en.json
+│   ├── index.md
+│   └── ...
+└── index-redirect.md          ← 根路径 JS 跳板（无语言内容，仅检测用户偏好后跳转）
+```
+
+### 如何添加多语言内容
+
+1. **添加新页面**：在 `src/zh-cn/` 下创建中文版本（主语言），在 `src/en/` 下创建英文版本。两者的 frontmatter 中 `permalink` 无需加语言前缀（如 `permalink: /about/`），目录数据文件会自动为它们加上 `/zh-cn/` 或 `/en/`。
+
+2. **使用翻译字典**：在模板中通过 `{{ 'key.path' | i18n }}` 引用翻译，字典键值在 `src/_data/i18n.js` 中定义。若新增翻译键，需同时添加 zh-cn 和 en 两个条目。
+
+3. **语言感知链接**：站内链接使用 `{{ '/xxx/' | localUrl }}` 而非 `{{ '/xxx/' | url }}`，`localUrl` 会自动根据当前语言加上正确前缀。
+
+4. **根路径行为**：用户访问 `/` 时，站点会检测 localStorage 中的语言偏好（或浏览器 `navigator.language`），自动跳转到 `/zh-cn/` 或 `/en/`。导航栏提供语言切换器，点击后偏好写入 localStorage。
+
+5. **目录数据文件说明**：
+   - `*.11tydata.js`：Eta/EJS JavaScript 对象，可计算属性，主要用于 `eleventyComputed.permalink`（动态加前缀）
+   - `*.json`：静态 JSON 对象，主要用于 locale、lang、dir 等元数据
+
+### 页面元数据
+
+所有内容页面需在 frontmatter 中设置以下字段：
+
+```yaml
+---
+title: 页面标题          # 必填，会出现在 <title> 和页面头部
+permalink: /page-slug/  # 语义路径，无需语言前缀（自动添加）
+layout: layouts/default  # 布局模板
+---
+```
+
 ## 🔨 技术栈
 
 本项目是一个纯静态站点，使用以下技术构建：
@@ -45,8 +99,13 @@
 - **Sass / SCSS** — CSS 预处理器，编译为压缩后的 CSS
 - **PostCSS + Autoprefixer** — 自动添加浏览器前缀，兼容主流浏览器
 - **[@11ty/eleventy-img](https://www.11ty.dev/docs/plugins/image/)** — 响应式图片处理，自动生成 `webp` 与 `jpeg` 多尺寸
-- **[@11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Markdown 代码块语法高亮
-- **原生 JavaScript（ES Modules）** — 少量交互逻辑；脚本以原生 ES Modules 形式组织在 `src/script/` 下，无需前端框架或打包器；入口 `main.js` 通过 `<script type="module">` 加载
+- **[11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Markdown 代码块语法高亮
+- **i18n 国际化** — 基于目录隔离的多语言方案：
+  - `lodash.get` + `templite` — 实现可嵌入变量的自定义翻译过滤器 `i18n`
+  - `eleventy-plugin-i18n` — 官方插件（参考实现，实际使用自定 filter）
+  - 目录级数据文件 (`*.11tydata.js` / `*.json`) — 自动为 `src/zh-cn/` 和 `src/en/` 注入 locale、permalink 前缀等
+  - 自定义过滤器：`i18n`（翻译）、`localUrl`（locale 感知的内部链接）、`switchLang`（语言切换链接）、`lang`（取当前语言）
+- **原生 JavaScript（ES Modules）** — 少量交互逻辑；脚本以原生 ES Modules 形式组织在 `src/script/` 下，无需前端框架或打包器；入口 `main.js` 通过 `<script type="module">` 加载；`lang-switcher.js` 处理导航栏语言切换与 localStorage 偏好持久化
 - **GitHub Actions** — 自动化 CI/CD，推送 `main` 分支即触发构建与部署
 - **GitHub Pages** — 静态站点托管平台
 

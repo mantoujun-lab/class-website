@@ -208,7 +208,7 @@ npm install
 | `npm run serve`    | 启动本地开发服务器，支持热重载                 |
 | `npm run build`    | 构建生产版本，产物输出到 `_site/`             |
 | `npm run watch`    | 仅监听文件变化并重新构建，不启动服务器         |
-| `npm run sync:wiki` | 把 `src/wiki/` 下的条目同步到 GitHub Wiki 仓库 |
+| `npm run sync:wiki` | 把 `src/zh-cn/wiki/` 下的条目同步到 GitHub Wiki 仓库 |
 | `npm run release`  | 构建并打包 `_site/` 为 zip，输出到 `dist/`    |
 | `npm run bump`     | 升级 `package.json` / `package-lock.json` 中的 `version` |
 | `npm run generate:contributors` | 重新生成 README 中的贡献者头像墙（与 `Generate contributors image` workflow 效果相同） |
@@ -276,10 +276,15 @@ git push origin main
 
 ```njk
 <link rel="stylesheet" href="{{ '/style/style.css' | url }}">
-<a href="{{ '/about/' | url }}">关于</a>
 ```
 
-避免直接写死根路径 `/`，否则本地预览时样式和链接会失效。
+对于站内页面链接，推荐使用 `| localUrl` 过滤器，它会自动根据当前语言注入正确的前缀（`/zh-cn/` 或 `/en/`）：
+
+```njk
+<a href="{{ '/about/' | localUrl }}">关于</a>
+```
+
+> 不要在模板中直接写 `/zh-cn/about/`，而是用 `'/about/' | localUrl`。这样同一模板可以同时为中文和英文版页面服务。
 
 ---
 
@@ -305,7 +310,7 @@ git push origin main
 ### HTML
 
 - 文件必须符合 HTML5 标准，使用 `<!DOCTYPE html>` 声明。
-- 必须在 `<html>` 标签上声明 `lang="zh-CN"`。
+- `<html>` 标签上的 `lang` 和 `dir` 属性由布局模板自动注入（`lang="{{ lang }}" dir="{{ dir }}"`），**不要**在子模板或页面中硬编码。
 - 必须包含 `<meta charset="UTF-8">` 和 viewport meta 标签：
   ```html
   <meta charset="UTF-8">
@@ -326,6 +331,40 @@ git push origin main
 - 不要在仓库中提交任何敏感信息（API Key、密码、Token 等）。
 - 不要使用内联脚本处理用户输入，避免 XSS。
 - 外部资源统一使用 HTTPS。
+
+### 多语言内容管理
+
+本站采用目录隔离的 i18n 架构，贡献内容时需注意以下几点：
+
+**目录结构**
+
+- 中文内容放在 `src/zh-cn/` 下（主语言）
+- 英文内容放在 `src/en/` 下（翻译版）
+- 两个目录结构应保持对称（如 `src/zh-cn/article/xxx.md` 对应 `src/en/article/xxx.md`）
+- `.11tydata.js` 和 `.json` 是目录数据文件，**不是页面**，用于自动注入 locale、permalink 前缀等，无需为它们写对应的英文/中文版本
+
+**翻译字典**
+
+- 所有界面文案集中在 `src/_data/i18n.js` 中管理
+- 新增翻译键时，必须同时提供 zh-cn 和 en 两个值
+- 使用方式：`{{ 'nav.home' | i18n }}` 在模板中引用
+- 支持模板变量：`{{ 'nav.greeting' | i18n({ name: '小明' }) }}`
+
+**常用 i18n 过滤器**
+
+| 过滤器 | 用途 | 示例 |
+| ------ | ---- | ---- |
+| `i18n` | 翻译字典键 | `{{ 'nav.home' \| i18n }}` |
+| `localUrl` | 生成带 locale 前缀的内部链接 | `{{ '/about/' \| localUrl }}` |
+| `switchLang` | 生成切换目标语言的链接 | `{{ page.url \| switchLang('en') }}` |
+| `lang` | 获取当前语言代码 | `{{ '' \| lang }}` |
+
+**新增页面流程**
+
+1. 在 `src/zh-cn/<section>/` 创建中文 `.md` 文件
+2. 在 `src/en/<section>/` 创建对应的英文 `.md` 文件（可以是占位内容，标注"待翻译"）
+3. frontmatter 中的 `permalink` 写相对路径（如 `/about/`），不要加语言前缀
+4. 如需在导航中展示，同时更新 `zh-cn.11tydata.js`（或 `.json`）中的导航配置
 
 ---
 
