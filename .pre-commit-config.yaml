@@ -1,13 +1,21 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-json
+      - id: check-case-conflict
+      - id: check-merge-conflict
       - id: check-added-large-files
         args: ['--maxkb=500']
       - id: detect-private-key
       - id: no-commit-to-branch
         args: ['--branch=main']
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint

@@ -2,7 +2,7 @@ extends: default
 
 rules:
   line-length:
-    max: 120
+    max: 100
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true
   indentation:
@@ -10,3 +10,8 @@ rules:
     indent-sequences: true
   document-start:
     present: false
+  truthy:
+    check-keys: false
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: enable
