@@ -2,9 +2,8 @@
 title: Articles
 layout: layouts/article
 permalink: /article/
-eleventyExcludeFromCollections: true
 eleventyNavigation:
-  key: article
+  key: en-article
   title: 📰 Articles
   order: 2
 ---
@@ -14,7 +13,7 @@ eleventyNavigation:
 > 🌐 Most articles are still in Chinese. We're translating them step by step.
 
 <div class="card-full-list">
-    {%- for entry in collections.article %}
+    {%- for entry in collections['article_' + locale] %}
     {{ cardEntry(
         entry.data.title,
         entry.data.description or "",

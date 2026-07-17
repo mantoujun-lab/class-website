@@ -41,7 +41,8 @@
    - 安装依赖：npm install @11ty/eleventy-navigation
    ============================================================ #}
 
-{%- set navPages = collections.all | eleventyNavigation %}
+{%- set _navLocale = locale or 'zh-cn' -%}
+{%- set navPages = collections.all | eleventyNavigation | filterNavByLocale(_navLocale) %}
 {%- if navPages.length %}
 <nav class="eleventy-nav">
     <ul>

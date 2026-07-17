@@ -3,9 +3,8 @@ title: 分区
 description: 你可以在这里找到你需要的专区、链接等内容
 layout: layouts/zone
 permalink: /zone/
-eleventyExcludeFromCollections: true
 eleventyNavigation:
-  key: zone
+  key: zh-cn-zone
   title: 📌 分区
   order: 4
 ---
@@ -14,7 +13,7 @@ eleventyNavigation:
 {% from "macros/card.njk" import card %}
 
 <div class="cardzone-three-columns">
-{%- for entry in collections.zone %}
+{%- for entry in collections['zone_' + locale] %}
 {{ card(entry.data.title, entry.data.description or "", entry.url | url, entry.data.cta or "进入") }}
 {%- endfor %}
 </div>

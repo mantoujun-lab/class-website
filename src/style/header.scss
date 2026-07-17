@@ -96,16 +96,16 @@ header {
         transition: transform $transition-sidebar;
         will-change: transform;
         z-index: 100;
-        padding-top: 60px;
+        display: flex;
+        flex-direction: column;
     }
 
     // 抽屉关闭按钮：仅移动端显示，桌面端通过全局 display:none 隐藏
     .nav-drawer-close {
         display: inline-flex;
-        position: absolute;
-        top: 12px;
-        left: 0;
-        margin: 0 12px;
+        position: relative;
+        flex-shrink: 0;
+        margin: 12px 12px 0;
         width: 50px;
         height: 50px;
         align-items: center;
@@ -136,10 +136,14 @@ header {
     }
 
     .nav-btns {
+        flex: 1;
         flex-direction: column;
         gap: 0;
         align-items: stretch;
-        padding: 0 $spacing-md;
+        padding: 0 $spacing-md $spacing-md;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
 
         a {
             padding: 14px;

@@ -1,14 +1,15 @@
 ---
 title: 讨论区
 description: '[需要Github 账户]可以在这里讨论一些事情'
+layout: layouts/main
 cta: 前往
 order: 3
 permalink: /discussion/
 eleventyNavigation:
-  key: discussion
+  key: zh-cn-discussion
   title: 💬 讨论
   order: 3
-  parent: zone
+  parent: zh-cn-zone
 ---
 
 {% from "macros/card.njk" import cardStandalone %}

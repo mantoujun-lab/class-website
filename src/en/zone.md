@@ -3,9 +3,8 @@ title: Zones
 description: Class zones & portals
 layout: layouts/zone
 permalink: /zone/
-eleventyExcludeFromCollections: true
 eleventyNavigation:
-  key: zone
+  key: en-zone
   title: 📌 Zones
   order: 4
 ---
@@ -14,7 +13,7 @@ eleventyNavigation:
 {% from "macros/card.njk" import card %}
 
 <div class="cardzone-three-columns">
-{%- for entry in collections.zone %}
+{%- for entry in collections['zone_' + locale] %}
 {{ card(entry.data.title, entry.data.description or "", entry.url | url, entry.data.cta or ('common.enter' | i18n)) }}
 {%- endfor %}
 </div>

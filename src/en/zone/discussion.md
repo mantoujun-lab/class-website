@@ -1,6 +1,7 @@
 ---
 title: Discussion
 description: 'Discussion board (GitHub account required)'
+layout: layouts/main
 cta: Visit
 order: 3
 permalink: /discussion/

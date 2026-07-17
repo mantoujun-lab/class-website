@@ -6,10 +6,10 @@ cta: 跳转
 order: 1
 permalink: /zone/study/
 eleventyNavigation:
-  key: discussion
+  key: zh-cn-study
   title: 📒 学习
   order: 2
-  parent: zone
+  parent: zh-cn-zone
 ---
 
 这里是学习资源的详细介绍页面。

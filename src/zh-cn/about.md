@@ -3,9 +3,8 @@ title: 关于我们
 layout: layouts/main
 permalink: /about/
 description: 海南省经济技术学校 25 级计算机应用 1 班组织介绍
-eleventyExcludeFromCollections: true
 eleventyNavigation:
-    key: about
+    key: zh-cn-about
     title: ℹ️ 关于
     order: 7
 ---

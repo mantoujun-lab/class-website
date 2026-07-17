@@ -2,9 +2,8 @@
 title: 文章
 layout: layouts/article
 permalink: /article/
-eleventyExcludeFromCollections: true
 eleventyNavigation:
-  key: article
+  key: zh-cn-article
   title: 📰 文章
   order: 2
 ---
@@ -12,7 +11,7 @@ eleventyNavigation:
 {% from "macros/card.njk" import cardEntry %}
 
 <div class="card-full-list">
-    {%- for entry in collections.article %}
+    {%- for entry in collections['article_' + locale] %}
     {{ cardEntry(
         entry.data.title,
         entry.data.description or "",

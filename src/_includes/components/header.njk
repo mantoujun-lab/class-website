@@ -42,12 +42,12 @@
                 <ul class="lang-menu" role="menu">
                     <li role="none">
                         <a href="{{ '/' | localUrl('zh-cn') }}" data-lang="zh-cn" role="menuitem"{% if _curLang == 'zh-cn' %} aria-current="true"{% endif %}>
-                            <i class="fa-solid fa-check" aria-hidden="true"></i> {{ 'lang.zh-cn' | i18n }}
+                            {% if _curLang == 'zh-cn' %}<i class="fa-solid fa-check" aria-hidden="true"></i>{% else %}<i class="fa-solid fa-check" aria-hidden="true" style="visibility:hidden"></i>{% endif %} {{ 'lang.zh-cn' | i18n }}
                         </a>
                     </li>
                     <li role="none">
                         <a href="{{ '/' | localUrl('en') }}" data-lang="en" role="menuitem"{% if _curLang == 'en' %} aria-current="true"{% endif %}>
-                            <i class="fa-solid fa-check" aria-hidden="true"></i> {{ 'lang.en' | i18n }}
+                            {% if _curLang == 'en' %}<i class="fa-solid fa-check" aria-hidden="true"></i>{% else %}<i class="fa-solid fa-check" aria-hidden="true" style="visibility:hidden"></i>{% endif %} {{ 'lang.en' | i18n }}
                         </a>
                     </li>
                 </ul>
