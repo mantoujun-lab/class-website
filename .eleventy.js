@@ -430,4 +430,3 @@ module.exports = function (eleventyConfig) {
         templateFormats: ["njk", "html", "md"]
     };
 };
-

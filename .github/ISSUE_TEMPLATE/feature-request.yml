@@ -25,7 +25,7 @@ body:
       label: 替代方案
       description: 如果有什么替代方案可以写在这
       placeholder: 通过xxx方法也可以实现
-      
+
   - type: textarea
     id: context
     attributes:
