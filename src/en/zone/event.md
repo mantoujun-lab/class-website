@@ -10,7 +10,7 @@ permalink: /event/
 {% from "macros/card.njk" import cardEntry %}
 
 <div class="card-entry-list">
-    {%- for entry in collections.event %}
+    {%- for entry in collections['event_' + locale] %}
     {{ cardEntry(
         entry.data.title,
         entry.data.description or "",

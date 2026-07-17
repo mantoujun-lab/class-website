@@ -4,7 +4,6 @@ const path = require("path");
 const Image = require("@11ty/eleventy-img");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const eleventyNavigation = require("@11ty/eleventy-navigation");
-const i18nPlugin = require("eleventy-plugin-i18n");
 const translations = require("./src/_data/i18n.js");
 const postcss = require("postcss");
 const autoprefixer = require("autoprefixer");
@@ -38,8 +37,8 @@ module.exports = function (eleventyConfig) {
     // 允许处理的模板格式：Markdown + Nunjucks
     eleventyConfig.setTemplateFormats(['md', 'njk']);
 
-    // i18n 插件
-    eleventyConfig.addPlugin(i18nPlugin, { translations });
+    // 注：eleventy-plugin-i18n 已停用，改用下方自定义 i18n filter。
+    // 原因：插件用 lodash.get 的路径解析（"nav.home" → nav.home 嵌套）与我们的点号键名冲突。
 
     // 注册语法高亮插件，仅在 Markdown 文件中启用
     // preAttributes 给 <pre> 自动加上 line-numbers 类，让 Prism line-numbers 插件接管。
@@ -55,9 +54,22 @@ module.exports = function (eleventyConfig) {
     // 注册导航插件
     eleventyConfig.addPlugin(eleventyNavigation);
 
-    // 注册 i18n 插件（暂时不用，因为插件从 page.url 推断 locale，时机不对）
-    // 我们自己实现 i18n filter（见下方），更可靠。
-    // eleventyConfig.addPlugin(i18nPlugin, {...});
+    // 自定义 filter：按 locale 过滤导航树
+    // 用法：collections.all | eleventyNavigation | filterNavByLocale('zh-cn')
+    eleventyConfig.addFilter("filterNavByLocale", function(navTree, locale) {
+        const prefix = "/" + locale;
+        const navTreeArr = Array.isArray(navTree) ? navTree : [];
+        return navTreeArr
+            .filter(entry => {
+                return entry.url && (entry.url.startsWith(prefix + "/") || entry.url === prefix || entry.url === prefix + "/");
+            })
+            .map(entry => {
+                const children = (entry.children || []).filter(child => {
+                    return child.url && (child.url.startsWith(prefix + "/") || child.url === prefix || child.url === prefix + "/");
+                });
+                return { ...entry, children };
+            });
+    });
 
     // 自定义 i18n filter：从 page.data.locale 读取（由 eleventy.permalink hook 写入）
     // 字典从 src/_data/i18n.js 读取；缺失时双向 fallback。
@@ -124,85 +136,75 @@ module.exports = function (eleventyConfig) {
         return url.replace(/^\/(zh-cn|en)(\/|$)/, "/" + targetLang + "$2");
     });
 
-    // Wiki 集合：仅匹配 src/{当前 locale}/wiki/ 下的 .md，按 order 排序
-    // i18n 多语言目录结构下，需要把 wiki 限定到当前 locale 子目录下，
-    // 避免在 zh-cn 页面上把英文 wiki 也列出来。
-    eleventyConfig.addCollection("wiki", (api) => {
-        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
-        return api.getFilteredByGlob(`src/${lang}/wiki/**/*.md`).sort((a, b) => {
-            return (a.data.order || 999) - (b.data.order || 999);
-        });
-    });
+    // 按 locale 创建独立的集合（修复：Eleventy 的 addCollection 是全局的，
+    // 不能在回调中用 api.page 获取当前页面的 locale，因为集合只计算一次）
+    // 模板中使用 collections['xxx_' + page.data.locale] 动态访问
+    const _locales = ["zh-cn", "en"];
 
-    // Event 集合：按 locale 隔离
-    eleventyConfig.addCollection("event", (api) => {
-        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
-        return api.getFilteredByGlob(`src/${lang}/event/**/*.md`).sort((a, b) => {
-            return (a.data.order || 999) - (b.data.order || 999);
-        });
-    });
-
-    // Article 集合：按 locale 隔离
-    eleventyConfig.addCollection("article", (api) => {
-        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
-        return api.getFilteredByGlob(`src/${lang}/article/**/*.md`).sort((a, b) => {
-            return (a.data.order || 999) - (b.data.order || 999);
-        });
-    });
-
-    // Zone 集合：按 locale 隔离，用于首页「分区入口」和 zone.md 列表
-    eleventyConfig.addCollection("zone", (api) => {
-        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
-        return api.getFilteredByGlob(`src/${lang}/zone/*.md`).sort((a, b) => {
-            return (a.data.order || 999) - (b.data.order || 999);
-        });
-    });
-
-    // Wiki 按分类分组：按父目录归类，用于侧边栏独立导航
-    // 数据结构：[{ name, label, pages: [...] }, ...]
-    // - name：分类标识（顶层为 "_root"）
-    // - label：分类显示名（取自 frontmatter 的 wikiCategory，否则用目录名）
-    // - pages：该分类下的所有页面
-    // 同时按 locale 隔离：仅聚合 src/{lang}/wiki/ 下内容。
-    eleventyConfig.addCollection("wikiByCategory", (api) => {
-        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
-        const all = api.getFilteredByGlob(`src/${lang}/wiki/**/*.md`);
-        const groups = new Map();
-
-        for (const page of all) {
-            // 提取分类：相对 src/{lang}/wiki/ 的父目录路径
-            const relPath = page.inputPath.replace(/\\/g, "/");
-            const match = relPath.match(/src\/[^/]+\/wiki\/(.*)\/[^/]+\.md$/);
-            const category = match ? match[1] : "_root";
-
-            if (!groups.has(category)) {
-                groups.set(category, []);
-            }
-            groups.get(category).push(page);
-        }
-
-        // 转成数组并排序：分类按 wikiCategoryOrder，页内按 order
-        const result = [];
-        for (const [category, pages] of groups) {
-            const sortedPages = pages.sort((a, b) => {
+    for (const _lang of _locales) {
+        // Wiki 集合
+        eleventyConfig.addCollection(`wiki_${_lang}`, (api) => {
+            return api.getFilteredByGlob(`src/${_lang}/wiki/**/*.md`).sort((a, b) => {
                 return (a.data.order || 999) - (b.data.order || 999);
             });
-            // 取分类的 label 和 order（用第一页的 frontmatter）
-            const first = sortedPages[0];
-            // _root 是顶层 wiki/ 目录的占位分类，给个友好的默认 label
-            // 同时让 _root 默认排在最前（用 -1 强制小于所有 wikiCategoryOrder）
-            const defaultLabel = category === '_root' ? '📖 首页' : category;
-            const defaultOrder = category === '_root' ? -1 : 999;
-            result.push({
-                name: category,
-                label: first.data.wikiCategory || defaultLabel,
-                order: first.data.wikiCategoryOrder ?? defaultOrder,
-                pages: sortedPages
+        });
+
+        // Event 集合
+        eleventyConfig.addCollection(`event_${_lang}`, (api) => {
+            return api.getFilteredByGlob(`src/${_lang}/event/**/*.md`).sort((a, b) => {
+                return (a.data.order || 999) - (b.data.order || 999);
             });
-        }
-        result.sort((a, b) => a.order - b.order);
-        return result;
-    });
+        });
+
+        // Article 集合
+        eleventyConfig.addCollection(`article_${_lang}`, (api) => {
+            return api.getFilteredByGlob(`src/${_lang}/article/**/*.md`).sort((a, b) => {
+                return (a.data.order || 999) - (b.data.order || 999);
+            });
+        });
+
+        // Zone 集合
+        eleventyConfig.addCollection(`zone_${_lang}`, (api) => {
+            return api.getFilteredByGlob(`src/${_lang}/zone/*.md`).sort((a, b) => {
+                return (a.data.order || 999) - (b.data.order || 999);
+            });
+        });
+
+        // Wiki 按分类分组
+        eleventyConfig.addCollection(`wikiByCategory_${_lang}`, (api) => {
+            const all = api.getFilteredByGlob(`src/${_lang}/wiki/**/*.md`);
+            const groups = new Map();
+
+            for (const page of all) {
+                const relPath = page.inputPath.replace(/\\/g, "/");
+                const match = relPath.match(/src\/[^/]+\/wiki\/(.*)\/[^/]+\.md$/);
+                const category = match ? match[1] : "_root";
+
+                if (!groups.has(category)) {
+                    groups.set(category, []);
+                }
+                groups.get(category).push(page);
+            }
+
+            const result = [];
+            for (const [category, pages] of groups) {
+                const sortedPages = pages.sort((a, b) => {
+                    return (a.data.order || 999) - (b.data.order || 999);
+                });
+                const first = sortedPages[0];
+                const defaultLabel = category === '_root' ? '📖 首页' : category;
+                const defaultOrder = category === '_root' ? -1 : 999;
+                result.push({
+                    name: category,
+                    label: first.data.wikiCategory || defaultLabel,
+                    order: first.data.wikiCategoryOrder ?? defaultOrder,
+                    pages: sortedPages
+                });
+            }
+            result.sort((a, b) => a.order - b.order);
+            return result;
+        });
+    }
 
     // 日期格式化 filter：强制锁定北京时间 + 24 小时制
     // 输入可能是 Luxon DateTime 实例、JS Date、ISO 字符串，统一转成 DateTime 再格式化

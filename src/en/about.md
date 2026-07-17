@@ -3,9 +3,8 @@ title: About Us
 layout: layouts/main
 permalink: /about/
 description: About Class of 2025 — Computer Applications
-eleventyExcludeFromCollections: true
 eleventyNavigation:
-    key: about
+    key: en-about
     title: ℹ️ About
     order: 7
 ---

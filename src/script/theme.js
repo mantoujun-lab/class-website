@@ -5,6 +5,7 @@ const OPEN_CLASS = 'theme-menu-open';
 const TABLET_BP = 768;
 
 let cachedTheme = null;
+let headerEl = null;
 
 function applyTheme(mode) {
     console.debug('[theme] 应用主题:', mode);
@@ -27,8 +28,8 @@ function isDesktop() {
 function setMenuOpen(menu, btn, open) {
     menu.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', String(open));
-    if (isDesktop()) {
-        document.body.classList.toggle(OPEN_CLASS, open);
+    if (isDesktop() && headerEl) {
+        headerEl.classList.toggle(OPEN_CLASS, open);
     }
     if (open) {
         console.debug('[theme] 菜单打开');
@@ -40,6 +41,7 @@ function setMenuOpen(menu, btn, open) {
 export function initTheme() {
     console.debug('[theme] 初始化');
 
+    headerEl = dom.header;
     const btn = dom.themeBtn;
     const menu = dom.themeMenu;
     if (!btn || !menu) return;
@@ -69,8 +71,7 @@ export function initTheme() {
     const overlay = dom.overlay;
     if (overlay) {
         overlay.addEventListener('click', function (e) {
-            // 只处理主题菜单场景（避免误关 nav-drawer/nav-popup）
-            if (document.body.classList.contains(OPEN_CLASS)) {
+            if (headerEl && headerEl.classList.contains(OPEN_CLASS)) {
                 e.stopPropagation();
                 setMenuOpen(menu, btn, false);
             }

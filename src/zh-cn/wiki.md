@@ -3,9 +3,8 @@ title: Wiki
 description: 25 级计算机应用 1 班的集体 Wiki
 layout: layouts/wiki
 permalink: /wiki/
-eleventyExcludeFromCollections: true
 eleventyNavigation:
-  key: wiki
+  key: zh-cn-wiki
   title: 📚 Wiki
   order: 3
 ---
@@ -34,7 +33,7 @@ wikiCategoryOrder: 可选,子目录顺序
 ## 所有条目
 
 <ul class="wiki-list">
-    {%- for entry in collections.wiki %}
+    {%- for entry in collections['wiki_' + locale] %}
     <li>
         <a href="{{ entry.url | url }}">{{ entry.data.title }}</a>
         {%- if entry.data.description %}

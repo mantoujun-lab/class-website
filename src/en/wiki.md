@@ -3,9 +3,8 @@ title: Wiki
 description: Class Wiki (English)
 layout: layouts/wiki
 permalink: /wiki/
-eleventyExcludeFromCollections: true
 eleventyNavigation:
-  key: wiki
+  key: en-wiki
   title: 📚 Wiki
   order: 3
 ---
@@ -35,7 +34,7 @@ Body content...
 ## All entries
 
 <ul class="wiki-list">
-    {%- for entry in collections.wiki %}
+    {%- for entry in collections['wiki_' + locale] %}
     <li>
         <a href="{{ entry.url | url }}">{{ entry.data.title }}</a>
         {%- if entry.data.description %}

@@ -6,16 +6,16 @@ cta: 进入
 order: 2
 permalink: /event/
 eleventyNavigation:
-  key: discussion
+  key: zh-cn-event
   title: 🔔 事件
   order: 1
-  parent: zone
+  parent: zh-cn-zone
 ---
 
 {% from "macros/card.njk" import cardEntry %}
 
 <div class="card-entry-list">
-    {%- for entry in collections.event %}
+    {%- for entry in collections['event_' + locale] %}
     {{ cardEntry(
         entry.data.title,
         entry.data.description or "",

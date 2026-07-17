@@ -142,6 +142,7 @@
         position: static;
         box-shadow: none;
         background: rgba(255, 255, 255, 0);
+        border: none;
         border-radius: $radius-btn;
         margin: $spacing-sm 0 $spacing-md;
         padding: 0;
@@ -164,8 +165,19 @@
             transform: translateY(0);
         }
 
+        li {
+            margin: $spacing-sm 0;
+            background: var(--nav-mobile-btn-bg, var(--glass-white-30));
+            border: $border-width-md solid var(--glass-white-60);
+            border-radius: $radius-btn;
+        }
+
         a {
             padding: $spacing-sm $spacing-md;
+            margin: 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
             color: $color-white;
             font-size: 0.95rem;
 

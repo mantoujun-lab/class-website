@@ -168,23 +168,28 @@ initTheme();
 (function initLangSwitcher() {
     const langBtn = document.querySelector('.lang-btn');
     const langMenu = document.querySelector('.lang-menu');
+    const headerEl = document.querySelector('header');
+    const overlay = document.querySelector('.overlay');
     if (!langBtn || !langMenu) return;
 
-    // 写入语言偏好的辅助函数
+    const LANG_OPEN_CLASS = 'lang-menu-open';
+    const TABLET_BP = 768;
+
+    function isDesktop() {
+        return window.innerWidth > TABLET_BP;
+    }
+
     function persistLang(lang) {
         try {
             localStorage.setItem('hjx-lang', lang);
         } catch (e) {
-            // localStorage 可能被禁用（隐私模式），静默失败即可
         }
     }
 
-    // 拦截语言菜单项的点击：在跳转前先持久化偏好
     langMenu.addEventListener('click', function (e) {
         var link = e.target.closest('a[data-lang]');
         if (!link) return;
         persistLang(link.getAttribute('data-lang'));
-        // 让默认的链接跳转继续生效
     });
 
     function isOpen() {
@@ -193,10 +198,16 @@ initTheme();
     function open() {
         langMenu.classList.add('open');
         langBtn.setAttribute('aria-expanded', 'true');
+        if (isDesktop() && headerEl) {
+            headerEl.classList.add(LANG_OPEN_CLASS);
+        }
     }
     function close() {
         langMenu.classList.remove('open');
         langBtn.setAttribute('aria-expanded', 'false');
+        if (headerEl) {
+            headerEl.classList.remove(LANG_OPEN_CLASS);
+        }
     }
     function toggle() {
         if (isOpen()) close();
@@ -207,13 +218,19 @@ initTheme();
         e.stopPropagation();
         toggle();
     });
-    // 点击菜单外部关闭
+
+    if (overlay) {
+        overlay.addEventListener('click', function () {
+            if (isOpen()) close();
+        });
+    }
+
     document.addEventListener('click', function (e) {
         if (isOpen() && !langMenu.contains(e.target) && !langBtn.contains(e.target)) {
             close();
         }
     });
-    // ESC 关闭
+
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && isOpen()) {
             close();
