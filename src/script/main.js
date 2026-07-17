@@ -168,8 +168,7 @@ initTheme();
 (function initLangSwitcher() {
     const langBtn = document.querySelector('.lang-btn');
     const langMenu = document.querySelector('.lang-menu');
-    const headerEl = document.querySelector('header');
-    const overlay = document.querySelector('.overlay');
+    const { header: headerEl, overlay } = dom;
     if (!langBtn || !langMenu) return;
 
     const LANG_OPEN_CLASS = 'lang-menu-open';

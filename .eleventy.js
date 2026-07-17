@@ -37,8 +37,9 @@ module.exports = function (eleventyConfig) {
     // 允许处理的模板格式：Markdown + Nunjucks
     eleventyConfig.setTemplateFormats(['md', 'njk']);
 
-    // 注：eleventy-plugin-i18n 已停用，改用下方自定义 i18n filter。
-    // 原因：插件用 lodash.get 的路径解析（"nav.home" → nav.home 嵌套）与我们的点号键名冲突。
+    // 注：eleventy-plugin-i18n 已移除（package.json），改用自定义实现
+    // 原因：插件的 lodash.get 路径解析将 "nav.home" 视为嵌套，与我们的点号键名冲突
+    // 替代方案见下方：addFilter("i18n"/"lang"/"localUrl") + 目录数据文件（zh-cn.11tydata.js）
 
     // 注册语法高亮插件，仅在 Markdown 文件中启用
     // preAttributes 给 <pre> 自动加上 line-numbers 类，让 Prism line-numbers 插件接管。
