@@ -1,21 +1,21 @@
 ---
-title: 文章
-layout: layouts/article
-eleventyNavigation:
-  key: article
-  title: 📰 文章
-  order: 2
+title: Events
+description: Class events and activities
+layout: layouts/zone
+cta: Visit
+order: 2
+permalink: /event/
 ---
 
 {% from "macros/card.njk" import cardEntry %}
 
-<div class="card-full-list">
-    {%- for entry in collections.article %}
+<div class="card-entry-list">
+    {%- for entry in collections.event %}
     {{ cardEntry(
         entry.data.title,
         entry.data.description or "",
         entry.url | url,
-        "查看详细信息",
+        ("common.viewDetail" | i18n),
         entry.data.date,
         entry.data.author
     ) }}

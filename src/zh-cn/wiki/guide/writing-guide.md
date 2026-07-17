@@ -2,6 +2,7 @@
 title: 写作指南
 description: 如何撰写 Wiki 条目
 layout: layouts/wiki
+permalink: /wiki/guide/writing-guide/
 order: 1
 wikiCategory: 📝 入门指南
 wikiCategoryOrder: 1

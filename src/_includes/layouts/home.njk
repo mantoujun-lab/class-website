@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang or 'zh-CN' }}" dir="{{ dir or 'ltr' }}">
 
 <head>
     {%- set layoutIcon = "/assets/images/icon/home.png" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title or "页面" }}</title>
+    <title>{{ title or ('common.page' | i18n) }}</title>
     {% include "components/head-assets.njk" %}
 </head>
 
@@ -16,69 +16,69 @@
     {# ==================== Hero 横幅 ==================== #}
     <section class="hero-banner">
         <div class="hero-inner">
-            <div class="hero-tag"><i class="fa-solid fa-graduation-cap"></i> 25级计算机应用1班</div>
+            <div class="hero-tag"><i class="fa-solid fa-graduation-cap"></i> {{ 'home.heroTag' | i18n }}</div>
             <h1 class="hero-title">
-                欢迎来到我们的<br>
-                <span class="hero-title-accent">班级网站</span>
+                {{ 'home.heroTitle1' | i18n }}<br>
+                <span class="hero-title-accent">{{ 'home.heroTitle2' | i18n }}</span>
             </h1>
             <p class="hero-subtitle">
-                基于 <strong class="Eleventy">Eleventy</strong> 构建的静态站点,由同学们共同维护。<br>
-                记录学习心得、笔记、事件与项目～
+                {{ 'home.heroSubtitle1' | i18n }}<br>
+                {{ 'home.heroSubtitle2' | i18n }}
             </p>
             <div class="hero-actions">
-                {{ button("fa-solid fa-book-open", "快速开始", "/wiki/getting-started/") }}
-                {{ button("fa-brands fa-github", "GitHub 仓库", "https://github.com/hjx-25pc1/hjx-25pc1.github.io", target="_blank") }}
-                {{ button("fa-solid fa-rocket", "Astro 站点", "/astro", btnColor="rgb(255, 150, 0)", btnHover="rgb(200, 150, 0)", btnBorder="rgb(200, 150, 0)") }}
+                {{ button("fa-solid fa-book-open", ('home.btnGetStarted' | i18n), ('/wiki/getting-started/' | localUrl)) }}
+                {{ button("fa-brands fa-github", ('home.btnRepo' | i18n), "https://github.com/hjx-25pc1/hjx-25pc1.github.io", target="_blank") }}
+                {{ button("fa-solid fa-rocket", ('home.btnAstro' | i18n), ('/astro' | localUrl), btnColor="rgb(255, 150, 0)", btnHover="rgb(200, 150, 0)", btnBorder="rgb(200, 150, 0)") }}
             </div>
 
-            {# 统计数字 + 浏览量图片(more counter 保留,作为附加信息) #}
+            {# 统计数字 + 浏览量图片（more counter 保留,作为附加信息） #}
             <div class="hero-stats">
                 <div class="hero-stat">
                     <div class="hero-stat-num">37</div>
-                    <div class="hero-stat-label">同学</div>
+                    <div class="hero-stat-label">{{ 'home.stat.students' | i18n }}</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-num">2</div>
-                    <div class="hero-stat-label">维护者</div>
+                    <div class="hero-stat-label">{{ 'home.stat.maintainers' | i18n }}</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-num">5</div>
-                    <div class="hero-stat-label">分区</div>
+                    <div class="hero-stat-label">{{ 'home.stat.zones' | i18n }}</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-num hero-stat-num--text">Eleventy</div>
-                    <div class="hero-stat-label">技术栈</div>
+                    <div class="hero-stat-label">{{ 'home.stat.stack' | i18n }}</div>
                 </div>
                 <div class="hero-stat hero-stat--counter">
-                    <img src="https://count.getloli.com/@hjx-25pc1.github.io?name=hjx-25pc1.github.io&theme=3d-num&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt="浏览量" class="hero-counter-img">
-                    <div class="hero-stat-label">浏览量</div>
+                    <img src="https://count.getloli.com/@hjx-25pc1.github.io?name=hjx-25pc1.github.io&theme=3d-num&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt="{{ 'home.stat.views' | i18n }}" class="hero-counter-img">
+                    <div class="hero-stat-label">{{ 'home.stat.views' | i18n }}</div>
                 </div>
             </div>
         </div>
     </section>
 
-    {# ==================== 关于我们(article 块) ==================== #}
+    {# ==================== 关于我们（article 块） ==================== #}
     <article>
-        <h2>🏫 关于我们</h2>
+        <h2>{{ 'home.aboutTitle' | i18n }}</h2>
         <div align="center">
-            <p>我们是来自<a href="http://hnjjx.com" target="_blank" style="font-weight: bold;">海南省经济技术学校</a>的<a href="https://github.com/hjx-25pc1" target="_blank" style="font-weight: bold;">25级计算机应用1班</a>(大专班),一个由 <strong>37</strong> 名同学组成的小集体</p>
-            <p>网站使用 <strong>GitHub</strong> 托管代码,<strong>GitHub Pages</strong> 部署静态页面,<strong>Eleventy</strong> 作为静态站点生成器。</p>
-            <p>目前处于半完成状态,内容会随时变化,欢迎每次都回来看看～</p>
-            {{ button("fa-solid fa-arrow-right", "了解更多", "/about/", btnColor="rgba(200, 255, 200)", textColor="rgb(0, 0, 0)", btnHover="rgb(150, 200, 150)", btnBorder="rgb(150, 200, 150)") }}
+            <p>{{ 'home.aboutP1' | i18n }}</p>
+            <p>{{ 'home.aboutP2' | i18n }}</p>
+            <p>{{ 'home.aboutP3' | i18n }}</p>
+            {{ button("fa-solid fa-arrow-right", ('home.btnLearnMore' | i18n), ('/about/' | localUrl), btnColor="rgba(200, 255, 200)", textColor="rgb(0, 0, 0)", btnHover="rgb(150, 200, 150)", btnBorder="rgb(150, 200, 150)") }}
         </div>
     </article>
 
-    {# ==================== 主体内容(由 index.md 注入) ==================== #}
+    {# ==================== 主体内容（由 index.md 注入） ==================== #}
     <article>
         {{ content | safe }}
     </article>
 
     {# ==================== 友情链接 ==================== #}
     <article>
-        <h2>🔗 友情链接</h2>
+        <h2>{{ 'home.friendsTitle' | i18n }}</h2>
         <div align="center">
-            {{ button("fa-solid fa-smile", "mantoujun12 的个人网站", "https://mantoujun12.github.io", btnColor="rgb(255, 255, 255)", btnHover="rgb(200, 200, 200)", textColor="rgb(0, 0, 0)", btnBorder="rgb(200, 200, 200)", target="_blank") }}
-            {{ button("fa-solid fa-school", "海经校网站", "http://www.hnjjx.com", btnColor="rgb(255, 150, 0)", btnHover="rgb(200, 150, 0)", btnBorder="rgb(200, 150, 0)", target="_blank") }}
+            {{ button("fa-solid fa-smile", "mantoujun12", "https://mantoujun12.github.io", btnColor="rgb(255, 255, 255)", btnHover="rgb(200, 200, 200)", textColor="rgb(0, 0, 0)", btnBorder="rgb(200, 200, 200)", target="_blank") }}
+            {{ button("fa-solid fa-school", "hnjjx.com", "http://www.hnjjx.com", btnColor="rgb(255, 150, 0)", btnHover="rgb(200, 150, 0)", btnBorder="rgb(200, 150, 0)", target="_blank") }}
         </div>
     </article>
     {% include "components/footer.njk" %}

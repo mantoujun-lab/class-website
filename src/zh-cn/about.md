@@ -1,7 +1,9 @@
 ---
 title: 关于我们
 layout: layouts/main
+permalink: /about/
 description: 海南省经济技术学校 25 级计算机应用 1 班组织介绍
+eleventyExcludeFromCollections: true
 eleventyNavigation:
     key: about
     title: ℹ️ 关于
@@ -34,31 +36,31 @@ eleventyNavigation:
 {{ card(
     "🏠 班级主页",
     "展示班级风貌,作为对外窗口。",
-    "/",
+    ("/" | localUrl),
     "回到首页"
 ) }}
 {{ card(
     "📚 班级 Wiki",
     "沉淀学习资料、写作规范、API 参考、部署指南等知识文档。",
-    "/wiki/",
+    ("/wiki/" | localUrl),
     "浏览 Wiki"
 ) }}
 {{ card(
     "🔔 事件记录",
     "记录班级里的重要事件、活动与日常。",
-    "/event/",
+    ("/event/" | localUrl),
     "查看事件"
 ) }}
 {{ card(
     "📰 文章分享",
     "同学撰写的技术笔记、随笔与心得。",
-    "/article/",
+    ("/article/" | localUrl),
     "阅读文章"
 ) }}
 {{ card(
     "💬 讨论区",
     "基于 GitHub Issues / Giscus 的开放讨论空间。",
-    "/discussion/",
+    ("/discussion/" | localUrl),
     "前往讨论"
 ) }}
 {{ card(

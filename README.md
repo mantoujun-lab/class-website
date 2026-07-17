@@ -34,7 +34,61 @@ The site is organized into three main content sections — **Events / Articles /
 - **Live Site**: <https://hjx-25pc1.github.io>
 - **Repository**: <https://github.com/hjx-25pc1/hjx-25pc1.github.io>
 
-## 🔨 Tech Stack
+## Project Structure & i18n Architecture
+
+This site uses a **directory-isolated** i18n architecture, where each language has its own content directory. Eleventy directory data files automatically inject locale and permalink prefixes:
+
+```
+src/
+├── _data/i18n.js              ← Translation dictionary (zh-cn / en)
+├── _includes/                 ← Layouts, components, macros (shared, not language-specific)
+├── _layouts/                  ← Layout templates
+├── _macros/                   ← Reusable macros
+├── style/                     ← SCSS stylesheets
+├── script/                    ← Front-end JavaScript
+├── zh-cn/                     ← Chinese content (primary language)
+│   ├── zh-cn.11tydata.js      ← Injects locale and permalink prefix
+│   ├── zh-cn.json             ← Injects locale/lang/dir metadata
+│   ├── index.md               ← Chinese homepage
+│   ├── article/               ← Chinese articles
+│   ├── wiki/                  ← Chinese wiki
+│   ├── zone/                  ← Chinese zones
+│   └── event/                 ← Chinese events
+├── en/                        ← English content
+│   ├── en.11tydata.js         ← Same, for English
+│   ├── en.json
+│   ├── index.md
+│   └── ...
+└── index-redirect.md          ← Root JS redirect (no language content, detects user preference)
+```
+
+### Adding Multilingual Content
+
+1. **Create new pages**: Add the Chinese version under `src/zh-cn/` (primary), and the English version under `src/en/`. The `permalink` in front matter does not need a language prefix (e.g., `permalink: /about/`) — directory data files will auto-add `/zh-cn/` or `/en/`.
+
+2. **Use translation dictionary**: Reference translations in templates with `{{ 'key.path' | i18n }}`. Dictionary keys are defined in `src/_data/i18n.js`. When adding new keys, provide both zh-cn and en values.
+
+3. **Locale-aware links**: Use `{{ '/path/' | localUrl }}` instead of `{{ '/path/' | url }}` for internal links. The `localUrl` filter automatically prepends the correct language prefix.
+
+4. **Root path behavior**: When users visit `/`, the site detects their language preference from localStorage (or `navigator.language`) and redirects to `/zh-cn/` or `/en/`. The navigation bar provides a language switcher that saves preferences to localStorage.
+
+5. **Directory data files**:
+   - `*.11tydata.js`: JavaScript objects with computed properties, mainly used for `eleventyComputed.permalink` (dynamic prefix injection)
+   - `*.json`: Static JSON objects for locale, lang, dir metadata
+
+### Page Metadata
+
+All content pages should include the following front matter:
+
+```yaml
+---
+title: Page Title          # Required; appears in <title> and page header
+permalink: /page-slug/     # Semantic path, no language prefix (auto-added)
+layout: layouts/default    # Layout template
+---
+```
+
+## Tech Stack
 
 This project is a fully static site built with the following technologies:
 
@@ -45,7 +99,12 @@ This project is a fully static site built with the following technologies:
 - **PostCSS + Autoprefixer** — Automatically adds vendor prefixes for broad browser compatibility
 - **[@11ty/eleventy-img](https://www.11ty.dev/docs/plugins/image/)** — Responsive image processing, auto-generates `webp` and `jpeg` at multiple sizes
 - **[@11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Syntax highlighting for Markdown code blocks
-- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependenc[...]
+- **i18n Internationalization** — Directory-based multi-language solution:
+  - `lodash.get` + `templite` — Custom `i18n` filter with variable interpolation
+  - `eleventy-plugin-i18n` — Official plugin (reference implementation; we use our own filter)
+  - Directory data files (`*.11tydata.js` / `*.json`) — Auto-inject locale and permalink prefix for `src/zh-cn/` and `src/en/`
+  - Custom filters: `i18n` (translate), `localUrl` (locale-aware URL), `switchLang` (language switch URL), `lang` (current language code)
+- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency; `lang-switcher.js` handles the navigation language switcher and localStorage preference persistence[...]
 - **GitHub Actions** — Automated CI/CD; pushing to the `main` branch triggers a build and deployment
 - **GitHub Pages** — Static site hosting platform
 

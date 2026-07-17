@@ -2,6 +2,8 @@
 title: 首页 - 25级计算机应用1班
 description: 海经校 25 计算机 1 班官方班级主页 —— 记录学习心得、笔记、事件与项目
 layout: layouts/home
+permalink: /
+eleventyExcludeFromCollections: true
 eleventyNavigation:
     key: home
     title: 🏠 首页
@@ -11,51 +13,51 @@ eleventyNavigation:
 {% from "macros/button.njk" import button %}
 {% from "macros/card.njk" import card, cardEntry %}
 
-## 📌 分区
+## {{ 'home.sectionZones' | i18n }}
 
 <div class="cardzone-three-columns">
 {%- for entry in collections.zone %}
 {%- if loop.index <= 3 %}
-{{ card(entry.data.title, entry.data.description or "", entry.url | url, entry.data.cta or "进入") }}
+{{ card(entry.data.title, entry.data.description or "", entry.url | url, entry.data.cta or ('common.enter' | i18n)) }}
 {%- endif %}
 {%- endfor %}
 </div>
 
 <div align="center">
-{{ button("fa-solid fa-book-open", "进入班级 Wiki", "/wiki/") }}
+{{ button("fa-solid fa-book-open", ('home.btnWiki' | i18n), ('/wiki/' | localUrl)) }}
 
-{{ button("fa-solid fa-arrow-right", "更多分区", "/zone/") }}
+{{ button("fa-solid fa-arrow-right", ('home.btnMoreZones' | i18n), ('/zone/' | localUrl)) }}
 </div>
 
-## 🔔 事件
+## {{ 'home.sectionEvents' | i18n }}
 
 <div class="card-entry-list">
 {%- for entry in collections.event %}
 {%- if loop.index <= 5 %}
-{{ cardEntry(entry.data.title, entry.data.description or "", entry.url | url, "查看详细信息", entry.data.date, entry.data.author) }}
+{{ cardEntry(entry.data.title, entry.data.description or "", entry.url | url, ('common.viewDetail' | i18n), entry.data.date, entry.data.author) }}
 {%- endif %}
 {%- endfor %}
 </div>
 
 <div align="right">
-{{ button("fa-solid fa-arrow-right", "查看更多事件", "/event/") }}
+{{ button("fa-solid fa-arrow-right", ('home.btnMoreEvents' | i18n), ('/event/' | localUrl)) }}
 </div>
 
-## 📰 文章
+## {{ 'home.sectionArticles' | i18n }}
 
 <div class="card-entry-list">
 {%- for entry in collections.article %}
 {%- if loop.index <= 15 %}
-{{ cardEntry(entry.data.title, entry.data.description or "", entry.url | url, "查看详细信息", entry.data.date, entry.data.author) }}
+{{ cardEntry(entry.data.title, entry.data.description or "", entry.url | url, ('common.viewDetail' | i18n), entry.data.date, entry.data.author) }}
 {%- endif %}
 {%- endfor %}
 </div>
 
 <div align="right">
-{{ button("fa-solid fa-arrow-right", "查看更多文章", "/article/") }}
+{{ button("fa-solid fa-arrow-right", ('home.btnMoreArticles' | i18n), ('/article/' | localUrl)) }}
 </div>
 
-## 👥 贡献者
+## {{ 'home.sectionContribs' | i18n }}
 
 <!-- CONTRIBUTORS START -->
 <a href="https://github.com/mantoujun12" title="mantoujun12"><img src="https://avatars.githubusercontent.com/u/202384594?v=4" width="80" alt="mantoujun12"/></a>

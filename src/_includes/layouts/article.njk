@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang or 'zh-CN' }}" dir="{{ dir or 'ltr' }}">
 
 <head>
     {%- set layoutIcon = "/assets/images/icon/article.png" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title or "页面" }}</title>
+    <title>{{ title or ('common.page' | i18n) }}</title>
     {% include "components/head-assets.njk" %}
 </head>
 
 <body>
     {% include "../components/header.njk" %}
     <article>
-        <h1>{{ title or "文章" }}</h1>
+        <h1>{{ title or ('article.listTitle' | i18n) }}</h1>
         {% if author %}
         <p class="author"><i class="fa-solid fa-user"></i> {{ author }}</p>
         {% endif %}

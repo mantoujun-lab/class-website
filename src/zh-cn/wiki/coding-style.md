@@ -2,6 +2,7 @@
 title: 代码规范
 description: 班级网站的代码风格约定
 layout: layouts/wiki
+permalink: /wiki/coding-style/
 order: 2
 ---
 

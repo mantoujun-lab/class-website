@@ -2,6 +2,7 @@
 title: 样式 Class 列表
 description: 汇总 src/style 下所有 SCSS 文件定义的样式类，按模块分类，供开发者参考
 layout: layouts/wiki
+permalink: /wiki/reference/style-class/
 order: 2
 wikiCategory: 📚 参考手册
 wikiCategoryOrder: 2

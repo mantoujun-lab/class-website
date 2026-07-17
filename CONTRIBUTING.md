@@ -208,7 +208,7 @@ npm install
 | `npm run serve`                | Start the local dev server with hot reload                               |
 | `npm run build`                | Build the production bundle into `_site/`                                |
 | `npm run watch`                | Watch files and rebuild without starting a server                        |
-| `npm run sync:wiki`            | Sync entries under `src/wiki/` to the GitHub Wiki repo                   |
+| `npm run sync:wiki`            | Sync entries under `src/zh-cn/wiki/` to the GitHub Wiki repo               |
 | `npm run release`              | Build `_site/` and package it as a zip into `dist/`                      |
 | `npm run bump`                 | Bump the `version` field in `package.json` / `package-lock.json`        |
 | `npm run generate:contributors` | Regenerate the contributors avatar wall in the READMEs (same effect as the `Generate contributors image` workflow) |
@@ -276,10 +276,15 @@ The site is deployed at the GitHub Pages root path (`/`), so please use Eleventy
 
 ```njk
 <link rel="stylesheet" href="{{ '/style/style.css' | url }}">
-<a href="{{ '/about/' | url }}">About</a>
 ```
 
-Avoid hard-coding the root path `/`; otherwise styles and links will break during local preview.
+For internal page links, use the `| localUrl` filter — it automatically prepends the correct language prefix (`/zh-cn/` or `/en/`) based on the current locale:
+
+```njk
+<a href="{{ '/about/' | localUrl }}">About</a>
+```
+
+> Do not hard-code `/zh-cn/about/` in templates. Use `'/about/' | localUrl` so the same template serves both Chinese and English pages.
 
 ---
 
@@ -305,7 +310,7 @@ To keep the codebase consistent, please follow these conventions:
 ### HTML
 
 - Files must be valid HTML5, starting with `<!DOCTYPE html>`.
-- Declare `lang="zh-CN"` on the `<html>` tag.
+- The `lang` and `dir` attributes on `<html>` are injected automatically by the layout template (`lang="{{ lang }}" dir="{{ dir }}"`). Do **not** hard-code them in child templates or pages.
 - Include `<meta charset="UTF-8">` and the viewport meta tag:
   ```html
   <meta charset="UTF-8">
@@ -328,6 +333,40 @@ Add a single space between Chinese and English content, e.g.:
 - Never commit sensitive information (API keys, passwords, tokens, etc.) to the repo.
 - Don't handle user input with inline scripts — protect against XSS.
 - Always use HTTPS for external resources.
+
+### Multilingual Content Management
+
+This site uses a directory-isolated i18n architecture. When contributing content, keep the following in mind:
+
+**Directory Structure**
+
+- Chinese content goes under `src/zh-cn/` (primary language)
+- English content goes under `src/en/` (translated version)
+- Both directories should mirror each other (e.g., `src/zh-cn/article/xxx.md` corresponds to `src/en/article/xxx.md`)
+- `.11tydata.js` and `.json` are directory data files, **not pages**. They auto-inject locale, permalink prefixes, etc. No need to create corresponding files in the other language directory.
+
+**Translation Dictionary**
+
+- All UI text is managed centrally in `src/_data/i18n.js`
+- When adding new translation keys, always provide both zh-cn and en values
+- Usage: `{{ 'nav.home' | i18n }}` in templates
+- Template variables are supported: `{{ 'nav.greeting' | i18n({ name: 'Jane' }) }}`
+
+**Common i18n Filters**
+
+| Filter     | Purpose                                      | Example                                  |
+| ---------- | -------------------------------------------- | ---------------------------------------- |
+| `i18n`     | Translate a dictionary key                   | `{{ 'nav.home' \| i18n }}`                |
+| `localUrl` | Generate a locale-prefixed internal URL      | `{{ '/about/' \| localUrl }}`             |
+| `switchLang` | Generate a URL switching to the target lang | `{{ page.url \| switchLang('zh-cn') }}`   |
+| `lang`     | Get the current language code                | `{{ '' \| lang }}`                        |
+
+**Adding New Pages**
+
+1. Create the Chinese `.md` file under `src/zh-cn/<section>/`
+2. Create the corresponding English `.md` file under `src/en/<section>/` (can be a placeholder with "To be translated")
+3. The `permalink` in front matter should be relative (e.g., `/about/`) — do not add a language prefix
+4. If the page should appear in navigation, update the nav configuration in `zh-cn.11tydata.js` (or `.json`)
 
 ---
 

@@ -2,6 +2,8 @@
 title: 分区
 description: 你可以在这里找到你需要的专区、链接等内容
 layout: layouts/zone
+permalink: /zone/
+eleventyExcludeFromCollections: true
 eleventyNavigation:
   key: zone
   title: 📌 分区
@@ -18,5 +20,5 @@ eleventyNavigation:
 </div>
 
 <div align="center">
-{{ button("fa-solid fa-book-open", "进入班级 Wiki", "/wiki/") }}
+{{ button("fa-solid fa-book-open", ('home.btnWiki' | i18n), ('/wiki/' | localUrl)) }}
 </div>

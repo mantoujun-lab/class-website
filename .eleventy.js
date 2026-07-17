@@ -4,6 +4,8 @@ const path = require("path");
 const Image = require("@11ty/eleventy-img");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const eleventyNavigation = require("@11ty/eleventy-navigation");
+const i18nPlugin = require("eleventy-plugin-i18n");
+const translations = require("./src/_data/i18n.js");
 const postcss = require("postcss");
 const autoprefixer = require("autoprefixer");
 
@@ -36,6 +38,9 @@ module.exports = function (eleventyConfig) {
     // 允许处理的模板格式：Markdown + Nunjucks
     eleventyConfig.setTemplateFormats(['md', 'njk']);
 
+    // i18n 插件
+    eleventyConfig.addPlugin(i18nPlugin, { translations });
+
     // 注册语法高亮插件，仅在 Markdown 文件中启用
     // preAttributes 给 <pre> 自动加上 line-numbers 类，让 Prism line-numbers 插件接管。
     // 注意：不要设置 codeAttributes.class = ""，否则会把默认的 "language-xxx" class 清掉，
@@ -50,48 +55,124 @@ module.exports = function (eleventyConfig) {
     // 注册导航插件
     eleventyConfig.addPlugin(eleventyNavigation);
 
-    // Wiki 集合：递归匹配所有 .md 文件，按 order 排序
+    // 注册 i18n 插件（暂时不用，因为插件从 page.url 推断 locale，时机不对）
+    // 我们自己实现 i18n filter（见下方），更可靠。
+    // eleventyConfig.addPlugin(i18nPlugin, {...});
+
+    // 自定义 i18n filter：从 page.data.locale 读取（由 eleventy.permalink hook 写入）
+    // 字典从 src/_data/i18n.js 读取；缺失时双向 fallback。
+    const lodashGet = require("lodash.get");
+    const templite = require("templite");
+    eleventyConfig.addFilter("i18n", function (key, data, localeOverride) {
+        // 多层兜底：参数 > ctx > page.data > 默认
+        const locale = localeOverride
+            || (this.ctx && this.ctx.locale)
+            || (this.page && this.page.data && this.page.data.locale)
+            || (this.env && this.env.locale) // 全局兜底
+            || "zh-cn";
+        const t = lodashGet(translations, [key, locale]);
+        if (t !== undefined) {
+            try { return templite(t, data || {}); } catch (e) { return t; }
+        }
+        // 兜底：双向 fallback
+        const fallback = (locale === "zh-cn") ? "en" : "zh-cn";
+        const tf = lodashGet(translations, [key, fallback]);
+        if (tf !== undefined) {
+            try { return templite(tf, data || {}); } catch (e) { return tf; }
+        }
+        return key; // 都找不到就返回 key（最少不会崩）
+    });
+
+    // 自定义 filter：从 page.data.locale 取当前 locale
+    // （由 eleventy.permalink hook 写入）
+    eleventyConfig.addFilter("lang", function (fallback) {
+        const l = (this.ctx && this.ctx.locale) || (this.page && this.page.data && this.page.data.locale);
+        return l || fallback || "zh-cn";
+    });
+
+    // localUrl filter：把"语义路径"自动加上当前 locale 前缀
+    // 用法：{{ "/wiki/" | localUrl }} 在 zh-cn 页面输出 /zh-cn/wiki/，在 en 页面输出 /en/wiki/
+    // 工作原理：
+    //   1. 模板里继续写不带 locale 前缀的链接（保持可读性、便于翻译模板时复用）
+    //   2. filter 从 page.data.locale 推断当前 locale
+    //   3. 跳过已是绝对外链（http/https/mailto/#）或已含 locale 前缀的路径
+    //   4. 内部路由（/assets、/script、/style、/img）也不加前缀
+    const INTERNAL_NO_PREFIX = /^\/(assets|script|style|img|favicon\.ico)\//;
+    eleventyConfig.addFilter("localUrl", function (path, overrideLang) {
+        if (!path || typeof path !== "string") return path;
+        // 外链 / 锚点 / 已带前缀：原样返回
+        if (/^(https?:|mailto:|#|javascript:)/i.test(path)) return path;
+        if (path.startsWith("//")) return path;
+        // 取当前 locale
+        const l = (this.ctx && this.ctx.locale) || (this.page && this.page.data && this.page.data.locale);
+        const lang = overrideLang || l || "zh-cn";
+        // 已是 /zh-cn/xxx 或 /en/xxx 形式
+        if (/^\/(zh-cn|en)\//.test(path)) return path;
+        if (path === "/zh-cn" || path === "/en") return path;
+        // 内部静态资源：直接返回
+        if (INTERNAL_NO_PREFIX.test(path)) return path;
+        // 根路径特殊处理：/ -> /zh-cn/
+        if (path === "/") return "/" + lang + "/";
+        // 给路径加前缀
+        return "/" + lang + path;
+    });
+
+    // 切换语言链接：在当前 URL 上替换 /zh-cn/ → /en/ 等
+    // 用法：{{ page.url | switchLang('en') }}
+    eleventyConfig.addFilter("switchLang", function (url, targetLang) {
+        if (!url || typeof url !== "string") return url;
+        return url.replace(/^\/(zh-cn|en)(\/|$)/, "/" + targetLang + "$2");
+    });
+
+    // Wiki 集合：仅匹配 src/{当前 locale}/wiki/ 下的 .md，按 order 排序
+    // i18n 多语言目录结构下，需要把 wiki 限定到当前 locale 子目录下，
+    // 避免在 zh-cn 页面上把英文 wiki 也列出来。
     eleventyConfig.addCollection("wiki", (api) => {
-        return api.getFilteredByGlob("src/wiki/**/*.md").sort((a, b) => {
+        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
+        return api.getFilteredByGlob(`src/${lang}/wiki/**/*.md`).sort((a, b) => {
             return (a.data.order || 999) - (b.data.order || 999);
         });
     });
 
-    // Event 集合：递归匹配 src/event/ 下的所有 .md 文件，按 order 排序
+    // Event 集合：按 locale 隔离
     eleventyConfig.addCollection("event", (api) => {
-        return api.getFilteredByGlob("src/event/**/*.md").sort((a, b) => {
+        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
+        return api.getFilteredByGlob(`src/${lang}/event/**/*.md`).sort((a, b) => {
             return (a.data.order || 999) - (b.data.order || 999);
         });
     });
 
-    // Article 集合：递归匹配 src/article/ 下的所有 .md 文件，按 order 排序
+    // Article 集合：按 locale 隔离
     eleventyConfig.addCollection("article", (api) => {
-        return api.getFilteredByGlob("src/article/**/*.md").sort((a, b) => {
+        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
+        return api.getFilteredByGlob(`src/${lang}/article/**/*.md`).sort((a, b) => {
             return (a.data.order || 999) - (b.data.order || 999);
         });
     });
 
-    // Zone 集合：匹配 src/zone/*.md 顶层文件，按 order 排序
-    // 用于首页「专区入口」卡片和 zone.md 分区列表的数据驱动
+    // Zone 集合：按 locale 隔离，用于首页「分区入口」和 zone.md 列表
     eleventyConfig.addCollection("zone", (api) => {
-        return api.getFilteredByGlob("src/zone/*.md").sort((a, b) => {
+        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
+        return api.getFilteredByGlob(`src/${lang}/zone/*.md`).sort((a, b) => {
             return (a.data.order || 999) - (b.data.order || 999);
         });
     });
 
     // Wiki 按分类分组：按父目录归类，用于侧边栏独立导航
     // 数据结构：[{ name, label, pages: [...] }, ...]
-    // - name：分类标识（顶层为 "all"）
+    // - name：分类标识（顶层为 "_root"）
     // - label：分类显示名（取自 frontmatter 的 wikiCategory，否则用目录名）
     // - pages：该分类下的所有页面
+    // 同时按 locale 隔离：仅聚合 src/{lang}/wiki/ 下内容。
     eleventyConfig.addCollection("wikiByCategory", (api) => {
-        const all = api.getFilteredByGlob("src/wiki/**/*.md");
+        const lang = (api.page && api.page.data && api.page.data.locale) || "zh-cn";
+        const all = api.getFilteredByGlob(`src/${lang}/wiki/**/*.md`);
         const groups = new Map();
 
         for (const page of all) {
-            // 提取分类：相对 src/wiki/ 的父目录路径
+            // 提取分类：相对 src/{lang}/wiki/ 的父目录路径
             const relPath = page.inputPath.replace(/\\/g, "/");
-            const match = relPath.match(/src\/wiki\/(.*)\/[^/]+\.md$/);
+            const match = relPath.match(/src\/[^/]+\/wiki\/(.*)\/[^/]+\.md$/);
             const category = match ? match[1] : "_root";
 
             if (!groups.has(category)) {
@@ -267,6 +348,59 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy('src/assets');
     eleventyConfig.addPassthroughCopy('src/script');
 
+    // ==================== Permalink i18n 增强 ====================
+    // 目标：现有页面 frontmatter 里写的是不带 locale 前缀的"短路径"
+    // （permalink: /wiki/、/article/、/event/、/about/、/discussion/、/zone/study/...），
+    // 我们希望按页面所在的 locale 子目录自动加上 /zh-cn/ 或 /en/ 前缀。
+    //
+    // 实现思路：用 eleventyConfig 的 permalink 计算钩子，
+    // 如果 permalink 以 / 开头、且不含 /zh-cn/ /en/ 前缀，则读取 page.inputPath
+    // 推断 locale 并加前缀。
+    //
+    // 例：
+    //   src/zh-cn/wiki.md     permalink: /wiki/    → /zh-cn/wiki/
+    //   src/zh-cn/zone/study.md permalink: /zone/study/ → /zh-cn/zone/study/
+    //   src/en/index.md       permalink: /         → /en/
+    // ==================== Permalink i18n 增强 ====================
+    // Eleventy 3.x 已弃用 eleventy.permalink 事件钩子，
+    // 改用 directory data file（src/{locale}/{locale}.11tydata.js）
+    // 在 eleventyComputed.permalink 里加 locale 前缀。
+    // 见 src/zh-cn/zh-cn.11tydata.js 与 src/en/en.11tydata.js。
+    // 这里仅注册一个全局 eleventyComputed，回退到 inputPath 推断：
+    eleventyConfig.addGlobalData("eleventyComputed", {
+        // permalink 兜底：仅当页面没显式声明 permalink 且未在目录数据中注入时生效
+        permalink: function (data) {
+            // 已经设置过（含目录级 eleventyComputed）就不再覆盖
+            const cur = data && data.permalink;
+            if (cur && typeof cur === "string") {
+                // 已带前缀就不再处理（重复注入兜底）
+                if (/^\/(zh-cn|en)\//.test(cur)) return cur;
+                if (cur === "/zh-cn" || cur === "/en") return cur;
+                if (INTERNAL_NO_PREFIX.test(cur)) return cur;
+                // 根路径跳板页：/index.html 不加 locale 前缀
+                // （用于 src/index-redirect.md 这种根 JS 跳板）
+                if (cur === "/index.html") return cur;
+                if (cur === "/") {
+                    const locale = (data.locale) || "zh-cn";
+                    return "/" + locale + "/";
+                }
+                // 给未带前缀的 permalink 补上前缀
+                const locale = (data.locale) || "zh-cn";
+                return "/" + locale + cur;
+            }
+            return cur; // undefined / null / false / 空 等保持原样
+        },
+        locale: function (data) {
+            // 由 src/{locale}/{locale}.11tydata.js 注入，否则默认 zh-cn
+            return data.locale || "zh-cn";
+        },
+        lang: function (data) {
+            if (data.lang) return data.lang;
+            const loc = data.locale || "zh-cn";
+            return loc === "zh-cn" ? "zh-CN" : loc;
+        },
+    });
+
     // 构建前编译 Sass
     eleventyConfig.on("beforeBuild", compileSass);
 
@@ -293,3 +427,4 @@ module.exports = function (eleventyConfig) {
         templateFormats: ["njk", "html", "md"]
     };
 };
+

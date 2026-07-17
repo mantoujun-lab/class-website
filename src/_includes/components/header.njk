@@ -7,17 +7,10 @@
    2. md front matter：定义 `headerBg: "#ff0000"`（次高优先级）
    3. 不设置则使用主题色（由 --color-primary 提供，跟随深浅色主题）
 
-   实现原理：
-   - header.scss 中 background 使用 var(--header-bg, $color-primary)
-   - 此处仅当 headerBg 非空时输出 inline style，避免给默认卡片加多余的空 style
-
-   按钮 hover / 移动端背景色不在此处暴露，按钮颜色统一走
-   `_theme-vars.scss` 中全局声明的 5 个 CSS 变量：
-   --header-hover-bg / --nav-drawer-close-hover-bg /
-   --nav-mobile-btn-bg / --nav-mobile-btn-border /
-   --nav-mobile-btn-hover-bg
-   默认值用 color-mix(in srgb, var(--header-bg, var(--color-primary)) X%, transparent)
-   自动跟随当前 header 底色给出协调的对比色。
+   i18n：
+   - 所有展示文案通过 `{{ 'nav.xxx' | i18n }}` 读取
+   - 所有站内链接通过 `{{ '/xxx' | localUrl }}` 自动加 locale 前缀
+   - 语言切换器：根据当前 locale 自动列出可用语言、跳到对应首页
    ============================================================ #}
 {%- set _headerBg = headerBg or "" -%}
 {%- set _headerStyle = ("--header-bg:" + _headerBg + ";") if _headerBg else "" -%}
@@ -27,44 +20,65 @@
 <header>
 {%- endif -%}
     <input type="checkbox" id="nav-toggle" hidden>
-    <div class="nav-title"><a href="/"><i class="fa-solid fa-school" aria-hidden="true"></i></a></div>
+    <div class="nav-title"><a href="{{ '/' | localUrl }}"><i class="fa-solid fa-school" aria-hidden="true"></i></a></div>
     <label for="nav-toggle" class="nav-hamburger"><i class="fa-solid fa-bars" aria-hidden="true"></i></label>
     <nav>
-        <button type="button" class="nav-drawer-close" aria-label="关闭导航菜单"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <button type="button" class="nav-drawer-close" aria-label="{{ 'common.close' | i18n }}"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
         <div class="nav-btns">
-            <a href="/"><i class="fa-solid fa-house" aria-hidden="true"></i><span class="hover-show">首页</span></a>
-            <a href="/article/"><i class="fa-solid fa-book" aria-hidden="true"></i><span class="hover-show">文章</span></a>
-            <a href="/wiki/"><i class="fa-solid fa-book-open" aria-hidden="true"></i><span class="hover-show">Wiki</span></a>
-            <a href="/zone/"><i class="fa-solid fa-arrow-pointer" aria-hidden="true"></i><span class="hover-show">分区</span></a>
-            <a href="https://github.com/hjx-25pc1/hjx-25pc1.github.io" target="_blank"><i class="fa-brands fa-github" aria-hidden="true"></i><span class="hover-show">此 Github 项目</span></a>
-            <a href="/astro"><i class="fa-solid fa-rocket" aria-hidden="true"></i><span class="hover-show">Astro Playground</span></a>
-            <a href="#" class="nav-popup-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-popup" aria-label="站点导航" role="button"><i class="fa-solid fa-sitemap" aria-hidden="true"></i><span class="hover-show">导航</span></a>
+            <a href="{{ '/' | localUrl }}"><i class="fa-solid fa-house" aria-hidden="true"></i><span class="hover-show">{{ 'nav.home' | i18n }}</span></a>
+            <a href="{{ '/article/' | localUrl }}"><i class="fa-solid fa-book" aria-hidden="true"></i><span class="hover-show">{{ 'nav.article' | i18n }}</span></a>
+            <a href="{{ '/wiki/' | localUrl }}"><i class="fa-solid fa-book-open" aria-hidden="true"></i><span class="hover-show">{{ 'nav.wiki' | i18n }}</span></a>
+            <a href="{{ '/zone/' | localUrl }}"><i class="fa-solid fa-arrow-pointer" aria-hidden="true"></i><span class="hover-show">{{ 'nav.zone' | i18n }}</span></a>
+            <a href="https://github.com/hjx-25pc1/hjx-25pc1.github.io" target="_blank"><i class="fa-brands fa-github" aria-hidden="true"></i><span class="hover-show">{{ 'nav.github' | i18n }}</span></a>
+            <a href="{{ '/astro' | localUrl }}"><i class="fa-solid fa-rocket" aria-hidden="true"></i><span class="hover-show">{{ 'nav.astro' | i18n }}</span></a>
+            <a href="#" class="nav-popup-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-popup" aria-label="{{ 'nav.siteMap' | i18n }}" role="button"><i class="fa-solid fa-sitemap" aria-hidden="true"></i><span class="hover-show">{{ 'nav.siteMap' | i18n }}</span></a>
+
+            {# 语言切换器 #}
+            {%- set _curLang = (locale or 'zh-cn') -%}
+            <div class="lang-switcher">
+                <button type="button" class="lang-btn" aria-label="{{ 'nav.langSwitch' | i18n }}" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-language" aria-hidden="true"></i><span class="hover-show">{{ 'nav.langSwitch' | i18n }}</span>
+                </button>
+                <ul class="lang-menu" role="menu">
+                    <li role="none">
+                        <a href="{{ '/' | localUrl('zh-cn') }}" data-lang="zh-cn" role="menuitem"{% if _curLang == 'zh-cn' %} aria-current="true"{% endif %}>
+                            <i class="fa-solid fa-check" aria-hidden="true"></i> {{ 'lang.zh-cn' | i18n }}
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a href="{{ '/' | localUrl('en') }}" data-lang="en" role="menuitem"{% if _curLang == 'en' %} aria-current="true"{% endif %}>
+                            <i class="fa-solid fa-check" aria-hidden="true"></i> {{ 'lang.en' | i18n }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
             <div class="theme-switcher">
-                <button type="button" class="theme-btn" aria-label="切换主题" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i><span class="hover-show">切换主题</span>
+                <button type="button" class="theme-btn" aria-label="{{ 'nav.themeToggle' | i18n }}" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i><span class="hover-show">{{ 'nav.themeToggle' | i18n }}</span>
                 </button>
                 <ul class="theme-menu" role="menu">
                     <li role="none">
                         <button type="button" role="menuitem" data-theme-value="auto">
-                            <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i> 跟随系统
+                            <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i> {{ 'nav.themeAuto' | i18n }}
                         </button>
                     </li>
                     <li role="none">
                         <button type="button" role="menuitem" data-theme-value="light">
-                            <i class="fa-solid fa-sun" aria-hidden="true"></i> 浅色
+                            <i class="fa-solid fa-sun" aria-hidden="true"></i> {{ 'nav.themeLight' | i18n }}
                         </button>
                     </li>
                     <li role="none">
                         <button type="button" role="menuitem" data-theme-value="dark">
-                            <i class="fa-solid fa-moon" aria-hidden="true"></i> 深色
+                            <i class="fa-solid fa-moon" aria-hidden="true"></i> {{ 'nav.themeDark' | i18n }}
                         </button>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="nav-popup" id="nav-popup" role="dialog" aria-modal="true" aria-label="站点导航菜单">
-        <button type="button" class="nav-popup-close" aria-label="关闭导航菜单"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <div class="nav-popup" id="nav-popup" role="dialog" aria-modal="true" aria-label="{{ 'nav.siteMap' | i18n }}">
+        <button type="button" class="nav-popup-close" aria-label="{{ 'common.close' | i18n }}"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
         {% include "components/nav.njk" %}
     </div>
     {# 统一遮罩：弹窗与抽屉共享，由 JS 按优先级关闭 #}

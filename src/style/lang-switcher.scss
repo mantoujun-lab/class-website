@@ -1,0 +1,177 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ==================== 语言切换器 ====================
+// 与 .theme-switcher 视觉一致：同一个 dropdown 样式，
+// 仅容器类名不同。点击按钮展开下拉菜单，点击外部/选项后自动收起。
+//
+// HTML 结构（由 header.njk 渲染）：
+// .lang-switcher
+//   ├─ .lang-btn           触发按钮（图标 + 文案）
+//   └─ .lang-menu          下拉菜单（默认折叠）
+//        ├─ li > a         链接到对应语言版本
+
+.lang-switcher {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.lang-btn {
+    // 与 .theme-btn 视觉完全一致：透明背景 + hover 玻璃感
+    background: transparent;
+    border: none;
+    color: $color-white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: $radius-btn;
+    transition: background $transition-fast;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background: var(--glass-white-15);
+    }
+
+    &:focus {
+        outline: 2px solid $color-white;
+        outline-offset: 2px;
+    }
+}
+
+// 复用 .theme-menu 的下拉样式（位置、玻璃感、动画），避免重复
+.lang-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--color-white-half);
+    backdrop-filter: $blur-basic;
+    -webkit-backdrop-filter: $blur-basic;
+    border: $border-solid-white;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-card;
+    padding: $spacing-sm 0;
+    margin: 0;
+    list-style: none;
+    min-width: 180px;
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(-4px);
+    visibility: hidden;
+    transition: opacity $transition-fast, transform $transition-fast, visibility 0s 0.25s;
+
+    &.open {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+        display: block;
+        transition: opacity $transition-fast, transform $transition-fast, visibility 0s 0s;
+    }
+
+    li {
+        margin: $spacing-md;
+        background: var(--color-white-half);
+        border: $border-solid-white;
+        border-radius: $radius-btn;
+    }
+
+    // 链接样式与 theme-menu 的 button 保持一致
+    a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: $spacing-sm $spacing-md;
+        color: $color-text;
+        text-decoration: none;
+        font-size: 14px;
+        transition: background $transition-fast;
+
+        &:hover {
+            background: var(--color-inline-code-bg);
+        }
+
+        // 当前语言项：用 opacity 灰显，但保留 hover 反馈
+        &[aria-current="true"] {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        i {
+            width: 16px;
+            text-align: center;
+            color: var(--color-primary, $color-primary);
+        }
+    }
+}
+
+@include respond-to($breakpoint-tablet) {
+    .nav-btns .lang-switcher {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nav-btns .lang-btn {
+        width: 100%;
+        height: auto;
+        padding: 14px;
+        margin: $spacing-sm 0;
+        background: var(--glass-white-30);
+        border: $border-width-md solid var(--glass-white-60);
+        border-radius: $radius-btn;
+        font-size: 1rem;
+        color: $color-white;
+        justify-content: flex-start;
+        gap: 7px;
+
+        &:hover {
+            background-color: var(--glass-white-60);
+            transform: none;
+        }
+
+        i {
+            padding: 0 7px 0 0;
+            font-size: 1rem;
+        }
+    }
+
+    // 移动端：内联展开（与 theme-menu 一致）
+    .nav-btns .lang-menu {
+        position: static;
+        box-shadow: none;
+        background: rgba(255, 255, 255, 0);
+        border-radius: $radius-btn;
+        margin: $spacing-sm 0 $spacing-md;
+        padding: 0;
+        min-width: 0;
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-8px);
+        transition:
+            max-height $transition-fast $cubic-ease,
+            padding $transition-fast $cubic-ease,
+            opacity $transition-fast $cubic-ease,
+            transform $transition-fast $cubic-ease;
+
+        &.open {
+            max-height: 500px;
+            padding: $spacing-sm 0;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        a {
+            padding: $spacing-sm $spacing-md;
+            color: $color-white;
+            font-size: 0.95rem;
+
+            &:hover {
+                background: var(--glass-white-20);
+            }
+        }
+    }
+}
