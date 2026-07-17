@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang or 'zh-CN' }}" dir="{{ dir or 'ltr' }}">
 
 <head>
     {%- set layoutIcon = "/assets/images/icon/wiki.png" %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title or "页面" }}</title>
+    <title>{{ title or ('common.page' | i18n) }}</title>
     {% include "components/head-assets.njk" %}
 </head>
 
 <body>
     {% include "../components/header.njk" %}
 
-    <button class="wiki-sidebar-toggle" type="button" aria-label="切换侧边栏" aria-expanded="true">
+    <button class="wiki-sidebar-toggle" type="button" aria-label="{{ 'wiki.toggleSidebar' | i18n }}" aria-expanded="true">
         <span class="wiki-sidebar-toggle-icon"></span>
     </button>
 
     <div class="wiki-layout">
         <aside class="wiki-sidebar">
-            <h3 class="wiki-sidebar-title">📚 Wiki</h3>
+            <h3 class="wiki-sidebar-title">{{ 'wiki.title' | i18n }}</h3>
             <nav class="wiki-nav">
                 <ul>
-                    <li><a href="{{ '/wiki/' | url }}"
-                            class="wiki-nav-home {%- if page.url == '/wiki/' %} active{% endif %}">📖 全部</a></li>
+                    <li><a href="{{ '/wiki/' | localUrl }}"
+                            class="wiki-nav-home {%- if page.url == ('/' ~ (locale or 'zh-cn') ~ '/wiki/') %} active{% endif %}">{{ 'wiki.all' | i18n }}</a></li>
                 </ul>
 
                 {#- 独立导航：基于 collections.wikiByCategory，不依赖 eleventyNavigation -#}
@@ -49,9 +49,9 @@
             {{ content | safe }}
             <hr>
             <p class="wiki-edit-link">
-                <a href="https://github.com/hjx-25pc1/hjx-25pc1.github.io/edit/main/src/wiki/{{ page.fileSlug }}.md"
+                <a href="https://github.com/hjx-25pc1/hjx-25pc1.github.io/edit/main/src/{{ (page.url.split('/')[1] or 'zh-cn') }}/wiki/{{ page.fileSlug }}.md"
                     target="_blank" rel="noopener">
-                    ✏️ 在 GitHub 上编辑此页
+                    {{ 'wiki.editOnGithub' | i18n }}
                 </a>
             </p>
         </main>

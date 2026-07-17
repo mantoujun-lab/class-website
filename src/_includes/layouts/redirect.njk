@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在跳转…</title>
+    {#
+    ============================================================
+    根路径 JS 跳板页
+    ------------------------------------------------------------
+    目的：用户访问 / 时，根据其浏览器语言 / cookie 偏好，
+          自动跳到 /zh-cn/ 或 /en/。
+
+    关键设计：
+    1. **首屏不白屏**：head 里 inline 一个 CSS（居中 spinner + 文案）
+       即使 JS 还没执行，用户也能看到"正在跳转"的提示
+    2. **head 底部同步执行决策脚本**：DOMContentLoaded 之前就跑，
+       读完 navigator.language / localStorage 后立即 location.replace
+    3. **localStorage 记忆用户选择**：点击语言切换器时已经存了
+       （header.njk 里我们可以用一段小脚本同步写 localStorage），
+       这里直接读 "hjx-lang" 即可
+    4. **defaultLocale = zh-cn**：浏览器语言不在 zh/en 时默认中文
+
+    与 GitHub Pages 的兼容性：
+    - GitHub Pages 不支持服务端重定向，JS 跳板是唯一可靠方案
+    - 没有服务端读取 cookie / Accept-Language 的能力
+    - 缺点：首屏一定有一次跳转（SEO 略差），但 Google 已经能渲染 JS
+    ============================================================
+    #}
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--color-page-bg, #f6f8fa);
+            color: var(--color-text, #24292f);
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            min-height: 100vh;
+            padding: 24px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        /* 深色主题兼容 */
+        @media (prefers-color-scheme: dark) {
+            html, body {
+                background: #0d1117;
+                color: #e6edf3;
+            }
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(127, 127, 127, 0.2);
+            border-top-color: rgba(127, 127, 127, 0.8);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        h1 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0;
+        }
+        p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin: 0;
+        }
+        a {
+            color: #0969da;
+            text-decoration: none;
+            margin-top: 8px;
+        }
+        a:hover { text-decoration: underline; }
+        /* 防止 FOUC：在 JS 执行前先隐藏跳转链接，避免闪现两个备选 */
+        .fallback-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+    </style>
+
+    {# 同步决策脚本：在 body 渲染前就读完 locale 并跳转，最大程度减少白屏 #}
+    <script>
+    (function () {
+        try {
+            // 1) 用户偏好（localStorage）：由 header.njk 的语言切换器写入
+            var saved = null;
+            try { saved = localStorage.getItem("hjx-lang"); } catch (e) {}
+
+            var target;
+            if (saved === "zh-cn" || saved === "en") {
+                target = saved;
+            } else {
+                // 2) 浏览器语言：navigator.language / languages
+                var langs = (navigator.languages && navigator.languages.length)
+                    ? navigator.languages
+                    : [navigator.language || navigator.userLanguage || ""];
+                var lc = (langs[0] || "").toLowerCase();
+                // zh-* 走中文，其他都英文
+                target = lc.indexOf("zh") === 0 ? "zh-cn" : "en";
+            }
+
+            // 3) 立即跳转（replace 不留历史记录）
+            var dest = "/" + target + "/";
+            // 防御：如果已经在目标路径就别跳（避免循环）
+            if (location.pathname !== dest && location.pathname !== "/" + target) {
+                window.location.replace(dest);
+            }
+        } catch (e) {
+            // 兜底：直接跳中文
+            window.location.replace("/zh-cn/");
+        }
+    })();
+    </script>
+</head>
+<body>
+    <div class="spinner" aria-hidden="true"></div>
+    <h1>正在跳转…</h1>
+    <p>Redirecting to your preferred language…</p>
+    {# 兜底链接：JS 失败时用户能手动选 #}
+    <div class="fallback-links">
+        <a href="/zh-cn/">简体中文</a>
+        <span aria-hidden="true">·</span>
+        <a href="/en/">English</a>
+    </div>
+    {# 内联 FOUC 处理脚本：hide fallbacks on success（避免他们看到链接又被跳走） #}
+    <script>
+    // 5 秒后如果还在本页（说明 JS 跳转失败），fallback 链接还在能帮用户脱困
+    // 这里不做任何事，依赖浏览器自动渲染
+    </script>
+</body>
+</html>
