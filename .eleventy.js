@@ -77,7 +77,9 @@ module.exports = function (eleventyConfig) {
         // 兜底：双向 fallback
         const fallback = (locale === "zh-cn") ? "en" : "zh-cn";
         const tf = lodashGet(translations, [key, fallback]);
-        if (tf !== undefined) return tf;
+        if (tf !== undefined) {
+            try { return templite(tf, data || {}); } catch (e) { return tf; }
+        }
         return key; // 都找不到就返回 key（最少不会崩）
     });
 
