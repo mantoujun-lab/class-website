@@ -311,7 +311,7 @@ Eleventy（简称 11ty）是一个简洁强大的静态站点生成器，基于 
 {{ card("渐变风格", "绿色系按钮搭配", "#", "绿色按钮", btnColor="#2b8a3e", btnTextColor="#ebfbee", btnHover="#1c532b", btnBorder="#8ce99a", btnBorderHover="#2b8a3e") }}
 </div>
 
-#### 12.2.5 cardFull 自定义颜色
+#### 12.2.6 cardFull 自定义颜色
 
 通栏卡片同样支持完整的颜色自定义，下面是一个全套自定义的示例：
 

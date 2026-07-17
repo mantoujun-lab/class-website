@@ -193,7 +193,8 @@ module.exports = function (eleventyConfig) {
                     return (a.data.order || 999) - (b.data.order || 999);
                 });
                 const first = sortedPages[0];
-                const defaultLabel = category === '_root' ? '📖 首页' : category;
+                const rootLabel = translations['wiki.root']?.[_lang] || '📖 首页';
+                const defaultLabel = category === '_root' ? rootLabel : category;
                 const defaultOrder = category === '_root' ? -1 : 999;
                 result.push({
                     name: category,
