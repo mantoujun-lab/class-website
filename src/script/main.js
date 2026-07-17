@@ -149,12 +149,78 @@ import { initModal, isModalOpen, closeTopModal } from './popup-modal.js';
     console.debug('[main] popstate 路由注册完成');
 
     // ============================================================
-    // 代码块增强：行号 + 复制按钮（动态加载 Prism 插件）
-    // 异步执行，不阻塞上面菜单初始化
-    // ============================================================
-    console.debug('[main] 初始化代码高亮和主题模块');
-    initPrism();
-    initTheme();
+// 代码块增强：行号 + 复制按钮（动态加载 Prism 插件）
+// 异步执行，不阻塞上面菜单初始化
+// ============================================================
+console.debug('[main] 初始化代码高亮和主题模块');
+initPrism();
+initTheme();
+
+// ============================================================
+// 语言切换器：点击 .lang-btn 切换 .lang-menu.open
+// 与主题切换器完全独立，不互斥（不阻挡弹窗/抽屉），
+// 简化实现：点击按钮/菜单外部/ESC 时收起。
+//
+// 额外的"持久化"：点击菜单项时把语言偏好写入 localStorage + cookie，
+// 这样根路径 / 的 JS 跳板页（src/_includes/layouts/redirect.njk）
+// 能记住用户偏好，下次访问 / 时直接跳到对应语言而不是又判断一次。
+// ============================================================
+(function initLangSwitcher() {
+    const langBtn = document.querySelector('.lang-btn');
+    const langMenu = document.querySelector('.lang-menu');
+    if (!langBtn || !langMenu) return;
+
+    // 写入语言偏好的辅助函数
+    function persistLang(lang) {
+        try {
+            localStorage.setItem('hjx-lang', lang);
+        } catch (e) {
+            // localStorage 可能被禁用（隐私模式），静默失败即可
+        }
+    }
+
+    // 拦截语言菜单项的点击：在跳转前先持久化偏好
+    langMenu.addEventListener('click', function (e) {
+        var link = e.target.closest('a[data-lang]');
+        if (!link) return;
+        persistLang(link.getAttribute('data-lang'));
+        // 让默认的链接跳转继续生效
+    });
+
+    function isOpen() {
+        return langMenu.classList.contains('open');
+    }
+    function open() {
+        langMenu.classList.add('open');
+        langBtn.setAttribute('aria-expanded', 'true');
+    }
+    function close() {
+        langMenu.classList.remove('open');
+        langBtn.setAttribute('aria-expanded', 'false');
+    }
+    function toggle() {
+        if (isOpen()) close();
+        else open();
+    }
+
+    langBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggle();
+    });
+    // 点击菜单外部关闭
+    document.addEventListener('click', function (e) {
+        if (isOpen() && !langMenu.contains(e.target) && !langBtn.contains(e.target)) {
+            close();
+        }
+    });
+    // ESC 关闭
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && isOpen()) {
+            close();
+            langBtn.focus();
+        }
+    });
+})();
 
     // 按需初始化 wiki 侧边栏（非 wiki 页面无相关元素，内部会优雅跳过）
     // 此处不重复打日志，由 wiki-sidebar.js 内部负责调试输出（详见该模块顶部注释）
