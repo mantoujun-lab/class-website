@@ -100,6 +100,7 @@ module.exports = {
     // ============================================================
     "wiki.title":          { "zh-cn": "📚 Wiki", "en": "📚 Wiki" },
     "wiki.all":            { "zh-cn": "📖 全部", "en": "📖 All" },
+    "wiki.root":           { "zh-cn": "📖 首页", "en": "📖 Home" },
     "wiki.editOnGithub":   { "zh-cn": "✏️ 在 GitHub 上编辑此页", "en": "✏️ Edit this page on GitHub" },
     "wiki.toggleSidebar":  { "zh-cn": "切换侧边栏", "en": "Toggle sidebar" },
 
