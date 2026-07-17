@@ -38,6 +38,9 @@ module.exports = function (eleventyConfig) {
     // 允许处理的模板格式：Markdown + Nunjucks
     eleventyConfig.setTemplateFormats(['md', 'njk']);
 
+    // i18n 插件
+    eleventyConfig.addPlugin(i18nPlugin, { translations });
+
     // 注册语法高亮插件，仅在 Markdown 文件中启用
     // preAttributes 给 <pre> 自动加上 line-numbers 类，让 Prism line-numbers 插件接管。
     // 注意：不要设置 codeAttributes.class = ""，否则会把默认的 "language-xxx" class 清掉，
