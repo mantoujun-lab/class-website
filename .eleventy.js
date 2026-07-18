@@ -381,9 +381,9 @@ module.exports = function (eleventyConfig) {
                 if (/^\/(zh-cn|en)\//.test(cur)) return cur;
                 if (cur === "/zh-cn" || cur === "/en") return cur;
                 if (INTERNAL_NO_PREFIX.test(cur)) return cur;
-                // 根路径跳板页：/index.html 不加 locale 前缀
-                // （用于 src/index-redirect.md 这种根 JS 跳板）
+                // 根路径特殊页：不加 locale 前缀
                 if (cur === "/index.html") return cur;
+                if (cur === "/404.html") return cur;
                 if (cur === "/") {
                     const locale = (data.locale) || "zh-cn";
                     return "/" + locale + "/";
