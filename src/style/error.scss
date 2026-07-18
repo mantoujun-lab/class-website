@@ -1,0 +1,54 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ==================== 错误页面 (404) ====================
+
+.error-page {
+    text-align: center;
+    padding: $spacing-xl $spacing-lg;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.error-code {
+    font-size: 6rem;
+    font-weight: 700;
+    font-family: $font-mono;
+    color: $color-primary;
+    line-height: 1;
+    margin-bottom: $spacing-lg;
+}
+
+.error-section h1 {
+    font-size: 1.8rem;
+    margin-bottom: $spacing-md;
+}
+
+.error-desc {
+    font-size: 1.1rem;
+    color: $color-text-light;
+    margin-bottom: $spacing-xl;
+    line-height: 1.6;
+}
+
+.error-actions {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@include respond-to($breakpoint-phone) {
+    .error-code {
+        font-size: 4rem;
+    }
+
+    .error-section h1 {
+        font-size: 1.4rem;
+    }
+
+    .error-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+}
