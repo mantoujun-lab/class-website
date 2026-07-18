@@ -2,7 +2,7 @@
 页面 head 资源引入（CSS / 字体 / 图标库）
 ------------------------------------------------------------
 集中管理 head 区需要加载的外部与本地样式资源：
-- 网站 favicon（按 layout / frontmatter 区分）
+- 网站 favicon（统一使用 logo.png）
 - 站点主样式 style.css
 - Google Fonts（延迟加载，带 noscript 回退）
 - Font Awesome 图标库（延迟加载，带 noscript 回退）
@@ -10,24 +10,13 @@
 用法：
 {% include "components/head-assets.njk" %}
 
-icon 解析顺序（前者优先）：
-1. 当前页面 frontmatter 中的 icon（最高优先级）
-2. 当前 layout 通过 {% set layoutIcon = "..." %} 注入的 layoutIcon
-3. head-assets.njk 顶部的 iconDefault 兜底默认
-
 注意：
 - 所有路径都使用 Eleventy 的 | url filter 处理 pathPrefix
 - 字体和图标库采用 preload + onload 延迟加载策略，
 配合 noscript 标签回退，对禁用 JS 的用户仍可正常显示
 ============================================================ #}
 
-{# 默认 favicon：当 layout / 页面都未指定时使用。路径相对 src/assets/ #}
-{%- set iconDefault = iconDefault or "/assets/images/icon/main.png" -%}
-
-{# 最终生效的 icon：layoutIcon → icon → iconDefault #}
-{%- set faviconPath = (icon if icon else (layoutIcon if layoutIcon else iconDefault)) -%}
-
-<link rel="icon" type="image/png" href="{{ faviconPath | url }}">
+<link rel="icon" type="image/png" href="{{ '/assets/images/icon/logo.png' | url }}">
 
 {# 防闪烁：在 CSS 加载前读取 localStorage 并设置 data-theme #}
 <script>

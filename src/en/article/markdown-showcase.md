@@ -63,11 +63,7 @@ Regular text, **bold**, *italic*, ***bold + italic***, ~~strikethrough~~, `inlin
 
 Single-image demo:
 
-![Site Icon]({{ "/assets/images/icon/main.png" | url }})
-![Site Icon]({{ "/assets/images/icon/home.png" | url }})
-![Site Icon]({{ "/assets/images/icon/wiki.png" | url }})
-![Site Icon]({{ "/assets/images/icon/article.png" | url }})
-![Site Icon]({{ "/assets/images/icon/zone.png" | url }})
+![Site Icon]({{ "/assets/images/icon/logo.png" | url }})
 
 > The `image` shortcode above is processed into a responsive `<picture>` with auto-generated WebP + JPEG at multiple resolutions.
 > Plain Markdown images are NOT processed — these are just for illustration.
