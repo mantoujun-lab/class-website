@@ -63,11 +63,7 @@ headerBg: green
 
 单张图片演示：
 
-![站点图标]({{ "/assets/images/icon/main.png" | url }})
-![站点图标]({{ "/assets/images/icon/home.png" | url }})
-![站点图标]({{ "/assets/images/icon/wiki.png" | url }})
-![站点图标]({{ "/assets/images/icon/article.png" | url }})
-![站点图标]({{ "/assets/images/icon/zone.png" | url }})
+![站点图标]({{ "/assets/images/icon/logo.png" | url }})
 
 > 上面的 `image` 短代码会被处理为响应式 `<picture>`，自动生成 WebP + JPEG 多分辨率。
 > 但普通 Markdown 图片不会被处理，仅作示意。
