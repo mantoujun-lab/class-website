@@ -4,10 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/zh-cn/wiki/**'
-      - 'src/en/wiki/**'
-      - 'src/zh-cn/wiki.md'
-      - 'src/en/wiki.md'
+      - 'src/*/wiki/**'
+      - 'src/*/wiki.md'
   workflow_dispatch:
 
 permissions:
