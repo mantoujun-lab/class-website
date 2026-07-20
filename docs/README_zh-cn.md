@@ -105,7 +105,7 @@ layout: layouts/default  # 布局模板
   - `eleventy-plugin-i18n` — 官方插件（参考实现，实际使用自定义 filter）
   - 目录级数据文件 (`*.11tydata.js` / `*.json`) — 自动为 `src/zh-cn/` 和 `src/en/` 注入 locale、permalink 前缀等
   - 自定义过滤器：`i18n`（翻译）、`localUrl`（locale 感知的内部链接）、`switchLang`（语言切换链接）、`lang`（取当前语言）
-- **原生 JavaScript（ES Modules）** — 少量交互逻辑；脚本以原生 ES Modules 形式组织在 `src/script/` 下，无需前端框架或打包器；入口 `main.js` 通过 `<script type="module">` 加载；`lang-switcher.js` 处理导航栏语言切换与 localStorage 偏好持久化
+- **原生 JavaScript（ES Modules）** — 少量交互逻辑；脚本以原生 ES Modules 形式组织在 `src/script/` 下，无需前端框架或打包器；入口 `main.js` 通过 `<script type="module">` 加载；导航栏语言切换与 localStorage 偏好持久化由 `main.js` 中的 `initLangSwitcher` IIFE 负责（不存在独立的 `lang-switcher.js` 文件）
 - **GitHub Actions** — 自动化 CI/CD，推送 `main` 分支即触发构建与部署
 - **GitHub Pages** — 静态站点托管平台
 

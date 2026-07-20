@@ -104,7 +104,7 @@ This project is a fully static site built with the following technologies:
   - `eleventy-plugin-i18n` — Official plugin (reference implementation; we use our own filter)
   - Directory data files (`*.11tydata.js` / `*.json`) — Auto-inject locale and permalink prefix for `src/zh-cn/` and `src/en/`
   - Custom filters: `i18n` (translate), `localUrl` (locale-aware URL), `switchLang` (language switch URL), `lang` (current language code)
-- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency; `lang-switcher.js` handles the navigation language switcher and localStorage preference persistence[...]
+- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency; the navigation language switcher and localStorage preference persistence are handled by the `initLangSwitcher` IIFE inside `main.js` (there is no standalone `lang-switcher.js` file)[...]
 - **GitHub Actions** — Automated CI/CD; pushing to the `main` branch triggers a build and deployment
 - **GitHub Pages** — Static site hosting platform
 
