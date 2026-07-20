@@ -9,10 +9,11 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-// archiver v7 的 CJS 导出是 { Archiver, ZipArchive, ... } 对象，
-// 而非早期版本的工厂函数；这里做兼容处理。
-const archiverMod = require('archiver');
-const ZipArchive = archiverMod.ZipArchive || archiverMod;
+// archiver v8（package.json 中声明 ^8.0.0）的 CJS 命名导出为
+// { Archiver, JsonArchive, TarArchive, ZipArchive }，ZipArchive 是可直接 new 的构造函数。
+// v8 的破坏性更新主要是 ESM 化（要求 Node v18+），
+// CJS 命名导出与 v7 一致，因此可以直接解构使用。
+const { ZipArchive } = require('archiver');
 
 const ROOT = path.join(__dirname, '..');
 const DIST_DIR = path.join(ROOT, 'dist');
