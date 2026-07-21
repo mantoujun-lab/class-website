@@ -14,7 +14,7 @@ const USE_ASSETS_MIRROR = process.env.ASSETS_USE_MIRROR === "true";
 
 function buildAssetsUrl(src) {
     if (!src || typeof src !== "string") return src;
-    if (/^https?:\/\//i.test(src)) return src;
+    if (/^(https?:)?\/\//i.test(src)) return src;
     const normalizedPath = src.startsWith("/") ? src.slice(1) : src;
     const baseUrl = USE_ASSETS_MIRROR && ASSETS_MIRROR_URL ? ASSETS_MIRROR_URL : ASSETS_PRIMARY_URL;
     return `${baseUrl}/${normalizedPath}`;
