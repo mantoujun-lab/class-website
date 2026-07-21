@@ -8,6 +8,15 @@ const translations = require("./src/_data/i18n.js");
 const postcss = require("postcss");
 const autoprefixer = require("autoprefixer");
 
+const ASSETS_BASE_URL = "https://raw.githubusercontent.com/hjx-25pc1/assets/main";
+
+function buildAssetsUrl(src) {
+    if (!src || typeof src !== "string") return src;
+    if (/^https?:\/\//i.test(src)) return src;
+    const normalizedPath = src.startsWith("/") ? src.slice(1) : src;
+    return `${ASSETS_BASE_URL}/${normalizedPath}`;
+}
+
 // 编译 Sass + PostCSS（Autoprefixer）函数
 // 扫描 src/style/ 下所有非 _ 前缀的 .scss 文件作为编译入口，分别输出为独立 CSS
 async function compileSass() {
@@ -298,10 +307,31 @@ module.exports = function (eleventyConfig) {
             srcWidths = [1280, 1920],
             displayWidths = [300, 600],
         } = JSON.parse(json);
-        const fullPath = path.join("src", src);
 
-        // 读取原图实际宽度，作为 srcWidths 的上限兜底
-        // sharp 由 @11ty/eleventy-img 间接依赖，无需单独安装
+        if (/^https?:\/\//i.test(src)) {
+            return `<img src="${src}"
+                     alt="${alt}"
+                     loading="lazy"
+                     decoding="async">`;
+        }
+
+        const fullPath = path.join("src", src);
+        let isLocalAsset = false;
+        try {
+            await fs.promises.access(fullPath, fs.constants.F_OK);
+            isLocalAsset = true;
+        } catch {
+            isLocalAsset = false;
+        }
+
+        if (!isLocalAsset) {
+            const remoteUrl = buildAssetsUrl(src);
+            return `<img src="${remoteUrl}"
+                     alt="${alt}"
+                     loading="lazy"
+                     decoding="async">`;
+        }
+
         let originalWidth = Infinity;
         try {
             const sharp = require("sharp");
@@ -310,10 +340,8 @@ module.exports = function (eleventyConfig) {
                 originalWidth = meta.width;
             }
         } catch (e) {
-            // 元数据读取失败时不做过滤，沿用用户传入的 srcWidths
         }
 
-        // 剔除超过原图宽度的项，并保证至少保留一项（原图本身）
         const effectiveWidths = srcWidths.filter(w => w <= originalWidth);
         if (effectiveWidths.length === 0) {
             effectiveWidths.push(Math.min(...srcWidths));
@@ -324,15 +352,12 @@ module.exports = function (eleventyConfig) {
             formats: ["webp", "jpeg"],
             outputDir: "_site/img/",
             urlPath: "/img/",
-            // 自适应质量：仅 webp 和 jpeg 应用，png 不受影响
             qualityFormatMap: {
                 webp: 80,
                 jpeg: 85,
             },
         });
 
-        // displayWidths 的最后一个值作为默认 sizes（最大显示尺寸），
-        // 移动端自适应撑满（图片通常会占满父容器宽度）
         const maxDisplay = displayWidths[displayWidths.length - 1];
 
         return `<picture>
@@ -348,7 +373,18 @@ module.exports = function (eleventyConfig) {
             </picture>`;
     });
 
-    // 将资源文件原样复制到输出目录
+    eleventyConfig.addFilter("assetsUrl", function (src) {
+        return buildAssetsUrl(src);
+    });
+
+    eleventyConfig.addShortcode("assetImage", async function (src, alt) {
+        const fullUrl = buildAssetsUrl(src);
+        return `<img src="${fullUrl}"
+                     alt="${alt}"
+                     loading="lazy"
+                     decoding="async">`;
+    });
+
     eleventyConfig.addPassthroughCopy('src/assets');
     eleventyConfig.addPassthroughCopy('src/script');
 

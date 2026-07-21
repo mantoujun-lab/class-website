@@ -71,9 +71,9 @@ Single-image demo:
 Below is the **image gallery** (using the built-in shortcode):
 
 <div class="image-gallery">
-    {% image '{"src": "assets/images/event/20260708133628_5_86.jpg", "alt": "Sample 1"}' %}
-    {% image '{"src": "assets/images/event/20260708133628_6_86.jpg", "alt": "Sample 2"}' %}
-    {% image '{"src": "assets/images/event/20260708133630_7_86.jpg", "alt": "Sample 3"}' %}
+    {% image '{"src": "images/event/20260708133628_5_86.jpg", "alt": "Sample 1"}' %}
+    {% image '{"src": "images/event/20260708133628_6_86.jpg", "alt": "Sample 2"}' %}
+    {% image '{"src": "images/event/20260708133630_7_86.jpg", "alt": "Sample 3"}' %}
 </div>
 
 ## 6. Code Blocks
