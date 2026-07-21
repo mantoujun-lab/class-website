@@ -377,15 +377,12 @@ module.exports = function (eleventyConfig) {
         return buildAssetsUrl(src);
     });
 
-    eleventyConfig.addShortcode("assetImage", async function (src, alt, options = {}) {
+    eleventyConfig.addShortcode("assetImage", async function (src, alt) {
         const fullUrl = buildAssetsUrl(src);
-        const displayWidths = options.displayWidths || [300, 600];
-        const maxDisplay = displayWidths[displayWidths.length - 1];
         return `<img src="${fullUrl}"
                      alt="${alt}"
                      loading="lazy"
-                     decoding="async"
-                     sizes="(max-width: 768px) 100vw, ${maxDisplay}px">`;
+                     decoding="async">`;
     });
 
     eleventyConfig.addPassthroughCopy('src/assets');
