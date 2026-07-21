@@ -300,15 +300,22 @@ module.exports = function (eleventyConfig) {
         } = JSON.parse(json);
 
         if (/^https?:\/\//i.test(src)) {
-            const maxDisplay = displayWidths[displayWidths.length - 1];
             return `<img src="${src}"
                      alt="${alt}"
                      loading="lazy"
-                     decoding="async"
-                     sizes="(max-width: 768px) 100vw, ${maxDisplay}px">`;
+                     decoding="async">`;
         }
 
         const fullPath = path.join("src", src);
+        const isLocalAsset = fs.existsSync(fullPath);
+
+        if (!isLocalAsset) {
+            const remoteUrl = `${ASSETS_BASE_URL}/${src.startsWith("/") ? src.slice(1) : src}`;
+            return `<img src="${remoteUrl}"
+                     alt="${alt}"
+                     loading="lazy"
+                     decoding="async">`;
+        }
 
         let originalWidth = Infinity;
         try {
@@ -351,7 +358,26 @@ module.exports = function (eleventyConfig) {
             </picture>`;
     });
 
-    // 将资源文件原样复制到输出目录
+    const ASSETS_BASE_URL = "https://raw.githubusercontent.com/hjx-25pc1/assets/main";
+
+    eleventyConfig.addFilter("assetsUrl", function (path) {
+        if (!path || typeof path !== "string") return path;
+        if (/^https?:\/\//i.test(path)) return path;
+        const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
+        return `${ASSETS_BASE_URL}/${normalizedPath}`;
+    });
+
+    eleventyConfig.addShortcode("assetImage", async function (src, alt, options = {}) {
+        const fullUrl = (/^https?:\/\//i.test(src)) ? src : `${ASSETS_BASE_URL}/${src.startsWith("/") ? src.slice(1) : src}`;
+        const displayWidths = options.displayWidths || [300, 600];
+        const maxDisplay = displayWidths[displayWidths.length - 1];
+        return `<img src="${fullUrl}"
+                     alt="${alt}"
+                     loading="lazy"
+                     decoding="async"
+                     sizes="(max-width: 768px) 100vw, ${maxDisplay}px">`;
+    });
+
     eleventyConfig.addPassthroughCopy('src/assets');
     eleventyConfig.addPassthroughCopy('src/script');
 

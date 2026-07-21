@@ -71,9 +71,9 @@ headerBg: green
 下面是 **image 画廊**（用项目内置的 shortcode）：
 
 <div class="image-gallery">
-    {% image '{"src": "https://raw.githubusercontent.com/hjx-25pc1/assets/main/images/event/20260708133628_5_86.jpg", "alt": "示例图 1"}' %}
-    {% image '{"src": "https://raw.githubusercontent.com/hjx-25pc1/assets/main/images/event/20260708133628_6_86.jpg", "alt": "示例图 2"}' %}
-    {% image '{"src": "https://raw.githubusercontent.com/hjx-25pc1/assets/main/images/event/20260708133630_7_86.jpg", "alt": "示例图 3"}' %}
+    {% image '{"src": "images/event/20260708133628_5_86.jpg", "alt": "示例图 1"}' %}
+    {% image '{"src": "images/event/20260708133628_6_86.jpg", "alt": "示例图 2"}' %}
+    {% image '{"src": "images/event/20260708133630_7_86.jpg", "alt": "示例图 3"}' %}
 </div>
 
 ## 6. 代码块
