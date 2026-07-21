@@ -27,7 +27,8 @@
     padding: 0;
 }
 
-.image-gallery>picture {
+.image-gallery>picture,
+.image-gallery>img {
     flex: 0 1 auto;
     @include gallery-image-base;
 
@@ -37,8 +38,7 @@
     }
 }
 
-.image-gallery>picture img,
-.image-gallery>img {
+.image-gallery>picture img {
     @include gallery-image-base;
     height: auto;
     border-radius: $radius-sm;
