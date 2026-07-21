@@ -298,10 +298,18 @@ module.exports = function (eleventyConfig) {
             srcWidths = [1280, 1920],
             displayWidths = [300, 600],
         } = JSON.parse(json);
+
+        if (/^https?:\/\//i.test(src)) {
+            const maxDisplay = displayWidths[displayWidths.length - 1];
+            return `<img src="${src}"
+                     alt="${alt}"
+                     loading="lazy"
+                     decoding="async"
+                     sizes="(max-width: 768px) 100vw, ${maxDisplay}px">`;
+        }
+
         const fullPath = path.join("src", src);
 
-        // 读取原图实际宽度，作为 srcWidths 的上限兜底
-        // sharp 由 @11ty/eleventy-img 间接依赖，无需单独安装
         let originalWidth = Infinity;
         try {
             const sharp = require("sharp");
@@ -310,10 +318,8 @@ module.exports = function (eleventyConfig) {
                 originalWidth = meta.width;
             }
         } catch (e) {
-            // 元数据读取失败时不做过滤，沿用用户传入的 srcWidths
         }
 
-        // 剔除超过原图宽度的项，并保证至少保留一项（原图本身）
         const effectiveWidths = srcWidths.filter(w => w <= originalWidth);
         if (effectiveWidths.length === 0) {
             effectiveWidths.push(Math.min(...srcWidths));
@@ -324,15 +330,12 @@ module.exports = function (eleventyConfig) {
             formats: ["webp", "jpeg"],
             outputDir: "_site/img/",
             urlPath: "/img/",
-            // 自适应质量：仅 webp 和 jpeg 应用，png 不受影响
             qualityFormatMap: {
                 webp: 80,
                 jpeg: 85,
             },
         });
 
-        // displayWidths 的最后一个值作为默认 sizes（最大显示尺寸），
-        // 移动端自适应撑满（图片通常会占满父容器宽度）
         const maxDisplay = displayWidths[displayWidths.length - 1];
 
         return `<picture>
