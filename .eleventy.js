@@ -8,6 +8,15 @@ const translations = require("./src/_data/i18n.js");
 const postcss = require("postcss");
 const autoprefixer = require("autoprefixer");
 
+const ASSETS_BASE_URL = "https://raw.githubusercontent.com/hjx-25pc1/assets/main";
+
+function buildAssetsUrl(src) {
+    if (!src || typeof src !== "string") return src;
+    if (/^https?:\/\//i.test(src)) return src;
+    const normalizedPath = src.startsWith("/") ? src.slice(1) : src;
+    return `${ASSETS_BASE_URL}/${normalizedPath}`;
+}
+
 // 编译 Sass + PostCSS（Autoprefixer）函数
 // 扫描 src/style/ 下所有非 _ 前缀的 .scss 文件作为编译入口，分别输出为独立 CSS
 async function compileSass() {
@@ -307,10 +316,16 @@ module.exports = function (eleventyConfig) {
         }
 
         const fullPath = path.join("src", src);
-        const isLocalAsset = fs.existsSync(fullPath);
+        let isLocalAsset = false;
+        try {
+            await fs.promises.access(fullPath, fs.constants.F_OK);
+            isLocalAsset = true;
+        } catch {
+            isLocalAsset = false;
+        }
 
         if (!isLocalAsset) {
-            const remoteUrl = `${ASSETS_BASE_URL}/${src.startsWith("/") ? src.slice(1) : src}`;
+            const remoteUrl = buildAssetsUrl(src);
             return `<img src="${remoteUrl}"
                      alt="${alt}"
                      loading="lazy"
@@ -358,17 +373,12 @@ module.exports = function (eleventyConfig) {
             </picture>`;
     });
 
-    const ASSETS_BASE_URL = "https://raw.githubusercontent.com/hjx-25pc1/assets/main";
-
-    eleventyConfig.addFilter("assetsUrl", function (path) {
-        if (!path || typeof path !== "string") return path;
-        if (/^https?:\/\//i.test(path)) return path;
-        const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
-        return `${ASSETS_BASE_URL}/${normalizedPath}`;
+    eleventyConfig.addFilter("assetsUrl", function (src) {
+        return buildAssetsUrl(src);
     });
 
     eleventyConfig.addShortcode("assetImage", async function (src, alt, options = {}) {
-        const fullUrl = (/^https?:\/\//i.test(src)) ? src : `${ASSETS_BASE_URL}/${src.startsWith("/") ? src.slice(1) : src}`;
+        const fullUrl = buildAssetsUrl(src);
         const displayWidths = options.displayWidths || [300, 600];
         const maxDisplay = displayWidths[displayWidths.length - 1];
         return `<img src="${fullUrl}"
