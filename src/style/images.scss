@@ -41,7 +41,8 @@
 
 .image-gallery>picture,
 .image-gallery>img {
-    flex: 0 1 auto;
+    flex: 0 0 auto;
+    width: calc((100% - 2 * #{$spacing-md}) / 3);
     @include gallery-image-layout;
 
     @include respond-to($breakpoint-tablet) {
