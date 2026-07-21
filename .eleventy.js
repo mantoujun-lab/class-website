@@ -10,12 +10,13 @@ const autoprefixer = require("autoprefixer");
 
 const ASSETS_PRIMARY_URL = "https://raw.githubusercontent.com/hjx-25pc1/assets/main";
 const ASSETS_MIRROR_URL = "https://assets.hjx-25pc1.r2.cloudflarestorage.com";
+const USE_ASSETS_MIRROR = process.env.ASSETS_USE_MIRROR === "true";
 
-function buildAssetsUrl(src, useMirror = false) {
+function buildAssetsUrl(src) {
     if (!src || typeof src !== "string") return src;
     if (/^https?:\/\//i.test(src)) return src;
     const normalizedPath = src.startsWith("/") ? src.slice(1) : src;
-    const baseUrl = useMirror && ASSETS_MIRROR_URL ? ASSETS_MIRROR_URL : ASSETS_PRIMARY_URL;
+    const baseUrl = USE_ASSETS_MIRROR && ASSETS_MIRROR_URL ? ASSETS_MIRROR_URL : ASSETS_PRIMARY_URL;
     return `${baseUrl}/${normalizedPath}`;
 }
 
