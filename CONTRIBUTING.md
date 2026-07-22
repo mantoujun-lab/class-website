@@ -368,6 +368,66 @@ This site uses a directory-isolated i18n architecture. When contributing content
 3. The `permalink` in front matter should be relative (e.g., `/about/`) — do not add a language prefix
 4. If the page should appear in navigation, update the nav configuration in `zh-cn.11tydata.js` (or `.json`)
 
+### Settings Panel Development
+
+The site's settings panel is driven by `src/_data/settings.json`. You can add or modify settings through the configuration file.
+
+**Config file location**: `src/_data/settings.json`
+
+**Basic structure**:
+
+```json
+{
+    "categories": [
+        {
+            "id": "category-id",
+            "icon": "fa-solid fa-icon-name",
+            "titleKey": "settings.category.xxx",
+            "items": [
+                {
+                    "id": "setting-id",
+                    "type": "select",
+                    "titleKey": "settings.xxx.title",
+                    "descriptionKey": "settings.xxx.description",
+                    "storageKey": "storage-key-name",
+                    "defaultValue": "default",
+                    "action": "actionName"
+                }
+            ]
+        }
+    ]
+}
+```
+
+**Supported setting types**:
+
+| Type | Description |
+| ---- | ----------- |
+| `select` | Dropdown select |
+| `radio` | Radio button group |
+| `toggle` | Switch toggle |
+| `text` | Single-line text input |
+| `number` | Number input |
+| `range` | Slider |
+| `color` | Color picker |
+| `checkbox` | Checkbox |
+| `textarea` | Multi-line text input |
+
+**Action mechanism**:
+
+Each setting can configure an `action` field to specify what happens when the value changes:
+
+- `applyTheme` — Apply theme (used with theme settings)
+- `navigate` — Navigate to a specified URL (works with `urlPattern`, supports `{lang}` variable substitution)
+- Custom action — Register the corresponding handler function in front-end scripts
+
+**Adding a new setting**:
+
+1. Add the configuration item in `src/_data/settings.json`
+2. Add the corresponding translation keys in `src/_data/i18n.js` (`titleKey`, `descriptionKey`, etc.)
+3. For custom actions, register the action handler function in `src/script/`
+4. Verify with a local build: `npm run build`
+
 ---
 
 ## Commit Conventions

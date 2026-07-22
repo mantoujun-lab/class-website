@@ -366,6 +366,66 @@ git push origin main
 3. frontmatter 中的 `permalink` 写相对路径（如 `/about/`），不要加语言前缀
 4. 如需在导航中展示，同时更新 `zh-cn.11tydata.js`（或 `.json`）中的导航配置
 
+### 设置面板开发
+
+本站的设置面板由 `src/_data/settings.json` 驱动，通过配置文件即可新增或修改设置项。
+
+**配置文件位置**：`src/_data/settings.json`
+
+**基本结构**：
+
+```json
+{
+    "categories": [
+        {
+            "id": "category-id",
+            "icon": "fa-solid fa-icon-name",
+            "titleKey": "settings.category.xxx",
+            "items": [
+                {
+                    "id": "setting-id",
+                    "type": "select",
+                    "titleKey": "settings.xxx.title",
+                    "descriptionKey": "settings.xxx.description",
+                    "storageKey": "storage-key-name",
+                    "defaultValue": "default",
+                    "action": "actionName"
+                }
+            ]
+        }
+    ]
+}
+```
+
+**支持的设置类型**：
+
+| 类型 | 说明 |
+| ---- | ---- |
+| `select` | 下拉选择框 |
+| `radio` | 单选按钮组 |
+| `toggle` | 开关切换 |
+| `text` | 单行文本输入 |
+| `number` | 数字输入 |
+| `range` | 滑块 |
+| `color` | 颜色选择器 |
+| `checkbox` | 复选框 |
+| `textarea` | 多行文本输入 |
+
+**Action 机制**：
+
+每个设置项可以配置 `action` 字段，指定值变化时触发的动作：
+
+- `applyTheme` — 应用主题（配合 theme 设置使用）
+- `navigate` — 导航到指定 URL（配合 `urlPattern` 使用，支持 `{lang}` 变量替换）
+- 自定义 action — 在前端脚本中注册对应的处理函数
+
+**新增设置项流程**：
+
+1. 在 `src/_data/settings.json` 中添加配置项
+2. 在 `src/_data/i18n.js` 中添加对应的翻译键（`titleKey`、`descriptionKey` 等）
+3. 如需自定义动作，在 `src/script/` 中注册对应的 action 处理函数
+4. 本地构建验证：`npm run build`
+
 ---
 
 ## Commit 规范

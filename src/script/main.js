@@ -31,6 +31,8 @@ import { initPopup, closePopup, getPopupOpen } from './popup.js';
 import { initDrawer, closeDrawer, getDrawerOpen } from './drawer.js';
 import { initPrism } from './prism.js';
 import { initTheme } from './theme.js';
+import { initLang } from './lang.js';
+import { initSettings } from './settings.js';
 import { initWikiSidebar, setWikiDeps, getWikiMobileOpen, closeWiki } from './wiki-sidebar.js';
 import { initModal, isModalOpen, closeTopModal } from './popup-modal.js';
 
@@ -149,94 +151,14 @@ import { initModal, isModalOpen, closeTopModal } from './popup-modal.js';
     console.debug('[main] popstate 路由注册完成');
 
     // ============================================================
-// 代码块增强：行号 + 复制按钮（动态加载 Prism 插件）
-// 异步执行，不阻塞上面菜单初始化
-// ============================================================
-console.debug('[main] 初始化代码高亮和主题模块');
-initPrism();
-initTheme();
-
-// ============================================================
-// 语言切换器：点击 .lang-btn 切换 .lang-menu.open
-// 与主题切换器完全独立，不互斥（不阻挡弹窗/抽屉），
-// 简化实现：点击按钮/菜单外部/ESC 时收起。
-//
-// 额外的"持久化"：点击菜单项时把语言偏好写入 localStorage + cookie，
-// 这样根路径 / 的 JS 跳板页（src/_includes/layouts/redirect.njk）
-// 能记住用户偏好，下次访问 / 时直接跳到对应语言而不是又判断一次。
-// ============================================================
-(function initLangSwitcher() {
-    const langBtn = document.querySelector('.lang-btn');
-    const langMenu = document.querySelector('.lang-menu');
-    const { header: headerEl, overlay } = dom;
-    if (!langBtn || !langMenu) return;
-
-    const LANG_OPEN_CLASS = 'lang-menu-open';
-    const TABLET_BP = 768;
-
-    function isDesktop() {
-        return window.innerWidth > TABLET_BP;
-    }
-
-    function persistLang(lang) {
-        try {
-            localStorage.setItem('hjx-lang', lang);
-        } catch (e) {
-        }
-    }
-
-    langMenu.addEventListener('click', function (e) {
-        var link = e.target.closest('a[data-lang]');
-        if (!link) return;
-        persistLang(link.getAttribute('data-lang'));
-    });
-
-    function isOpen() {
-        return langMenu.classList.contains('open');
-    }
-    function open() {
-        langMenu.classList.add('open');
-        langBtn.setAttribute('aria-expanded', 'true');
-        if (isDesktop() && headerEl) {
-            headerEl.classList.add(LANG_OPEN_CLASS);
-        }
-    }
-    function close() {
-        langMenu.classList.remove('open');
-        langBtn.setAttribute('aria-expanded', 'false');
-        if (headerEl) {
-            headerEl.classList.remove(LANG_OPEN_CLASS);
-        }
-    }
-    function toggle() {
-        if (isOpen()) close();
-        else open();
-    }
-
-    langBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        toggle();
-    });
-
-    if (overlay) {
-        overlay.addEventListener('click', function () {
-            if (isOpen()) close();
-        });
-    }
-
-    document.addEventListener('click', function (e) {
-        if (isOpen() && !langMenu.contains(e.target) && !langBtn.contains(e.target)) {
-            close();
-        }
-    });
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && isOpen()) {
-            close();
-            langBtn.focus();
-        }
-    });
-})();
+    // 代码块增强：行号 + 复制按钮（动态加载 Prism 插件）
+    // 异步执行，不阻塞上面菜单初始化
+    // ============================================================
+    console.debug('[main] 初始化代码高亮、主题、语言和设置模块');
+    initPrism();
+    initTheme();
+    initLang();
+    initSettings();
 
     // 按需初始化 wiki 侧边栏（非 wiki 页面无相关元素，内部会优雅跳过）
     // 此处不重复打日志，由 wiki-sidebar.js 内部负责调试输出（详见该模块顶部注释）

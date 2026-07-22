@@ -1,0 +1,45 @@
+{
+    "categories": [
+        {
+            "id": "appearance",
+            "icon": "fa-solid fa-palette",
+            "titleKey": "settings.category.appearance",
+            "items": [
+                {
+                    "id": "theme",
+                    "type": "select",
+                    "titleKey": "settings.theme.title",
+                    "descriptionKey": "settings.theme.description",
+                    "storageKey": "hjx-theme",
+                    "defaultValue": "auto",
+                    "options": [
+                        { "value": "auto", "labelKey": "nav.themeAuto", "icon": "fa-solid fa-circle-half-stroke" },
+                        { "value": "light", "labelKey": "nav.themeLight", "icon": "fa-solid fa-sun" },
+                        { "value": "dark", "labelKey": "nav.themeDark", "icon": "fa-solid fa-moon" }
+                    ],
+                    "action": "applyTheme"
+                }
+            ]
+        },
+        {
+            "id": "language",
+            "icon": "fa-solid fa-language",
+            "titleKey": "settings.category.language",
+            "items": [
+                {
+                    "id": "language",
+                    "type": "radio",
+                    "titleKey": "settings.language.title",
+                    "descriptionKey": "settings.language.description",
+                    "storageKey": "hjx-lang",
+                    "defaultValue": "zh-cn",
+                    "options": [
+                        { "value": "zh-cn", "labelKey": "lang.zh-cn", "urlPattern": "/{lang}/" },
+                        { "value": "en", "labelKey": "lang.en", "urlPattern": "/{lang}/" }
+                    ],
+                    "action": "navigate"
+                }
+            ]
+        }
+    ]
+}

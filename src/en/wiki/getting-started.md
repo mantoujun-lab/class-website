@@ -30,6 +30,17 @@ Similar to writing an article, just create or edit a `.md` file under `src/wiki/
 - Wiki pages should include a complete title, description, and clear paragraph structure
 - When editing others' content, explain the reason and scope in the PR description
 
+## Site Features Quick Tour
+
+### Settings Panel
+
+Click the gear icon on the right side of the navigation bar to open the settings panel, where you can:
+
+- **Switch theme**: Light, dark, and system-following modes
+- **Switch language**: Between Simplified Chinese and English
+
+Settings are automatically saved to browser local storage and will be applied on your next visit.
+
 ## Notes
 
 - Add a space between Chinese and English text

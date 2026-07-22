@@ -42,6 +42,7 @@
 ```
 src/
 ├── _data/i18n.js              ← 翻译字典（zh-cn / en 两套）
+├── _data/settings.json        ← 设置面板配置（主题、语言等）
 ├── _includes/                 ← 布局、组件、宏（共享，非语言相关）
 ├── _layouts/                  ← 布局模板
 ├── _macros/                   ← 可复用宏
@@ -71,7 +72,7 @@ src/
 
 3. **语言感知链接**：站内链接使用 `{{ '/xxx/' | localUrl }}` 而非 `{{ '/xxx/' | url }}`，`localUrl` 会自动根据当前语言加上正确前缀。
 
-4. **根路径行为**：用户访问 `/` 时，站点会检测 localStorage 中的语言偏好（或浏览器 `navigator.language`），自动跳转到 `/zh-cn/` 或 `/en/`。导航栏提供语言切换器，点击后偏好写入 localStorage。
+4. **根路径行为**：用户访问 `/` 时，站点会检测 localStorage 中的语言偏好（或浏览器 `navigator.language`），自动跳转到 `/zh-cn/` 或 `/en/`。导航栏设置面板提供语言和主题设置，点击后偏好写入 localStorage。
 
 5. **目录数据文件说明**：
    - `*.11tydata.js`：Eta/EJS JavaScript 对象，可计算属性，主要用于 `eleventyComputed.permalink`（动态加前缀）
