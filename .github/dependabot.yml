@@ -3,9 +3,6 @@
 
 version: 2
 
-# 全局开关
-# 每个 update 项下允许的子属性参考：
-# https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference
 updates:
   # —— GitHub Actions ——
   - package-ecosystem: "github-actions"
@@ -15,15 +12,12 @@ updates:
       day: "monday"
       time: "08:00"
       timezone: "Asia/Shanghai"
-    # Actions 升级兼容性较好，patch + minor 自动合并
     labels:
       - "dependencies"
       - "ci"
-    # 每个 PR 只跑 5 个，避免堆积
     open-pull-requests-limit: 5
-    # Group 一起提 PR，减少噪音
     groups:
-      actions-minor:
+      actions-updates:
         patterns:
           - "*"
         update-types:
@@ -38,49 +32,26 @@ updates:
       day: "monday"
       time: "08:00"
       timezone: "Asia/Shanghai"
-    # dev 依赖较多，PR 上限放开一些
     open-pull-requests-limit: 8
     labels:
       - "dependencies"
       - "javascript"
-    # 各组策略：把同类型更新合并到一个 PR 里
+    # 版本更新策略：
+    #   - 不使用 allow 限制依赖类型，确保生产依赖和安全更新都能被检测到
+    #     （原配置错误只allow development，导致生产依赖安全告警无法自修复）
+    #   - major更新单独PR需人工审核，minor/patch分组处理
+    #   - 安全更新(Security updates)不受groups限制，总是单独创建PR
     groups:
-      # Eleventy 主框架及其插件（重大升级需手工确认）
-      eleventy-major:
+      # 所有 major 版本更新单独分组，必须人工审查兼容性
+      major-updates:
         patterns:
-          - "@11ty/*"
+          - "*"
         update-types:
           - "major"
-      eleventy-minor:
+      # non-major 更新（minor + patch）分组处理
+      minor-patch-updates:
         patterns:
-          - "@11ty/*"
+          - "*"
         update-types:
           - "minor"
           - "patch"
-      # 构建工具链（Sass / PostCSS / Autoprefixer）
-      build-tools:
-        patterns:
-          - "sass"
-          - "postcss"
-          - "autoprefixer"
-        update-types:
-          - "minor"
-          - "patch"
-      # 其它依赖
-      prod-minor:
-        update-types:
-          - "minor"
-          - "patch"
-    # 允许范围：
-    #   - 生产依赖：仅 patch / minor（升级 major 风险较大）
-    #   - 开发依赖：完全放开，包括 major（dev 工具断了影响小）
-    allow:
-      - dependency-type: "development"
-      # production 不显式 allow，则按默认 major 不自动开 PR
-    # 不主动忽略的依赖
-    ignore: []
-
-# 如果你想让某些依赖完全不更新，可以在上面某个 updates 块里加 ignore：
-# ignore:
-#   - dependency-name: "autoprefixer"
-#     versions: ["10.x"]
