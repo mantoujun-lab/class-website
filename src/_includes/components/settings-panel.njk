@@ -15,19 +15,23 @@
 {%- macro renderSettingControl(item) -%}
     {%- set _inputClass = "data-setting-input" -%}
     {%- set _inputAttr = 'data-setting-input=""' -%}
+    {%- set _inputId = "setting-" + item.id -%}
 
     {%- if item.type == "select" -%}
-        <select class="setting-select" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}">
-            {%- for option in item.options -%}
-                <option value="{{ option.value }}"{% if option.urlPattern %} data-url-pattern="{{ option.urlPattern }}"{% endif %}{% if option.value == item.defaultValue %} selected{% endif %}>{{ option.labelKey | i18n }}</option>
-            {%- endfor -%}
-        </select>
+        <div class="setting-select-wrapper">
+            <select id="{{ _inputId }}" class="setting-select" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}">
+                {%- for option in item.options -%}
+                    <option value="{{ option.value }}"{% if option.urlPattern %} data-url-pattern="{{ option.urlPattern }}"{% endif %}{% if option.value == item.defaultValue %} selected{% endif %}>{{ option.labelKey | i18n }}</option>
+                {%- endfor -%}
+            </select>
+        </div>
 
     {%- elif item.type == "radio" -%}
-        <div class="setting-radio-group">
+        <div class="setting-radio-group" role="radiogroup" aria-labelledby="{{ _inputId }}-label">
             {%- for option in item.options -%}
-                <label class="setting-radio-item">
-                    <input type="radio" name="setting-radio-{{ item.id }}" class="setting-radio-input" {{ _inputAttr | safe }} value="{{ option.value }}"{% if option.urlPattern %} data-url-pattern="{{ option.urlPattern }}"{% endif %} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if option.value == item.defaultValue %} checked{% endif %}>
+                {%- set _radioId = _inputId + "-" + option.value -%}
+                <label class="setting-radio-item" for="{{ _radioId }}">
+                    <input type="radio" id="{{ _radioId }}" name="setting-radio-{{ item.id }}" class="setting-radio-input" {{ _inputAttr | safe }} value="{{ option.value }}"{% if option.urlPattern %} data-url-pattern="{{ option.urlPattern }}"{% endif %} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if option.value == item.defaultValue %} checked{% endif %}>
                     <i class="fa-solid fa-check setting-radio-icon" aria-hidden="true"></i>
                     <span class="setting-radio-label">
                         {%- if option.icon -%}<i class="{{ option.icon }}" aria-hidden="true"></i> {% endif -%}
@@ -38,38 +42,38 @@
         </div>
 
     {%- elif item.type == "toggle" -%}
-        <label class="setting-toggle">
-            <input type="checkbox" class="setting-toggle-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} checked{% endif %}>
+        <label class="setting-toggle" for="{{ _inputId }}">
+            <input type="checkbox" id="{{ _inputId }}" class="setting-toggle-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} checked{% endif %}>
             <span class="setting-toggle-slider"></span>
         </label>
 
     {%- elif item.type == "text" -%}
-        <input type="text" class="setting-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.placeholder %} placeholder="{{ item.placeholder | i18n }}"{% endif %}>
+        <input type="text" id="{{ _inputId }}" class="setting-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.placeholder %} placeholder="{{ item.placeholder | i18n }}"{% endif %}>
 
     {%- elif item.type == "number" -%}
-        <input type="number" class="setting-input setting-input-number" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
+        <input type="number" id="{{ _inputId }}" class="setting-input setting-input-number" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
 
     {%- elif item.type == "range" -%}
         <div class="setting-range-wrap">
-            <input type="range" class="setting-range" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
+            <input type="range" id="{{ _inputId }}" class="setting-range" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
             <span class="setting-range-value" data-range-value="{{ item.id }}">{{ item.defaultValue }}</span>
         </div>
 
     {%- elif item.type == "color" -%}
         <div class="setting-color-wrap">
-            <input type="color" class="setting-color-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} value="{{ item.defaultValue }}"{% endif %}>
+            <input type="color" id="{{ _inputId }}" class="setting-color-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} value="{{ item.defaultValue }}"{% endif %}>
             <span class="setting-color-preview" data-color-preview="{{ item.id }}"></span>
         </div>
 
     {%- elif item.type == "checkbox" -%}
-        <label class="setting-checkbox">
-            <input type="checkbox" class="setting-checkbox-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} checked{% endif %}>
+        <label class="setting-checkbox" for="{{ _inputId }}">
+            <input type="checkbox" id="{{ _inputId }}" class="setting-checkbox-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} checked{% endif %}>
             <span class="setting-checkbox-custom"></span>
             <span class="setting-checkbox-label">{{ item.labelKey | i18n if item.labelKey else '' }}</span>
         </label>
 
     {%- elif item.type == "textarea" -%}
-        <textarea class="setting-textarea" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}" rows="{{ item.rows if item.rows else 4 }}"{% if item.placeholder %} placeholder="{{ item.placeholder | i18n }}"{% endif %}>{{ item.defaultValue if item.defaultValue else '' }}</textarea>
+        <textarea id="{{ _inputId }}" class="setting-textarea" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}" rows="{{ item.rows if item.rows else 4 }}"{% if item.placeholder %} placeholder="{{ item.placeholder | i18n }}"{% endif %}>{{ item.defaultValue if item.defaultValue else '' }}</textarea>
 
     {%- endif -%}
 {%- endmacro -%}
@@ -95,7 +99,7 @@
                 {%- for item in category.items -%}
                 <div class="setting-item" data-setting-id="{{ item.id }}" data-setting-type="{{ item.type }}" data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}">
                     <div class="setting-item-header">
-                        <h5 class="setting-item-title">{{ item.titleKey | i18n }}</h5>
+                        <h5 class="setting-item-title" id="setting-{{ item.id }}-label">{{ item.titleKey | i18n }}</h5>
                         {%- if item.descriptionKey -%}
                         <p class="setting-item-description">{{ item.descriptionKey | i18n }}</p>
                         {%- endif -%}

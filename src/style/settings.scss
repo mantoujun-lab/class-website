@@ -146,25 +146,31 @@
 }
 
 // ==================== 1. Select 下拉选择器 ====================
-.setting-select {
+.setting-select-wrapper {
     position: relative;
+    display: inline-block;
     min-width: 160px;
 
-    select {
+    .setting-select {
         appearance: none;
         -webkit-appearance: none;
+        -moz-appearance: none;
         width: 100%;
-        padding: 8px 36px 8px 12px;
+        padding: 10px 40px 10px 14px;
         font-size: 0.9rem;
+        font-family: inherit;
         color: $color-text;
         background: var(--color-card-bg);
         border: $border-width-sm solid var(--color-border-light);
-        border-radius: $radius-sm;
+        border-radius: $radius-btn;
         cursor: pointer;
-        transition: border-color $transition-fast, box-shadow $transition-fast;
+        transition: border-color $transition-fast, box-shadow $transition-fast, background $transition-fast;
+        line-height: 1.4;
+        margin: 0;
 
         &:hover {
             border-color: $color-primary;
+            background: var(--color-primary-five);
         }
 
         &:focus {
@@ -172,25 +178,47 @@
             border-color: $color-primary;
             box-shadow: 0 0 0 3px var(--color-primary-eight);
         }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        // option 样式（浏览器支持有限，仅作基础美化）
+        option {
+            color: $color-text;
+            background: var(--color-card-bg);
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 8px 12px; // 大部分浏览器不支持，仅作兼容
+        }
+
+        &:disabled option {
+            color: $color-text-light;
+        }
     }
 
     &::after {
-        content: "";
+        content: "\f078";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
         position: absolute;
         top: 50%;
-        right: 12px;
-        width: 0;
-        height: 0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 6px solid $color-text-light;
+        right: 14px;
+        color: $color-text-light;
+        font-size: 0.75rem;
         transform: translateY(-50%);
         pointer-events: none;
-        transition: border-color $transition-fast;
+        transition: color $transition-fast, transform $transition-fast;
     }
 
     &:hover::after {
-        border-top-color: $color-primary;
+        color: $color-primary;
+    }
+
+    &:has(.setting-select:focus)::after {
+        color: $color-primary;
+        transform: translateY(-50%) rotate(180deg);
     }
 }
 
@@ -570,12 +598,17 @@ textarea.setting-input {
         margin-bottom: $spacing-sm;
     }
 
-    .setting-select {
+    .setting-select-wrapper {
         min-width: 120px;
 
-        select {
+        .setting-select {
             font-size: 0.85rem;
-            padding: 6px 30px 6px 10px;
+            padding: 8px 32px 8px 12px;
+        }
+
+        &::after {
+            right: 12px;
+            font-size: 0.7rem;
         }
     }
 
