@@ -25,10 +25,15 @@
 
 // ==================== 设置面板 ====================
 // 两栏式设置弹窗：左侧分类导航 + 右侧设置内容
-// 依赖 popup.scss 的 modal 结构，通过 .settings-modal 覆盖 modal-body 样式
+// 依赖 popup.scss 的 modal 结构，通过 #modal-settings 覆盖 modal 样式
+
+// ---- 弹窗尺寸加大 ----
+#modal-settings[data-modal-size="lg"] {
+    --modal-size: 900px;
+}
 
 // ---- 弹窗内容覆盖 ----
-.settings-modal {
+#modal-settings {
     .modal-body {
         padding: 0;
         overflow: hidden;
@@ -36,9 +41,9 @@
 }
 
 // ---- 整体容器 ----
-.settings-modal-inner {
+.settings-panel {
     @include flex(row, flex-start, stretch);
-    height: 540px;
+    height: 560px;
 }
 
 // ==================== 左侧分类导航 ====================
@@ -492,7 +497,7 @@ textarea.setting-input {
 
 // ==================== 响应式：平板及以下 ====================
 @include respond-to($breakpoint-tablet) {
-    .settings-modal-inner {
+    .settings-panel {
         @include flex(column, flex-start, stretch);
         height: auto;
         max-height: calc(100vh - 120px);

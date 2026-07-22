@@ -145,12 +145,17 @@ header {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
 
-        a {
+        a,
+        button.nav-settings-btn {
             padding: 14px;
             margin: $spacing-sm 0;
             background: var(--nav-mobile-btn-bg, var(--glass-white-30));
             border: $border-width-md solid var(--nav-mobile-btn-border, var(--glass-white-60));
             border-radius: $radius-btn;
+            color: $color-white;
+            font-size: inherit;
+            text-align: left;
+            cursor: pointer;
             transition: $transition-fast;
 
             &::after {

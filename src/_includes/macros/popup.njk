@@ -45,10 +45,9 @@
 {%- if not modalId -%}
 {{- "<!-- popup 宏错误：modalId 必填 -->" | safe -}}
 {%- else -%}
-{%- set _size = size if size in ["sm", "md", "lg"] else "md" -%}
 {# data-modal-state="closed" 由 JS 切换为 "open" 触发动画（避免首屏闪烁） #}
 <div class="modal-backdrop" data-modal-backdrop="{{ modalId }}"></div>
-<div class="modal" id="modal-{{ modalId }}" data-modal-id="{{ modalId }}" data-modal-size="{{ _size }}" data-modal-state="closed" role="dialog" aria-modal="true" aria-labelledby="modal-{{ modalId }}-title" tabindex="-1">
+<div class="modal" id="modal-{{ modalId }}" data-modal-id="{{ modalId }}" data-modal-size="{% if size == "sm" or size == "md" or size == "lg" %}{{ size }}{% else %}md{% endif %}" data-modal-state="closed" role="dialog" aria-modal="true" aria-labelledby="modal-{{ modalId }}-title" tabindex="-1">
     {%- if title or showClose %}
     <div class="modal-header">
         <div class="modal-header-text">
