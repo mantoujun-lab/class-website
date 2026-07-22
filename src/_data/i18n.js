@@ -27,6 +27,17 @@ module.exports = {
     "nav.langSwitch":   { "zh-cn": "语言",       "en": "Language" },
 
     // ============================================================
+    // 设置页
+    // ============================================================
+    "settings.title":                   { "zh-cn": "设置",                   "en": "Settings" },
+    "settings.category.appearance":     { "zh-cn": "外观",                   "en": "Appearance" },
+    "settings.category.language":       { "zh-cn": "语言",                   "en": "Language" },
+    "settings.theme.title":             { "zh-cn": "主题",                   "en": "Theme" },
+    "settings.theme.description":       { "zh-cn": "选择网站的颜色主题",     "en": "Choose the color theme of the website" },
+    "settings.language.title":          { "zh-cn": "显示语言",               "en": "Display Language" },
+    "settings.language.description":    { "zh-cn": "选择网站的显示语言",     "en": "Choose the display language of the website" },
+
+    // ============================================================
     // Footer
     // ============================================================
     "footer.copyright": {

@@ -41,6 +41,7 @@ This site uses a **directory-isolated** i18n architecture, where each language h
 ```
 src/
 ├── _data/i18n.js              ← Translation dictionary (zh-cn / en)
+├── _data/settings.json        ← Settings panel configuration (theme, language, etc.)
 ├── _includes/                 ← Layouts, components, macros (shared, not language-specific)
 ├── _layouts/                  ← Layout templates
 ├── _macros/                   ← Reusable macros
@@ -70,7 +71,7 @@ src/
 
 3. **Locale-aware links**: Use `{{ '/path/' | localUrl }}` instead of `{{ '/path/' | url }}` for internal links. The `localUrl` filter automatically prepends the correct language prefix.
 
-4. **Root path behavior**: When users visit `/`, the site detects their language preference from localStorage (or `navigator.language`) and redirects to `/zh-cn/` or `/en/`. The navigation bar provides a language switcher that saves preferences to localStorage.
+4. **Root path behavior**: When users visit `/`, the site detects their language preference from localStorage (or `navigator.language`) and redirects to `/zh-cn/` or `/en/`. A settings panel in the navigation bar provides language and theme settings that save preferences to localStorage.
 
 5. **Directory data files**:
    - `*.11tydata.js`: JavaScript objects with computed properties, mainly used for `eleventyComputed.permalink` (dynamic prefix injection)

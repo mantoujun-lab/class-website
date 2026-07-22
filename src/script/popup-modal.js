@@ -6,7 +6,6 @@
 //   2. 委托式事件绑定（document 级）：
 //        - [data-modal-open="<id>"]   点击 → 打开对应弹窗
 //        - [data-modal-close="<id>"]  点击 → 关闭对应弹窗
-//        - [data-modal-backdrop]      点击 → 不响应（关闭只走 close 触发器 / ESC / popstate）
 //   3. 焦点陷阱：复用 focus-trap.js 的工具（Tab 循环 + 焦点归还）
 //   4. 多弹窗互斥：打开新弹窗时关闭当前已打开的弹窗（栈语义，最新的最上层）
 //   5. 与现有菜单互斥：弹窗打开时静默关闭 nav-popup / drawer / wiki
@@ -18,6 +17,7 @@
 // 关键设计：
 //   - DOM 查询懒加载：第一次 openModal(id) 时按需查找节点，避免空页报错
 //   - closeModal(id, manageHistory)：popstate 回调里传 false 避免重复 back
+//   - 遮罩：复用全局统一遮罩 .overlay（在 overlay.scss 中管理）
 //
 // 依赖：
 //   - focus-trap.js：rememberFocus / restoreFocus / focusFirst / trapFocus / clearFocusableCache
@@ -31,7 +31,7 @@ import { acquireSlot, releaseSlot, markReleased } from './history-stack.js';
 // ---- 模块状态 ----
 // openStack: 后进先出的栈，记录当前打开的弹窗 id（用于多弹窗互斥）
 const openStack = [];
-// 缓存 id -> { modal, backdrop } 引用，避免重复 querySelector
+// 缓存 id -> modal 元素引用，避免重复 querySelector
 const modalCache = new Map();
 
 // ---- 依赖注入（由 main.js 调用 initModal 时传入） ----
@@ -47,10 +47,8 @@ function findModal(id) {
         console.debug('[modal] 未找到 id=' + id + ' 的弹窗节点');
         return null;
     }
-    const backdrop = document.querySelector('.modal-backdrop[data-modal-backdrop="' + id + '"]');
-    const entry = { modal: modal, backdrop: backdrop };
-    modalCache.set(id, entry);
-    return entry;
+    modalCache.set(id, modal);
+    return modal;
 }
 
 function getOwnerId(id) {
@@ -61,8 +59,8 @@ function getOwnerId(id) {
 // ---- 核心 API ----
 export function openModal(id) {
     console.debug('[modal] 打开弹窗: ' + id);
-    const entry = findModal(id);
-    if (!entry) return;
+    const modal = findModal(id);
+    if (!modal) return;
 
     // 互斥：若其他菜单正打开，静默关闭（复用 history 槽位）
     // 注：nav-popup/drawer/wiki 占用的是同一个单槽位 'popup'/'drawer'/'wiki'，
@@ -76,9 +74,9 @@ export function openModal(id) {
         const prevId = openStack[openStack.length - 1];
         if (prevId === id) {
             // 同一个弹窗重复打开：仅把焦点拉回去即可
-            entry.modal.setAttribute('data-modal-state', 'open');
+            modal.setAttribute('data-modal-state', 'open');
             document.body.classList.add('modal-open');
-            focusFirst(entry.modal);
+            focusFirst(modal);
             return;
         }
         closeModal(prevId, false);
@@ -87,7 +85,7 @@ export function openModal(id) {
     // 入栈
     openStack.push(id);
     document.body.classList.add('modal-open');
-    entry.modal.setAttribute('data-modal-state', 'open');
+    modal.setAttribute('data-modal-state', 'open');
 
     // 占用 history 槽位（按 id 区分，支持多弹窗共存于 history 栈）
     acquireSlot(getOwnerId(id));
@@ -97,11 +95,11 @@ export function openModal(id) {
     // 等动画结束后再聚焦，避免 transition 与 focus 抢资源
     requestAnimationFrame(function () {
         if (!isModalOpen(id)) return; // 弹窗可能已在 rAF 前关闭
-        focusFirst(entry.modal);
+        focusFirst(modal);
     });
 
     // 触发自定义事件，方便外部 hook
-    entry.modal.dispatchEvent(new CustomEvent('modal:open', { bubbles: true, detail: { id: id } }));
+    modal.dispatchEvent(new CustomEvent('modal:open', { bubbles: true, detail: { id: id } }));
 }
 
 export function closeModal(id, manageHistory) {
@@ -113,11 +111,11 @@ export function closeModal(id, manageHistory) {
     }
     console.debug('[modal] 关闭弹窗: ' + id + ', manageHistory=' + manageHistory);
 
-    const entry = findModal(id);
-    if (!entry) return;
+    const modal = findModal(id);
+    if (!modal) return;
 
-    entry.modal.setAttribute('data-modal-state', 'closed');
-    clearFocusableCache(entry.modal);
+    modal.setAttribute('data-modal-state', 'closed');
+    clearFocusableCache(modal);
 
     openStack.splice(idx, 1);
 
@@ -137,7 +135,7 @@ export function closeModal(id, manageHistory) {
     restoreFocus();
 
     // 触发自定义事件
-    entry.modal.dispatchEvent(new CustomEvent('modal:close', { bubbles: true, detail: { id: id } }));
+    modal.dispatchEvent(new CustomEvent('modal:close', { bubbles: true, detail: { id: id } }));
 }
 
 // 查询是否打开了某个 / 任意弹窗
@@ -179,9 +177,6 @@ export function initModal(deps) {
             closeModal(id, true);
             return;
         }
-        // 遮罩点击：永远不响应（弹窗关闭只走 [data-modal-close] / ESC / popstate）
-        const backdrop = e.target.closest('[data-modal-backdrop]');
-        if (backdrop) return;
     });
 
     // ---- 全局键盘：ESC 关闭栈顶 + Tab 焦点陷阱 ----
@@ -196,8 +191,8 @@ export function initModal(deps) {
 
         if (e.key === 'Tab') {
             const topId = openStack[openStack.length - 1];
-            const entry = findModal(topId);
-            if (entry) trapFocus(e, entry.modal);
+            const modal = findModal(topId);
+            if (modal) trapFocus(e, modal);
         }
     });
 

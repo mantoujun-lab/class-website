@@ -33,48 +33,10 @@
             <a href="https://hjx-25pc1.github.io/astro/"><i class="fa-solid fa-rocket" aria-hidden="true"></i><span class="hover-show">{{ 'nav.astro' | i18n }}</span></a>
             <a href="#" class="nav-popup-btn" aria-haspopup="true" aria-expanded="false" aria-controls="nav-popup" aria-label="{{ 'nav.siteMap' | i18n }}" role="button"><i class="fa-solid fa-sitemap" aria-hidden="true"></i><span class="hover-show">{{ 'nav.siteMap' | i18n }}</span></a>
 
-            {# 语言切换器 #}
-            {%- set _curLang = (locale or 'zh-cn') -%}
-            <div class="lang-switcher">
-                <button type="button" class="lang-btn" aria-label="{{ 'nav.langSwitch' | i18n }}" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-language" aria-hidden="true"></i><span class="hover-show">{{ 'nav.langSwitch' | i18n }}</span>
-                </button>
-                <ul class="lang-menu" role="menu">
-                    <li role="none">
-                        <a href="{{ '/' | localUrl('zh-cn') }}" data-lang="zh-cn" role="menuitem"{% if _curLang == 'zh-cn' %} aria-current="true"{% endif %}>
-                            {% if _curLang == 'zh-cn' %}<i class="fa-solid fa-check" aria-hidden="true"></i>{% else %}<i class="fa-solid fa-check" aria-hidden="true" style="visibility:hidden"></i>{% endif %} {{ 'lang.zh-cn' | i18n }}
-                        </a>
-                    </li>
-                    <li role="none">
-                        <a href="{{ '/' | localUrl('en') }}" data-lang="en" role="menuitem"{% if _curLang == 'en' %} aria-current="true"{% endif %}>
-                            {% if _curLang == 'en' %}<i class="fa-solid fa-check" aria-hidden="true"></i>{% else %}<i class="fa-solid fa-check" aria-hidden="true" style="visibility:hidden"></i>{% endif %} {{ 'lang.en' | i18n }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="theme-switcher">
-                <button type="button" class="theme-btn" aria-label="{{ 'nav.themeToggle' | i18n }}" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i><span class="hover-show">{{ 'nav.themeToggle' | i18n }}</span>
-                </button>
-                <ul class="theme-menu" role="menu">
-                    <li role="none">
-                        <button type="button" role="menuitem" data-theme-value="auto">
-                            <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i> {{ 'nav.themeAuto' | i18n }}
-                        </button>
-                    </li>
-                    <li role="none">
-                        <button type="button" role="menuitem" data-theme-value="light">
-                            <i class="fa-solid fa-sun" aria-hidden="true"></i> {{ 'nav.themeLight' | i18n }}
-                        </button>
-                    </li>
-                    <li role="none">
-                        <button type="button" role="menuitem" data-theme-value="dark">
-                            <i class="fa-solid fa-moon" aria-hidden="true"></i> {{ 'nav.themeDark' | i18n }}
-                        </button>
-                    </li>
-                </ul>
-            </div>
+            {# 设置按钮 #}
+            <button type="button" class="nav-settings-btn" data-modal-open="settings" aria-label="{{ 'settings.title' | i18n }}">
+                <i class="fa-solid fa-gear" aria-hidden="true"></i><span class="hover-show">{{ 'settings.title' | i18n }}</span>
+            </button>
         </div>
     </nav>
     <div class="nav-popup" id="nav-popup" role="dialog" aria-modal="true" aria-label="{{ 'nav.siteMap' | i18n }}">
@@ -83,4 +45,5 @@
     </div>
     {# 统一遮罩：弹窗与抽屉共享，由 JS 按优先级关闭 #}
     <div class="overlay"></div>
+    {% include "components/settings-panel.njk" %}
 </header>

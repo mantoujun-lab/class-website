@@ -1,0 +1,119 @@
+{# ============================================================
+   设置面板组件（Settings Panel）
+   ------------------------------------------------------------
+   基于 popup 宏实现的两栏式设置面板，左侧分类导航，右侧设置内容。
+   支持多种设置类型：select / radio / toggle / text / number / range / color / checkbox / textarea
+
+   数据来源：
+     - settings.categories 来自 src/_data/settings.json
+     - 所有文案通过 i18n 过滤器翻译
+   ============================================================ #}
+
+{% from "macros/popup.njk" import popup %}
+
+{# 渲染单个设置项的控件 #}
+{%- macro renderSettingControl(item) -%}
+    {%- set _inputAttr = 'data-setting-input=""' -%}
+    {%- set _inputId = "setting-" + item.id -%}
+
+    {%- if item.type == "select" -%}
+        <div class="setting-select-wrapper">
+            <select id="{{ _inputId }}" class="setting-select" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}">
+                {%- for option in item.options -%}
+                    <option value="{{ option.value }}"{% if option.urlPattern %} data-url-pattern="{{ option.urlPattern }}"{% endif %}{% if option.value == item.defaultValue %} selected{% endif %}>{{ option.labelKey | i18n }}</option>
+                {%- endfor -%}
+            </select>
+        </div>
+
+    {%- elif item.type == "radio" -%}
+        <div class="setting-radio-group" role="radiogroup" aria-labelledby="{{ _inputId }}-label">
+            {%- for option in item.options -%}
+                {%- set _radioId = _inputId + "-" + option.value -%}
+                <label class="setting-radio-item" for="{{ _radioId }}">
+                    <input type="radio" id="{{ _radioId }}" name="setting-radio-{{ item.id }}" class="setting-radio-input" {{ _inputAttr | safe }} value="{{ option.value }}"{% if option.urlPattern %} data-url-pattern="{{ option.urlPattern }}"{% endif %} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if option.value == item.defaultValue %} checked{% endif %}>
+                    <i class="fa-solid fa-check setting-radio-icon" aria-hidden="true"></i>
+                    <span class="setting-radio-label">
+                        {%- if option.icon -%}<i class="{{ option.icon }}" aria-hidden="true"></i> {% endif -%}
+                        {{- option.labelKey | i18n -}}
+                    </span>
+                </label>
+            {%- endfor -%}
+        </div>
+
+    {%- elif item.type == "toggle" -%}
+        <label class="setting-toggle" for="{{ _inputId }}">
+            <input type="checkbox" id="{{ _inputId }}" class="setting-toggle-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} checked{% endif %}>
+            <span class="setting-toggle-slider"></span>
+        </label>
+
+    {%- elif item.type == "text" -%}
+        <input type="text" id="{{ _inputId }}" class="setting-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.placeholder %} placeholder="{{ item.placeholder | i18n }}"{% endif %}>
+
+    {%- elif item.type == "number" -%}
+        <input type="number" id="{{ _inputId }}" class="setting-input setting-input-number" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
+
+    {%- elif item.type == "range" -%}
+        <div class="setting-range">
+            <input type="range" id="{{ _inputId }}" class="setting-range-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
+            <span class="setting-range-value" data-range-value="{{ item.id }}">{{ item.defaultValue }}</span>
+        </div>
+
+    {%- elif item.type == "color" -%}
+        <div class="setting-color">
+            <input type="color" id="{{ _inputId }}" class="setting-color-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} value="{{ item.defaultValue }}"{% endif %}>
+            <span class="setting-color-preview" data-color-preview="{{ item.id }}"></span>
+        </div>
+
+    {%- elif item.type == "checkbox" -%}
+        <label class="setting-checkbox" for="{{ _inputId }}">
+            <input type="checkbox" id="{{ _inputId }}" class="setting-checkbox-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} checked{% endif %}>
+            <span class="setting-checkbox-custom"></span>
+            <span class="setting-checkbox-label">{{ item.labelKey | i18n if item.labelKey else '' }}</span>
+        </label>
+
+    {%- elif item.type == "textarea" -%}
+        <textarea id="{{ _inputId }}" class="setting-input setting-textarea" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}" rows="{{ item.rows if item.rows else 4 }}"{% if item.placeholder %} placeholder="{{ item.placeholder | i18n }}"{% endif %}>{{ item.defaultValue if item.defaultValue else '' }}</textarea>
+
+    {%- endif -%}
+{%- endmacro -%}
+
+{# 构建设置面板内部内容 #}
+{%- set _settingsContent -%}
+<div class="settings-panel">
+    <aside class="settings-sidebar">
+        <ul class="settings-category-list" role="tablist">
+            {%- for category in settings.categories -%}
+            <li class="settings-category-item{% if loop.first %} is-active{% endif %}" data-settings-category="{{ category.id }}" role="tab" aria-selected="{% if loop.first %}true{% else %}false{% endif %}" tabindex="0">
+                <i class="{{ category.icon }} settings-category-icon" aria-hidden="true"></i>
+                <span class="settings-category-label">{{ category.titleKey | i18n }}</span>
+            </li>
+            {%- endfor -%}
+        </ul>
+    </aside>
+    <section class="settings-content">
+        {%- for category in settings.categories -%}
+        <div class="settings-panel-item" data-settings-panel="{{ category.id }}" role="tabpanel"{% if not loop.first %} hidden{% endif %}>
+            <h4 class="settings-panel-title">{{ category.titleKey | i18n }}</h4>
+            <div class="settings-item-list">
+                {%- for item in category.items -%}
+                <div class="setting-item" data-setting-id="{{ item.id }}" data-setting-type="{{ item.type }}" data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}">
+                    <div class="setting-item-header">
+                        <h5 class="setting-item-title" id="setting-{{ item.id }}-label">{{ item.titleKey | i18n }}</h5>
+                        {%- if item.descriptionKey -%}
+                        <p class="setting-item-description">{{ item.descriptionKey | i18n }}</p>
+                        {%- endif -%}
+                    </div>
+                    <div class="setting-item-control">
+                        {{ renderSettingControl(item) }}
+                    </div>
+                </div>
+                {%- endfor -%}
+            </div>
+        </div>
+        {%- endfor -%}
+    </section>
+</div>
+{%- endset -%}
+
+{# 渲染弹窗 #}
+{{ popup("settings", "settings.title" | i18n, _settingsContent, size="lg") }}

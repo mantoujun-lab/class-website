@@ -1,108 +1,93 @@
-import { dom } from './_dom.js';
+// ============================================================
+// theme.js — 主题管理模块
+// ------------------------------------------------------------
+// 职责：
+//   1. 管理主题状态（auto / light / dark）
+//   2. 持久化主题偏好到 localStorage
+//   3. 监听系统主题变化（prefers-color-scheme）
+//   4. 提供公共 API 供其他模块调用
+//
+// 公共 API：
+//   - getCurrentTheme()   获取当前设置的主题（'auto' | 'light' | 'dark'）
+//   - getResolvedTheme()  获取实际解析后的主题（'light' | 'dark'）
+//   - applyTheme(theme)   应用指定主题并持久化
+//   - initTheme()         初始化主题（读取存储 + 设置监听器）
+//   - toggleTheme()       循环切换主题（auto → light → dark → auto）
+// ============================================================
 
-const STORAGE_KEY = 'hjx-theme';
-const OPEN_CLASS = 'theme-menu-open';
-const TABLET_BP = 768;
+const STORAGE_KEY = "hjx-theme";
 
 let cachedTheme = null;
-let headerEl = null;
 
-function applyTheme(mode) {
-    console.debug('[theme] 应用主题:', mode);
-    if (mode === 'auto') {
-        document.documentElement.removeAttribute('data-theme');
-    } else {
-        document.documentElement.dataset.theme = mode;
+function getSystemTheme() {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+export function getCurrentTheme() {
+    return cachedTheme || "auto";
+}
+
+export function getResolvedTheme() {
+    const current = getCurrentTheme();
+    if (current === "auto") {
+        return getSystemTheme();
     }
-    cachedTheme = mode;
-    console.debug('[theme] 保存主题到本地存储');
+    return current;
+}
+
+export function applyTheme(theme) {
+    console.debug("[theme] 应用主题:", theme);
+
+    if (theme === "auto") {
+        document.documentElement.removeAttribute("data-theme");
+    } else {
+        document.documentElement.dataset.theme = theme;
+    }
+
+    cachedTheme = theme;
+
     try {
-        localStorage.setItem(STORAGE_KEY, mode);
+        localStorage.setItem(STORAGE_KEY, theme);
     } catch (e) { }
 }
 
-function isDesktop() {
-    return window.innerWidth > TABLET_BP;
-}
-
-function setMenuOpen(menu, btn, open) {
-    menu.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', String(open));
-    if (isDesktop() && headerEl) {
-        headerEl.classList.toggle(OPEN_CLASS, open);
-    }
-    if (open) {
-        console.debug('[theme] 菜单打开');
+export function toggleTheme() {
+    const current = getCurrentTheme();
+    let next;
+    if (current === "auto") {
+        next = "light";
+    } else if (current === "light") {
+        next = "dark";
     } else {
-        console.debug('[theme] 菜单关闭');
+        next = "auto";
     }
+    applyTheme(next);
+    return next;
 }
 
 export function initTheme() {
-    console.debug('[theme] 初始化');
-
-    headerEl = dom.header;
-    const btn = dom.themeBtn;
-    const menu = dom.themeMenu;
-    if (!btn || !menu) return;
+    console.debug("[theme] 初始化");
 
     // 读取初始主题（仅设缓存；data-theme 已由 head-assets.njk 内联脚本在 CSS 前设置，无需再应用）
     let saved = null;
     try {
         saved = localStorage.getItem(STORAGE_KEY);
     } catch (e) { }
+
     cachedTheme = saved;
-    console.debug('[theme] 读取初始主题:', saved);
+    console.debug("[theme] 读取初始主题:", saved);
 
-    btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        const willOpen = !menu.classList.contains('open');
-        setMenuOpen(menu, btn, willOpen);
-    });
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    mq.addEventListener("change", function () {
+        console.debug("[theme] 系统主题变化，当前设置:", cachedTheme);
+        const shouldRespond = !cachedTheme || cachedTheme === "auto";
+        console.debug("[theme] 是否响应系统变化:", shouldRespond ? "是" : "否");
 
-    menu.querySelectorAll('[data-theme-value]').forEach(function (el) {
-        el.addEventListener('click', function () {
-            applyTheme(el.dataset.themeValue);
-            setMenuOpen(menu, btn, false);
-        });
-    });
-
-    // 桌面端：点击遮罩关闭菜单
-    const overlay = dom.overlay;
-    if (overlay) {
-        overlay.addEventListener('click', function (e) {
-            if (headerEl && headerEl.classList.contains(OPEN_CLASS)) {
-                e.stopPropagation();
-                setMenuOpen(menu, btn, false);
-            }
-        });
-    }
-
-    document.addEventListener('click', function (e) {
-        if (!menu.contains(e.target) && !btn.contains(e.target)) {
-            setMenuOpen(menu, btn, false);
-        }
-    });
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && menu.classList.contains('open')) {
-            setMenuOpen(menu, btn, false);
-            btn.focus();
-        }
-    });
-
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mq.addEventListener('change', function () {
-        console.debug('[theme] 从缓存读取主题:', cachedTheme);
-        const shouldRespond = !cachedTheme || cachedTheme === 'auto';
-        console.debug('[theme] 系统主题变化，当前设置:', cachedTheme, '，是否响应:', shouldRespond ? '是' : '否');
-        // 仅在「自动」或「未设置」时跟随系统主题
-        // （用户已显式选择 dark/light 时不响应系统切换，保持用户偏好）
         if (shouldRespond) {
             if (mq.matches) {
-                document.documentElement.dataset.theme = 'dark';
+                document.documentElement.dataset.theme = "dark";
             } else {
-                document.documentElement.removeAttribute('data-theme');
+                document.documentElement.removeAttribute("data-theme");
             }
         }
     });

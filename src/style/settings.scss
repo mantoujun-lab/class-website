@@ -1,0 +1,629 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+// ==================== 导航栏设置按钮 ====================
+
+.nav-settings-btn {
+    color: $color-white;
+    padding: 8px;
+    border-radius: $radius-btn;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    transition: background $transition-fast;
+
+    &:hover {
+        background: var(--header-hover-bg, var(--glass-white-15));
+    }
+
+    &:focus {
+        outline: 2px solid $color-white;
+        outline-offset: 2px;
+    }
+}
+
+// ==================== 设置面板 ====================
+// 两栏式设置弹窗：左侧分类导航 + 右侧设置内容
+// 依赖 popup.scss 的 modal 结构，通过 #modal-settings 覆盖 modal 样式
+
+// ---- 弹窗尺寸加大 ----
+#modal-settings[data-modal-size="lg"] {
+    --modal-size: 900px;
+}
+
+// ---- 弹窗内容覆盖 ----
+#modal-settings {
+    .modal-body {
+        padding: 0;
+        overflow: hidden;
+    }
+}
+
+// ---- 整体容器 ----
+.settings-panel {
+    @include flex(row, flex-start, stretch);
+    height: 560px;
+}
+
+// ==================== 左侧分类导航 ====================
+.settings-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--color-wiki-sidebar-bg);
+    border-right: $border-width-sm solid var(--color-border-light);
+    overflow-y: auto;
+
+    .settings-category-list {
+        list-style: none;
+        margin: 0;
+        padding: $spacing-sm 0;
+    }
+
+    .settings-category-item {
+        @include flex(row, flex-start, center);
+        gap: $spacing-sm;
+        padding: 12px $spacing-md;
+        cursor: pointer;
+        color: $color-text-light;
+        font-size: 0.95rem;
+        transition: background $transition-fast, color $transition-fast;
+        border-left: 3px solid transparent;
+
+        &:hover {
+            background: var(--color-wiki-list-item-bg);
+            color: $color-text;
+        }
+
+        &.is-active {
+            background: var(--color-wiki-list-item-bg);
+            color: $color-primary;
+            border-left-color: $color-primary;
+            font-weight: 500;
+        }
+
+        .settings-category-icon {
+            flex-shrink: 0;
+            width: 18px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .settings-category-label {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+// ==================== 右侧内容区 ====================
+.settings-content {
+    flex: 1;
+    padding: $spacing-lg;
+    overflow-y: auto;
+}
+
+// ==================== 设置项卡片 ====================
+.setting-item {
+    background: var(--color-card-bg);
+    border: $border-width-sm solid var(--color-card-border);
+    border-radius: $radius-md;
+    padding: $spacing-md;
+    margin-bottom: $spacing-md;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &:hover {
+        border-color: var(--color-border-light);
+    }
+}
+
+.setting-item-header {
+    margin-bottom: $spacing-sm;
+
+    .setting-item-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: $color-text;
+        margin-bottom: 4px;
+    }
+
+    .setting-item-description {
+        font-size: 0.85rem;
+        color: $color-text-light;
+        line-height: 1.5;
+    }
+}
+
+.setting-item-control {
+    @include flex(row, flex-end, center);
+    margin-top: $spacing-sm;
+}
+
+// ==================== 1. Select 下拉选择器 ====================
+.setting-select-wrapper {
+    position: relative;
+    display: inline-block;
+    min-width: 160px;
+
+    .setting-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 100%;
+        padding: 10px 40px 10px 14px;
+        font-size: 0.9rem;
+        font-family: inherit;
+        color: $color-text;
+        background: var(--color-card-bg);
+        border: $border-width-sm solid var(--color-border-light);
+        border-radius: $radius-btn;
+        cursor: pointer;
+        transition: border-color $transition-fast, box-shadow $transition-fast, background $transition-fast;
+        line-height: 1.4;
+        margin: 0;
+
+        &:hover {
+            border-color: $color-primary;
+            background: var(--color-primary-five);
+        }
+
+        &:focus {
+            outline: none;
+            border-color: $color-primary;
+            box-shadow: 0 0 0 3px var(--color-primary-eight);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        // option 样式（浏览器支持有限，仅作基础美化）
+        option {
+            color: $color-text;
+            background: var(--color-card-bg);
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 8px 12px; // 大部分浏览器不支持，仅作兼容
+        }
+
+        &:disabled option {
+            color: $color-text-light;
+        }
+    }
+
+    &::after {
+        content: "\f078";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        top: 50%;
+        right: 14px;
+        color: $color-text-light;
+        font-size: 0.75rem;
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: color $transition-fast, transform $transition-fast;
+    }
+
+    &:hover::after {
+        color: $color-primary;
+    }
+
+    &:has(.setting-select:focus)::after {
+        color: $color-primary;
+        transform: translateY(-50%) rotate(180deg);
+    }
+}
+
+// ==================== 2. Radio 单选组 ====================
+.setting-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: $border-width-sm solid var(--color-card-border);
+    border-radius: $radius-sm;
+    overflow: hidden;
+}
+
+.setting-radio-item {
+    @include flex(row, flex-start, center);
+    gap: $spacing-sm;
+    padding: 10px $spacing-md;
+    cursor: pointer;
+    color: $color-text;
+    font-size: 0.9rem;
+    border-bottom: $border-width-sm solid var(--color-card-border);
+    transition: background $transition-fast, border-color $transition-fast;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background: var(--color-primary-five);
+    }
+
+    &.is-selected {
+        background: var(--color-primary-eight);
+        border-color: var(--color-primary);
+
+        .setting-radio-icon {
+            color: $color-primary;
+            opacity: 1;
+        }
+    }
+
+    .setting-radio-icon {
+        flex-shrink: 0;
+        width: 16px;
+        text-align: center;
+        color: $color-primary;
+        opacity: 0;
+        transition: opacity $transition-fast;
+        font-size: 0.8rem;
+    }
+
+    .setting-radio-label {
+        flex: 1;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+}
+
+// ==================== 3. Toggle 开关 ====================
+.setting-toggle {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+
+    input[type="checkbox"] {
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked + .setting-toggle-slider {
+            background: $color-primary;
+
+            &::before {
+                transform: translateX(22px);
+            }
+        }
+
+        &:focus-visible + .setting-toggle-slider {
+            box-shadow: 0 0 0 3px var(--color-primary-eight);
+        }
+    }
+
+    .setting-toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background: var(--color-border-light);
+        border-radius: 26px;
+        transition: background $transition-fast;
+
+        &::before {
+            content: "";
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            top: 3px;
+            background: $color-white;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: transform $transition-fast;
+        }
+    }
+}
+
+// ==================== 4. Text / Number / Textarea 输入框 ====================
+.setting-input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: $color-text;
+    background: var(--color-card-bg);
+    border: $border-width-sm solid var(--color-border-light);
+    border-radius: $radius-sm;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+    font-family: inherit;
+
+    &:hover {
+        border-color: $color-primary;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px var(--color-primary-eight);
+    }
+
+    &::placeholder {
+        color: $color-text-light;
+        opacity: 0.6;
+    }
+
+    &[type="number"] {
+        width: 100px;
+        text-align: center;
+    }
+
+    &[type="text"] {
+        max-width: 280px;
+    }
+}
+
+textarea.setting-input {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+// ==================== 5. Range 滑块 ====================
+.setting-range {
+    @include flex(row, flex-start, center);
+    gap: $spacing-md;
+    width: 100%;
+
+    .setting-range-input {
+        flex: 1;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 6px;
+        background: var(--color-border-light);
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+        transition: background $transition-fast;
+
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: $color-primary;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+            transition: transform $transition-fast, box-shadow $transition-fast;
+
+            &:hover {
+                transform: scale(1.1);
+                box-shadow: 0 2px 8px rgba(74, 108, 247, 0.4);
+            }
+        }
+
+        &::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: $color-primary;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+            transition: transform $transition-fast, box-shadow $transition-fast;
+
+            &:hover {
+                transform: scale(1.1);
+                box-shadow: 0 2px 8px rgba(74, 108, 247, 0.4);
+            }
+        }
+    }
+
+    .setting-range-value {
+        flex-shrink: 0;
+        min-width: 48px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: $color-text-light;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+// ==================== 6. Color 颜色选择器 ====================
+.setting-color {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+
+    .setting-color-preview {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: $border-width-sm solid var(--color-border-light);
+        background: var(--color-card-bg);
+        transition: border-color $transition-fast, transform $transition-fast;
+        pointer-events: none;
+        box-shadow: inset 0 0 0 2px var(--color-card-bg);
+    }
+
+    &:hover .setting-color-preview {
+        border-color: $color-primary;
+        transform: scale(1.05);
+    }
+
+    .setting-color-input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+        border: none;
+        padding: 0;
+    }
+}
+
+// ==================== 7. Checkbox 复选框 ====================
+.setting-checkbox {
+    @include flex(row, flex-start, center);
+    gap: $spacing-sm;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+        display: none;
+
+        &:checked + .setting-checkbox-custom {
+            background: $color-primary;
+            border-color: $color-primary;
+
+            &::after {
+                opacity: 1;
+                transform: rotate(45deg) scale(1);
+            }
+        }
+
+        &:focus-visible + .setting-checkbox-custom {
+            box-shadow: 0 0 0 3px var(--color-primary-eight);
+        }
+    }
+
+    .setting-checkbox-custom {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        border: $border-width-sm solid var(--color-border-light);
+        border-radius: 4px;
+        background: var(--color-card-bg);
+        position: relative;
+        transition: background $transition-fast, border-color $transition-fast, box-shadow $transition-fast;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid $color-white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg) scale(0);
+            opacity: 0;
+            transition: opacity $transition-fast, transform $transition-fast;
+        }
+    }
+
+    .setting-checkbox-label {
+        font-size: 0.9rem;
+        color: $color-text;
+        user-select: none;
+    }
+}
+
+// ==================== 响应式：平板及以下 ====================
+@include respond-to($breakpoint-tablet) {
+    .settings-panel {
+        @include flex(column, flex-start, stretch);
+        height: auto;
+        max-height: calc(100vh - 120px);
+    }
+
+    .settings-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: $border-width-sm solid var(--color-border-light);
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+
+        .settings-category-list {
+            @include flex(row, flex-start, center);
+            padding: 0;
+            white-space: nowrap;
+        }
+
+        .settings-category-item {
+            @include flex(row, center, center);
+            border-left: none;
+            border-bottom: 3px solid transparent;
+            padding: 12px $spacing-md;
+
+            &.is-active {
+                border-left: none;
+                border-bottom-color: $color-primary;
+            }
+
+            .settings-category-icon {
+                display: none;
+            }
+
+            .settings-category-label {
+                flex: none;
+            }
+        }
+    }
+
+    .settings-content {
+        flex: 1;
+        padding: $spacing-md;
+        max-height: 60vh;
+    }
+
+    .setting-item {
+        padding: $spacing-sm $spacing-md;
+    }
+
+    .setting-item-header {
+        .setting-item-title {
+            font-size: 0.95rem;
+        }
+
+        .setting-item-description {
+            font-size: 0.8rem;
+        }
+    }
+}
+
+// ==================== 响应式：手机 ====================
+@include respond-to($breakpoint-phone) {
+    .settings-content {
+        padding: $spacing-sm $spacing-md;
+    }
+
+    .setting-item {
+        padding: $spacing-sm;
+        margin-bottom: $spacing-sm;
+    }
+
+    .setting-select-wrapper {
+        min-width: 120px;
+
+        .setting-select {
+            font-size: 0.85rem;
+            padding: 8px 32px 8px 12px;
+        }
+
+        &::after {
+            right: 12px;
+            font-size: 0.7rem;
+        }
+    }
+
+    .setting-radio-item {
+        padding: 8px $spacing-sm;
+        font-size: 0.85rem;
+    }
+
+    .setting-input {
+        &[type="number"] {
+            width: 80px;
+        }
+
+        &[type="text"] {
+            max-width: 100%;
+        }
+    }
+}
