@@ -13,7 +13,6 @@
 
 {# 渲染单个设置项的控件 #}
 {%- macro renderSettingControl(item) -%}
-    {%- set _inputClass = "data-setting-input" -%}
     {%- set _inputAttr = 'data-setting-input=""' -%}
     {%- set _inputId = "setting-" + item.id -%}
 
@@ -54,13 +53,13 @@
         <input type="number" id="{{ _inputId }}" class="setting-input setting-input-number" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
 
     {%- elif item.type == "range" -%}
-        <div class="setting-range-wrap">
-            <input type="range" id="{{ _inputId }}" class="setting-range" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
+        <div class="setting-range">
+            <input type="range" id="{{ _inputId }}" class="setting-range-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue is defined %} value="{{ item.defaultValue }}"{% endif %}{% if item.min is defined %} min="{{ item.min }}"{% endif %}{% if item.max is defined %} max="{{ item.max }}"{% endif %}{% if item.step is defined %} step="{{ item.step }}"{% endif %}>
             <span class="setting-range-value" data-range-value="{{ item.id }}">{{ item.defaultValue }}</span>
         </div>
 
     {%- elif item.type == "color" -%}
-        <div class="setting-color-wrap">
+        <div class="setting-color">
             <input type="color" id="{{ _inputId }}" class="setting-color-input" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}"{% if item.defaultValue %} value="{{ item.defaultValue }}"{% endif %}>
             <span class="setting-color-preview" data-color-preview="{{ item.id }}"></span>
         </div>
@@ -73,7 +72,7 @@
         </label>
 
     {%- elif item.type == "textarea" -%}
-        <textarea id="{{ _inputId }}" class="setting-textarea" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}" rows="{{ item.rows if item.rows else 4 }}"{% if item.placeholder %} placeholder="{{ item.placeholder | i18n }}"{% endif %}>{{ item.defaultValue if item.defaultValue else '' }}</textarea>
+        <textarea id="{{ _inputId }}" class="setting-input setting-textarea" {{ _inputAttr | safe }} data-storage-key="{{ item.storageKey }}" data-action="{{ item.action }}" rows="{{ item.rows if item.rows else 4 }}"{% if item.placeholder %} placeholder="{{ item.placeholder | i18n }}"{% endif %}>{{ item.defaultValue if item.defaultValue else '' }}</textarea>
 
     {%- endif -%}
 {%- endmacro -%}

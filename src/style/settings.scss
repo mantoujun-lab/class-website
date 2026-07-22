@@ -376,7 +376,7 @@ textarea.setting-input {
     gap: $spacing-md;
     width: 100%;
 
-    input[type="range"] {
+    .setting-range-input {
         flex: 1;
         -webkit-appearance: none;
         appearance: none;
@@ -455,7 +455,7 @@ textarea.setting-input {
         transform: scale(1.05);
     }
 
-    input[type="color"] {
+    .setting-color-input {
         position: absolute;
         inset: 0;
         width: 100%;

@@ -62,7 +62,7 @@ export function getCurrentLang() {
         return pathMatch[1].toLowerCase();
     }
 
-    return DEFAULT_LANG;
+    return getBrowserLang();
 }
 
 export function persistLang(lang) {
