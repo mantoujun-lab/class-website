@@ -6,6 +6,7 @@
 html {
     scroll-behavior: smooth;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 *,
@@ -29,10 +30,16 @@ a {
     color: $color-primary;
     text-decoration: none;
     transition: color $transition-fast;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
         color: $color-primary-dark;
     }
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
 }
 
 // 修复 Font Awesome 图标不显示的问题：
