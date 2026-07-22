@@ -331,6 +331,55 @@ function actionApplyTheme(value) {
 }
 
 /**
+ * 规范化导航值（例如语言码）
+ * 仅保留字母、数字、下划线和短横线，其他字符移除
+ * @param {*} value
+ * @returns {string}
+ */
+function sanitizeNavigateValue(value) {
+    const normalized = String(value == null ? "" : value).trim();
+    const safe = normalized.replace(/[^a-zA-Z0-9_-]/g, "");
+    return safe || "en";
+}
+
+/**
+ * 规范化 URL 模板，仅允许站内相对路径模板
+ * @param {*} pattern
+ * @returns {string}
+ */
+function sanitizeUrlPattern(pattern) {
+    const fallback = "/{lang}/";
+    const normalized = String(pattern == null ? "" : pattern).trim();
+    if (!normalized) return fallback;
+    if (!normalized.startsWith("/")) return fallback;
+    return normalized;
+}
+
+/**
+ * 构造安全跳转 URL：同源 + http/https
+ * @param {*} value
+ * @param {*} pattern
+ * @returns {string}
+ */
+function buildSafeNavigationUrl(value, pattern) {
+    const safeValue = sanitizeNavigateValue(value);
+    const safePattern = sanitizeUrlPattern(pattern);
+    const rawUrl = safePattern.replace(/\{lang\}/g, safeValue).replace(/\{value\}/g, safeValue);
+
+    try {
+        const parsed = new URL(rawUrl, window.location.origin);
+        const isHttp = parsed.protocol === "http:" || parsed.protocol === "https:";
+        if (parsed.origin === window.location.origin && isHttp) {
+            return parsed.href;
+        }
+    } catch (e) {
+        console.warn("[settings] 无效跳转 URL，使用安全默认值:", rawUrl, e);
+    }
+
+    return window.location.origin + "/";
+}
+
+/**
  * 内置 Action：页面跳转
  * 从当前选中的 option 中获取 urlPattern，使用 lang.js 的 navigateToLang 跳转
  *
@@ -362,14 +411,12 @@ function actionNavigate(value, settingItem) {
             langModule.navigateToLang(value, urlPattern);
         } else {
             console.warn("[settings] lang 模块中未找到 navigateToLang 函数");
-            const pattern = urlPattern || "/{lang}/";
-            const url = pattern.replace(/\{lang\}/g, value).replace(/\{value\}/g, value);
+            const url = buildSafeNavigationUrl(value, urlPattern);
             window.location.href = url;
         }
     }).catch(function (e) {
         console.error("[settings] 加载 lang 模块失败:", e);
-        const pattern = urlPattern || "/{lang}/";
-        const url = pattern.replace(/\{lang\}/g, value).replace(/\{value\}/g, value);
+        const url = buildSafeNavigationUrl(value, urlPattern);
         window.location.href = url;
     });
 }
