@@ -16,6 +16,28 @@
 
 const STORAGE_KEY = "hjx-lang";
 const DEFAULT_LANG = "zh-cn";
+const ALLOWED_LANGS = new Set(["zh-cn", "en"]);
+
+function normalizeLang(lang) {
+    const lc = String(lang || "").toLowerCase();
+    return ALLOWED_LANGS.has(lc) ? lc : DEFAULT_LANG;
+}
+
+function buildSafeLangUrl(lang, urlPattern) {
+    const safeLang = normalizeLang(lang);
+    const pattern = urlPattern || "/{lang}/";
+    const rawUrl = pattern.replace(/\{lang\}/g, safeLang);
+
+    try {
+        const parsed = new URL(rawUrl, window.location.origin);
+        if (parsed.origin !== window.location.origin) {
+            return "/" + safeLang + "/";
+        }
+        return parsed.pathname + parsed.search + parsed.hash;
+    } catch (e) {
+        return "/" + safeLang + "/";
+    }
+}
 
 function getBrowserLang() {
     const langs = (navigator.languages && navigator.languages.length)
@@ -50,13 +72,13 @@ export function persistLang(lang) {
 }
 
 export function navigateToLang(lang, urlPattern) {
-    const pattern = urlPattern || "/{lang}/";
-    const url = pattern.replace(/\{lang\}/g, lang);
+    const safeLang = normalizeLang(lang);
+    const safeUrl = buildSafeLangUrl(safeLang, urlPattern);
 
-    persistLang(lang);
+    persistLang(safeLang);
 
-    console.debug("[lang] 跳转到:", url);
-    window.location.href = url;
+    console.debug("[lang] 跳转到:", safeUrl);
+    window.location.href = safeUrl;
 }
 
 export function initLang() {
