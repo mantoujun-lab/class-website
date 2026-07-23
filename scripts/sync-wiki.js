@@ -21,7 +21,7 @@ const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const WIKI_DIR = path.join(ROOT, '.wiki-tmp');
-const WIKI_REPO = 'https://github.com/hjx-25pc1/hjx-25pc1.github.io.wiki.git';
+const WIKI_REPO = 'https://github.com/mantoujun-lab/class-website.wiki.git';
 
 /** 语言配置: code 必须和 src/ 下的目录名一致 */
 const LOCALES = [

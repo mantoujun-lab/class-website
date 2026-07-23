@@ -3,7 +3,7 @@
  * 用法：npm run release [-- 1.2.3]
  *       不传版本号时，自动用 <package.json 版本>-<日期>-<commit-hash>
  *
- * 输出：dist/hjx-25pc1.github.io-<version>.zip
+ * 输出：dist/class-website-<version>.zip
  */
 
 const fs = require('fs');
@@ -48,7 +48,7 @@ function zip(version) {
     }
 
     fs.mkdirSync(DIST_DIR, { recursive: true });
-    const zipName = `hjx-25pc1.github.io-${version}.zip`;
+    const zipName = `class-website-${version}.zip`;
     const zipPath = path.join(DIST_DIR, zipName);
     const output = fs.createWriteStream(zipPath);
     const archive = new ZipArchive({ zlib: { level: 9 } });

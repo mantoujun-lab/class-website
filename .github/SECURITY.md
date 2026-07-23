@@ -27,7 +27,7 @@ This repository uses a rolling-release model: only the version deployed from `ma
 Use one of the following private channels:
 
 1. **GitHub Private Advisory (recommended)** — Repository → **Security** tab → **Report a vulnerability** → "Private vulnerability reporting".
-   <https://github.com/hjx-25pc1/hjx-25pc1.github.io/security/advisories/new>
+   <https://github.com/mantoujun-lab/class-website/security/advisories/new>
 2. **Email (fallback when GitHub is unavailable)** — `hjx-25pc1@users.noreply.github.com`, with `[SECURITY]` in the subject line.
 
 When emailing the personal addresses (`3881679030@qq.com` / `2064074143@qq.com`) instead, please see the master copy for the full report template.

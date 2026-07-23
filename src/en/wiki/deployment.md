@@ -8,18 +8,24 @@ order: 3
 
 # Deployment Guide
 
-## Automatic Deployment
+## Vercel Automatic Deployment
 
-Pushing to the `main` branch triggers GitHub Actions:
+This project is configured for automatic deployment on Vercel:
 
-1. `npm ci` installs dependencies
-2. `npm run build` builds the site
-3. Uploads the `_site/` artifact
-4. Deploys to GitHub Pages
+1. Connect the repository to Vercel
+2. Pushing to the `main` branch triggers automatic deployment
+3. Vercel runs `npm run build` and deploys the `_site/` directory
+4. A domain is automatically assigned after successful deployment
 
-## Manual Deployment
+## Configuration
 
-On the GitHub Actions page, select `Deploy static content to Pages` and click `Run workflow`.
+The `vercel.json` at the project root includes the following configuration:
+
+- **Build command**: `npm run build`
+- **Output directory**: `_site`
+- **Clean URLs**: Enabled (`cleanUrls: true`)
+- **Trailing Slash**: Enabled (`trailingSlash: true`)
+- **Rewrites**: All paths rewrite to `/$1/index.html`, supporting SPA-style routing
 
 ## Deployment Path Prefix
 
@@ -38,11 +44,10 @@ The `Generate contributors image` workflow (`.github/workflows/contributors.yml`
   1. Call the GitHub API to fetch the contributor list
   2. Replace content between the `<!-- CONTRIBUTORS START/END -->` placeholders in `README.md` / `docs/README_zh-cn.md` / `src/index.md`
   3. Auto-commit and push to `main`
-- **Linked deployment**: `static.yml`'s `push.paths` already includes `README.md` and `docs/README_zh-cn.md`, so when the README is modified, the deployment workflow runs again automatically — keeping the avatar wall on the website and README in sync
 - **Local debugging**: you can use the `ALLOW_FALLBACK=1` environment variable to run with placeholder data
 
 ```bash
-GITHUB_REPOSITORY=hjx-25pc1/hjx-25pc1.github.io \
+GITHUB_REPOSITORY=mantoujun-lab/class-website \
 ALLOW_FALLBACK=1 \
 npm run generate:contributors
 ```

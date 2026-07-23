@@ -172,7 +172,7 @@ Please include as much of the following as possible:
 
 Don't want to install Node.js locally? No problem — this repo ships with a Codespace devcontainer that gives you a full environment straight from your browser:
 
-1. Open <https://github.com/hjx-25pc1/hjx-25pc1.github.io> and click the green **Code** button.
+1. Open <https://github.com/mantoujun-lab/class-website> and click the green **Code** button.
 2. Switch to the **Codespaces** tab → click **Create codespace on main**.
 3. On first launch, `npm ci` will run automatically to install dependencies, and `npm run serve` will start in the background.
 4. Once the codespace is ready, a port-forwarding prompt will appear at the bottom-right — pick port `8080` and click **Open in Browser** to open `http://localhost:8080` for live preview.
@@ -196,8 +196,8 @@ Don't want to install Node.js locally? No problem — this repo ships with a Cod
 ### Clone and Install
 
 ```bash
-git clone https://github.com/hjx-25pc1/hjx-25pc1.github.io.git
-cd hjx-25pc1.github.io
+git clone https://github.com/mantoujun-lab/class-website.git
+cd class-website
 npm install
 ```
 
@@ -450,13 +450,12 @@ Each setting can configure an `action` field to specify what happens when the va
 
 ## Deployment Notes
 
-- Only pushes to the `main` branch trigger deployment.
-- GitHub Actions builds the project and publishes the `_site/` directory to GitHub Pages.
-- In-flight deployments are not cancelled; queued intermediate deployments are skipped.
+- This project is configured for deployment on Vercel.
+- Push to the `main` branch to trigger automatic deployment on Vercel.
 - **Do not** edit anything inside `_site/` directly — it will be overwritten on every build.
-- Discuss CI changes with the maintainers in an Issue first.
+- Discuss CI/CD changes with the maintainers in an Issue first.
 
-After a successful deployment, the site is available at [https://hjx-25pc1.github.io](https://hjx-25pc1.github.io).
+After a successful deployment, the site is available at the domain assigned by Vercel.
 
 ---
 
@@ -476,7 +475,7 @@ You can also ask the maintainers to add you in the PR.
 
 ## Contact
 
-- Open an Issue: [GitHub Issues](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues)
+- Open an Issue: [GitHub Issues](https://github.com/mantoujun-lab/class-website/issues)
 - Maintainers: [mantoujun12](https://github.com/mantoujun12) / [mantoujun6](https://github.com/mantoujun6).
 
 ---

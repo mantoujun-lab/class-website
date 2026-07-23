@@ -13,7 +13,7 @@ order: 1
 ## 如何贡献一篇文章
 
 1. Fork 仓库到你的 GitHub 账号
-2. Clone 到本地：`git clone https://github.com/<你的用户名>/hjx-25pc1.github.io.git`
+2. Clone 到本地：`git clone https://github.com/<你的用户名>/class-website.git`
 3. 新建分支：`git checkout -b add-event-<日期>`
 4. 在 `src/event-<日期>.md` 创建文件，文件名请使用英文小写、数字和短横线
 5. 编辑内容，文章顶部请加上 frontmatter，包含 title、description、layout、permalink、order 等信息

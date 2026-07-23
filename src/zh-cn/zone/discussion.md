@@ -29,7 +29,7 @@ eleventyNavigation:
 </div>
 
 <script src="https://giscus.app/client.js"
-        data-repo="hjx-25pc1/hjx-25pc1.github.io"
+        data-repo="mantoujun-lab/class-website"
         data-repo-id="R_kgDOTNNixA"
         data-category="Giscus|网站评论"
         data-category-id="DIC_kwDOTNNixM4DAxSG"

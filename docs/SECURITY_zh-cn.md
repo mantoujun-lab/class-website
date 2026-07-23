@@ -61,7 +61,7 @@
 ### 🔒 GitHub 私有漏洞报告（推荐）
 
 1. 进入本仓库 → `Security` 标签页 → `Report a vulnerability` → 选择「私有漏洞报告」
-2. 链接：<https://github.com/hjx-25pc1/hjx-25pc1.github.io/security/advisories/new>
+2. 链接：<https://github.com/mantoujun-lab/class-website/security/advisories/new>
 3. 填写漏洞详情并提交
 
 ---
