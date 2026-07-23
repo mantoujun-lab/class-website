@@ -8,16 +8,16 @@
 
 Before submitting an issue, please check:
 
-- [Class Wiki](https://hjx-25pc1.github.io/wiki/) — Includes Getting Started, Coding Style, and Deployment Guide
+- [Class Wiki](/wiki/) — Includes Getting Started, Coding Style, and Deployment Guide
 - [Contributing Guide](CONTRIBUTING.md) — How to participate
 
 ## 💬 Ask Questions
 
-- **General questions**: Use [GitHub Discussions](https://github.com/hjx-25pc1/hjx-25pc1.github.io/discussions)
-- **Bug reports**: Use the [Bug Report Issue template](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=bug-report.yml)
-- **Feature requests**: Use the [Feature Request Issue template](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=feature-request.yml)
-- **Documentation improvements**: Use the [Documentation Issue template](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=documentation.yml)
-- **Performance issues**: Use the [Performance Issue template](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=performance.yml)
+- **General questions**: Use [GitHub Discussions](https://github.com/mantoujun-lab/class-website/discussions)
+- **Bug reports**: Use the [Bug Report Issue template](https://github.com/mantoujun-lab/class-website/issues/new?template=bug-report.yml)
+- **Feature requests**: Use the [Feature Request Issue template](https://github.com/mantoujun-lab/class-website/issues/new?template=feature-request.yml)
+- **Documentation improvements**: Use the [Documentation Issue template](https://github.com/mantoujun-lab/class-website/issues/new?template=documentation.yml)
+- **Performance issues**: Use the [Performance Issue template](https://github.com/mantoujun-lab/class-website/issues/new?template=performance.yml)
 
 > See the full Issue template list in [CONTRIBUTING.md](CONTRIBUTING.md#submitting-an-issue).
 

@@ -172,7 +172,7 @@
 
 不想在本地装 Node.js 也可以！仓库已经配置好 Codespace 开发容器，在浏览器里就能进入完整环境：
 
-1. 打开 <https://github.com/hjx-25pc1/hjx-25pc1.github.io>，点击绿色的 **Code** 按钮。
+1. 打开 <https://github.com/mantoujun-lab/class-website>，点击绿色的 **Code** 按钮。
 2. 切到 **Codespaces** 标签 → 点击 **Create codespace on main**。
 3. 首次创建时会自动跑 `npm ci` 安装依赖，并在后台启动 `npm run serve`。
 4. 创建完成后右下角会弹出端口转发提示，选择 8080 端口并点击 **Open in Browser**，即可在网页上访问 `http://localhost:8080` 实时预览。
@@ -196,8 +196,8 @@
 ### 克隆与安装
 
 ```bash
-git clone https://github.com/hjx-25pc1/hjx-25pc1.github.io.git
-cd hjx-25pc1.github.io
+git clone https://github.com/mantoujun-lab/class-website.git
+cd class-website
 npm install
 ```
 
@@ -448,13 +448,12 @@ git push origin main
 
 ## 部署说明
 
-- 仅 `main` 分支的 `push` 会触发部署。
-- GitHub Actions 会构建项目并将 `_site/` 目录发布到 GitHub Pages。
-- 部署期间不会取消正在进行中的部署，排队中的中间部署会被跳过。
+- 本项目已配置为在 Vercel 上部署。
+- 推送到 `main` 分支后 Vercel 会自动部署。
 - **不要**直接修改 `_site/` 目录下的任何文件，它会在每次构建时被覆盖。
-- 如需修改 CI 流程，请先在 Issue 中与维护者讨论。
+- 如需修改 CI/CD 流程，请先在 Issue 中与维护者讨论。
 
-部署成功后可通过 [https://hjx-25pc1.github.io](https://hjx-25pc1.github.io) 访问。
+部署成功后可通过 Vercel 分配的域名访问。
 
 ---
 
@@ -474,7 +473,7 @@ git push origin main
 
 ## 联系方式
 
-- 通过 [GitHub Issues](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues) 提交问题与建议。
+- 通过 [GitHub Issues](https://github.com/mantoujun-lab/class-website/issues) 提交问题与建议。
 - 项目维护者：[mantoujun12](https://github.com/mantoujun12) / [mantoujun6](https://github.com/mantoujun6)。
 
 ---

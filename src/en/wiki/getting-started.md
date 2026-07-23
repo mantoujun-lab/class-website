@@ -13,7 +13,7 @@ Welcome aboard! This guide shows how to contribute to the class website.
 ## How to contribute an article
 
 1. Fork the repository to your GitHub account
-2. Clone locally: `git clone https://github.com/<your-username>/hjx-25pc1.github.io.git`
+2. Clone locally: `git clone https://github.com/<your-username>/class-website.git`
 3. Create a branch: `git checkout -b add-event-<date>`
 4. Create a file under `src/event-<date>.md`; use lowercase letters, numbers, and hyphens in the filename
 5. Edit the content. Add frontmatter at the top with title, description, layout, permalink, order, etc.

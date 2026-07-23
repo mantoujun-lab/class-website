@@ -32,7 +32,7 @@ body:
       placeholder: |
         - 路径: docs/README_zh-cn.md
         - 行号: 23 ~ 45
-        - 在线链接: https://hjx-25pc1.github.io/xxx
+        - 在线链接: https://your-domain.vercel.app/xxx
     validations:
       required: true
 

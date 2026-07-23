@@ -1,20 +1,19 @@
 <div align="center">
 
-![Counts](https://count.getloli.com/@hjx-25pc1.github.io?name=hjx-25pc1.github.io&theme=miku&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto)
+![Counts](https://count.getloli.com/@class-website?name=class-website&theme=miku&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto)
 
 # 班级网站
 
 25级计算机应用1班
 
-
-[![GitHub Pages](https://img.shields.io/github/deployments/hjx-25pc1/hjx-25pc1.github.io/github-pages?style=for-the-badge)](https://hjx-25pc1.github.io)
-[![License](https://img.shields.io/github/license/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/blob/main/LICENSE)
-[![Stars](https://img.shields.io/github/stars/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io)
-[![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-181717?style=for-the-badge&logo=github)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/codespaces)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
+[![License](https://img.shields.io/github/license/mantoujun-lab/class-website?style=for-the-badge)](https://github.com/mantoujun-lab/class-website/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/mantoujun-lab/class-website?style=for-the-badge)](https://github.com/mantoujun-lab/class-website)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-181717?style=for-the-badge&logo=github)](https://github.com/mantoujun-lab/class-website/codespaces)
 [![Eleventy](https://img.shields.io/badge/Eleventy-000000?style=for-the-badge&logo=eleventy&logoColor=white)](https://www.11ty.dev)
 [![Nunjucks](https://img.shields.io/badge/nunjucks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
 
 [English](../README.md) | **简体中文**
 
@@ -32,8 +31,8 @@
 
 - **作者**：hjx-25pc1
 - **许可证**：MIT
-- **在线访问**：<https://hjx-25pc1.github.io>
-- **源码仓库**：<https://github.com/hjx-25pc1/hjx-25pc1.github.io>
+- **在线访问**：部署在 Vercel 上（连接仓库后自动分配域名）
+- **源码仓库**：<https://github.com/mantoujun-lab/class-website>
 
 ## 📁 项目结构与多语言架构
 
@@ -75,7 +74,7 @@ src/
 4. **根路径行为**：用户访问 `/` 时，站点会检测 localStorage 中的语言偏好（或浏览器 `navigator.language`），自动跳转到 `/zh-cn/` 或 `/en/`。导航栏设置面板提供语言和主题设置，点击后偏好写入 localStorage。
 
 5. **目录数据文件说明**：
-   - `*.11tydata.js`：Eta/EJS JavaScript 对象，可计算属性，主要用于 `eleventyComputed.permalink`（动态加前缀）
+   - `*.11tydata.js`：JavaScript 对象，可计算属性，主要用于 `eleventyComputed.permalink`（动态加前缀）
    - `*.json`：静态 JSON 对象，主要用于 locale、lang、dir 等元数据
 
 ### 页面元数据
@@ -103,12 +102,11 @@ layout: layouts/default  # 布局模板
 - **[11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Markdown 代码块语法高亮
 - **i18n 国际化** — 基于目录隔离的多语言方案：
   - `lodash.get` + `templite` — 实现可嵌入变量的自定义翻译过滤器 `i18n`
-  - `eleventy-plugin-i18n` — 官方插件（参考实现，实际使用自定义 filter）
   - 目录级数据文件 (`*.11tydata.js` / `*.json`) — 自动为 `src/zh-cn/` 和 `src/en/` 注入 locale、permalink 前缀等
   - 自定义过滤器：`i18n`（翻译）、`localUrl`（locale 感知的内部链接）、`switchLang`（语言切换链接）、`lang`（取当前语言）
-- **原生 JavaScript（ES Modules）** — 少量交互逻辑；脚本以原生 ES Modules 形式组织在 `src/script/` 下，无需前端框架或打包器；入口 `main.js` 通过 `<script type="module">` 加载；导航栏语言切换与 localStorage 偏好持久化由 `main.js` 中的 `initLangSwitcher` IIFE 负责（不存在独立的 `lang-switcher.js` 文件）
-- **GitHub Actions** — 自动化 CI/CD，推送 `main` 分支即触发构建与部署
-- **GitHub Pages** — 静态站点托管平台
+- **原生 JavaScript（ES Modules）** — 少量交互逻辑；脚本以原生 ES Modules 形式组织在 `src/script/` 下，无需前端框架或打包器
+- **GitHub Actions** — 自动化 CI/CD
+- **Vercel** — 静态站点托管平台
 
 ## 🖥️ 开发环境要求
 
@@ -126,7 +124,7 @@ layout: layouts/default  # 布局模板
 
 不用在本地装任何东西，浏览器一点就能进入完整开发环境：
 
-1. 打开 <https://github.com/hjx-25pc1/hjx-25pc1.github.io>，点击绿色的 **Code** 按钮。
+1. 打开 <https://github.com/mantoujun-lab/class-website>，点击绿色的 **Code** 按钮。
 2. 切到 **Codespaces** 标签 → 点击 **Create codespace on main**。
 3. 首次创建会自动跑 `npm ci` 装依赖，并在后台启动 `npm run serve`。
 4. 创建完成后，右下角会弹出端口转发提示，端口选 `8080` 并点击 **Open in Browser**，就能在网页上打开 `http://localhost:8080` 实时预览。
@@ -142,8 +140,8 @@ layout: layouts/default  # 布局模板
 1. **克隆仓库**
 
    ```bash
-   git clone https://github.com/hjx-25pc1/hjx-25pc1.github.io.git
-   cd hjx-25pc1.github.io
+   git clone https://github.com/mantoujun-lab/class-website.git
+   cd class-website
    ```
 
 2. **安装依赖**
@@ -198,7 +196,7 @@ layout: layouts/default  # 布局模板
    npm run generate:contributors
    ```
 
-## � 反馈与建议
+## 🐛 反馈与建议
 
 本仓库提供了 5 种 **Issue 模板** 供你选择：
 
@@ -212,17 +210,31 @@ layout: layouts/default  # 布局模板
 
 > 提交前请先搜索现有 Issue，避免重复。完整流程见 [CONTRIBUTING_zh-cn.md](CONTRIBUTING_zh-cn.md)。
 
-## �🚀 部署说明
+## 🚀 部署说明
 
-本项目使用 **GitHub Actions** 自动部署到 **GitHub Pages**：
+本项目配置为在 **Vercel** 上部署：
 
-- 触发条件：向 `main` 分支推送，并且改动位于 `src/**`、`.eleventy.js`、`package.json`、`package-lock.json`、`README.md` 或 `docs/README_zh-cn.md`
-- 构建环境：Ubuntu 最新版 + Node.js 24
-- 部署流程：`npm ci` → `npm run build` → 上传 `_site/` 工件 → 部署到 `github-pages` 环境
-- 并发策略：同一时刻仅允许一个部署任务进行，队列中的中间部署会被跳过
-- 在线地址：<https://hjx-25pc1.github.io>
+### Vercel 一键部署
 
-如需手动触发部署，可在 GitHub 仓库的 **Actions** 页面选择 `Deploy static content to Pages` 工作流并点击 **Run workflow**。
+1. Fork 本仓库到你的 GitHub 账号
+2. 访问 [Vercel](https://vercel.com) 并使用 GitHub 登录
+3. 点击 "New Project"，导入你 fork 的仓库
+4. Vercel 会自动检测项目配置（根目录 `vercel.json`）
+5. 直接点击 "Deploy"，等待构建完成即可
+
+### 配置说明
+
+项目根目录的 `vercel.json` 包含完整的部署配置：
+
+- **构建命令**：`npm run build`
+- **输出目录**：`_site`
+- **简洁 URL**：启用（`cleanUrls: true`）
+- **尾部斜杠**：启用（`trailingSlash: true`）
+- **重写规则**：支持 Eleventy 生成的 clean URLs 路由
+
+### 自动部署
+
+推送到 `main` 分支会自动触发 Vercel 部署，部署成功后可在 Vercel 控制台查看分配的域名。
 
 ## 👥 贡献者
 
@@ -264,18 +276,8 @@ layout: layouts/default  # 布局模板
 
 ---
 
-## ⭐ Star History
-
-<a href="https://www.star-history.com/?repos=hjx-25pc1%2Fhjx-25pc1.github.io&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&theme=dark&legend=top-left&sealed_token=3bEqp9fDKFtN1WO9QJc2KSMQLGzP2OA77ARV10R3BXHfQ34Rj_mKyDoZkqWDou3caxqEoAc3KwFTR9-65Dl8rnPx-q4oUMm7nxKGvvhRnenPM_MzU8nFCpPOFiq7ssfqEOvLaBrSoAwS1GnkLcb4EI10ZY25dj8R-ZZSP7BzzX1fk0lcHnNAeN7iZVaW" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&legend=top-left&sealed_token=3bEqp9fDKFtN1WO9QJc2KSMQLGzP2OA77ARV10R3BXHfQ34Rj_mKyDoZkqWDou3caxqEoAc3KwFTR9-65Dl8rnPx-q4oUMm7nxKGvvhRnenPM_MzU8nFCpPOFiq7ssfqEOvLaBrSoAwS1GnkLcb4EI10ZY25dj8R-ZZSP7BzzX1fk0lcHnNAeN7iZVaW" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&legend=top-left&sealed_token=3bEqp9fDKFtN1WO9QJc2KSMQLGzP2OA77ARV10R3BXHfQ34Rj_mKyDoZkqWDou3caxqEoAc3KwFTR9-65Dl8rnPx-q4oUMm7nxKGvvhRnenPM_MzU8nFCpPOFiq7ssfqEOvLaBrSoAwS1GnkLcb4EI10ZY25dj8R-ZZSP7BzzX1fk0lcHnNAeN7iZVaW" />
- </picture>
-</a>
-
 ## 📑 许可证
 
-本项目基于 [MIT 许可证](LICENSE) 开源。
+本项目基于 [MIT 许可证](../LICENSE) 开源。
 
 > 部分内容由AI生成（项目介绍、代码等）

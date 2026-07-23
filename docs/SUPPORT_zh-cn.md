@@ -8,16 +8,16 @@
 
 提交问题前，请先查看：
 
-- [班级知识库 Wiki](https://hjx-25pc1.github.io/wiki/) — 包含新手指南、代码规范、部署指南
+- [班级知识库 Wiki](/wiki/) — 包含新手指南、代码规范、部署指南
 - [贡献指南](CONTRIBUTING_zh-cn.md) — 如何参与贡献
 
 ## 💬 提问
 
-- **一般性问题**：使用 [GitHub Discussions](https://github.com/hjx-25pc1/hjx-25pc1.github.io/discussions)
-- **Bug 反馈**：使用 [Bug 反馈 Issue 模板](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=bug-report.yml)
-- **功能建议**：使用 [功能建议 Issue 模板](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=feature-request.yml)
-- **文档改进**：使用 [文档改进 Issue 模板](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=documentation.yml)
-- **性能问题**：使用 [性能问题 Issue 模板](https://github.com/hjx-25pc1/hjx-25pc1.github.io/issues/new?template=performance.yml)
+- **一般性问题**：使用 [GitHub Discussions](https://github.com/mantoujun-lab/class-website/discussions)
+- **Bug 反馈**：使用 [Bug 反馈 Issue 模板](https://github.com/mantoujun-lab/class-website/issues/new?template=bug-report.yml)
+- **功能建议**：使用 [功能建议 Issue 模板](https://github.com/mantoujun-lab/class-website/issues/new?template=feature-request.yml)
+- **文档改进**：使用 [文档改进 Issue 模板](https://github.com/mantoujun-lab/class-website/issues/new?template=documentation.yml)
+- **性能问题**：使用 [性能问题 Issue 模板](https://github.com/mantoujun-lab/class-website/issues/new?template=performance.yml)
 
 > 完整 Issue 模板说明见 [CONTRIBUTING_zh-cn.md](CONTRIBUTING_zh-cn.md#提交-issue)。
 

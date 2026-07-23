@@ -65,7 +65,7 @@ eleventyNavigation:
 {{ card(
     "🛠️ 开源协作",
     "使用 GitHub Actions 自动部署,鼓励同学提交 PR 参与共建。",
-    "https://github.com/hjx-25pc1/hjx-25pc1.github.io",
+    "https://github.com/mantoujun-lab/class-website",
     "查看仓库",
     target="_blank"
 ) }}
@@ -123,8 +123,8 @@ eleventyNavigation:
 ) }}
 
 <div align="center">
-{{ button("fa-solid fa-book", "阅读项目 README", "https://github.com/hjx-25pc1/hjx-25pc1.github.io/blob/main/docs/README_zh-cn.md", target="_blank") }}
-{{ button("fa-brands fa-github", "提交 Issue / PR", "https://github.com/hjx-25pc1/hjx-25pc1.github.io", target="_blank") }}
+{{ button("fa-solid fa-book", "阅读项目 README", "https://github.com/mantoujun-lab/class-website/blob/main/docs/README_zh-cn.md", target="_blank") }}
+{{ button("fa-brands fa-github", "提交 Issue / PR", "https://github.com/mantoujun-lab/class-website", target="_blank") }}
 </div>
 
 ---

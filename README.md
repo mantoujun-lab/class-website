@@ -1,15 +1,15 @@
 <div align="center">
 
-![Counts](https://count.getloli.com/@hjx-25pc1.github.io?name=hjx-25pc1.github.io&theme=miku&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto)
+![Counts](https://count.getloli.com/@class-website?name=class-website&theme=miku&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto)
 
 # Class Website
 
 Class 1, Computer Application, Grade 2025
 
-[![GitHub Pages](https://img.shields.io/github/deployments/hjx-25pc1/hjx-25pc1.github.io/github-pages?style=for-the-badge)](https://hjx-25pc1.github.io)
-[![License](https://img.shields.io/github/license/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/blob/main/LICENSE)
-[![Stars](https://img.shields.io/github/stars/hjx-25pc1/hjx-25pc1.github.io?style=for-the-badge)](https://github.com/hjx-25pc1/hjx-25pc1.github.io)
-[![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-181717?style=for-the-badge&logo=github)](https://github.com/hjx-25pc1/hjx-25pc1.github.io/codespaces)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
+[![License](https://img.shields.io/github/license/mantoujun-lab/class-website?style=for-the-badge)](https://github.com/mantoujun-lab/class-website/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/mantoujun-lab/class-website?style=for-the-badge)](https://github.com/mantoujun-lab/class-website)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-181717?style=for-the-badge&logo=github)](https://github.com/mantoujun-lab/class-website/codespaces)
 [![Eleventy](https://img.shields.io/badge/Eleventy-000000?style=for-the-badge&logo=eleventy&logoColor=white)](https://www.11ty.dev)
 [![Nunjucks](https://img.shields.io/badge/nunjucks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
@@ -17,7 +17,7 @@ Class 1, Computer Application, Grade 2025
 
 **English** | [简体中文](docs/README_zh-cn.md)
 
-This is a Class Website. You can find some interesting content.
+This is a Class Website. You can find some interesting content here.
 
 📖 [Documentation](CONTRIBUTING.md) · 🛡️ [Security Policy](SECURITY.md) · 💬 [Support](SUPPORT.md) · 📜 [Code of Conduct](CODE_OF_CONDUCT.md)
 
@@ -25,14 +25,14 @@ This is a Class Website. You can find some interesting content.
 
 ## 🔭 Overview
 
-This repository hosts the source code of the official class website for **Class 1, Computer Application, Grade 2025**. It is used to showcase the class, share learning materials, document everyday[...]
+This repository hosts the source code of the official class website for **Class 1, Computer Application, Grade 2025**. It is used to showcase the class, share learning materials, document everyday moments, and serves as a practice project for students learning web development.
 
 The site is organized into three main content sections — **Events / Articles / Wiki** — plus a handful of "Zone" entry points (discussion, study, activities, etc.).
 
 - **Author**: hjx-25pc1
 - **License**: MIT
-- **Live Site**: <https://hjx-25pc1.github.io>
-- **Repository**: <https://github.com/hjx-25pc1/hjx-25pc1.github.io>
+- **Live Site**: Deployed on Vercel (domain assigned after connecting the repository)
+- **Repository**: <https://github.com/mantoujun-lab/class-website>
 
 ## Project Structure & i18n Architecture
 
@@ -102,12 +102,11 @@ This project is a fully static site built with the following technologies:
 - **[@11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Syntax highlighting for Markdown code blocks
 - **i18n Internationalization** — Directory-based multi-language solution:
   - `lodash.get` + `templite` — Custom `i18n` filter with variable interpolation
-  - `eleventy-plugin-i18n` — Official plugin (reference implementation; we use our own filter)
   - Directory data files (`*.11tydata.js` / `*.json`) — Auto-inject locale and permalink prefix for `src/zh-cn/` and `src/en/`
   - Custom filters: `i18n` (translate), `localUrl` (locale-aware URL), `switchLang` (language switch URL), `lang` (current language code)
-- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency; the navigation language switcher and localStorage preference persistence are handled by the `initLangSwitcher` IIFE inside `main.js` (there is no standalone `lang-switcher.js` file)[...]
-- **GitHub Actions** — Automated CI/CD; pushing to the `main` branch triggers a build and deployment
-- **GitHub Pages** — Static site hosting platform
+- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency
+- **GitHub Actions** — Automated CI/CD
+- **Vercel** — Static site hosting platform
 
 ## 🖥️ Development Requirements
 
@@ -125,14 +124,14 @@ Before you start, make sure the following tools are installed locally:
 
 No local toolchain needed — fire up a full dev environment straight from your browser:
 
-1. Open <https://github.com/hjx-25pc1/hjx-25pc1.github.io> and click the green **Code** button.
+1. Open <https://github.com/mantoujun-lab/class-website> and click the green **Code** button.
 2. Switch to the **Codespaces** tab → click **Create codespace on main**.
 3. On first launch, `npm ci` will run automatically to install dependencies, and `npm run serve` will start in the background.
 4. Once the codespace is ready, a port-forwarding prompt will appear at the bottom-right — pick port `8080` and click **Open in Browser** to open `http://localhost:8080` for live preview.
 5. Edit any file under `src/`; Eleventy will rebuild automatically and the browser will refresh — true WYSIWYG.
 6. When you're done, commit, push, and open a PR straight from the Source Control panel on the left — exactly like local development.
 
-> 💡 Each GitHub account gets a free monthly Codespace allowance (the 2-core machine type). That's plenty for writing articles and tweaking styles. If you need more horsepower, pick a 4-core (or[...]
+> 💡 Each GitHub account gets a free monthly Codespace allowance (the 2-core machine type). That's plenty for writing articles and tweaking styles. If you need more horsepower, pick a 4-core (or larger) machine type when creating the Codespace.
 
 ## 💻 Local Development
 
@@ -141,8 +140,8 @@ Follow these steps to run the dev server locally:
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/hjx-25pc1/hjx-25pc1.github.io.git
-   cd hjx-25pc1.github.io
+   git clone https://github.com/mantoujun-lab/class-website.git
+   cd class-website
    ```
 
 2. **Install dependencies**
@@ -213,15 +212,29 @@ This repository ships with **5 Issue templates** — pick the one that fits your
 
 ## 🚀 Deployment
 
-This project is automatically deployed to **GitHub Pages** via **GitHub Actions**:
+This project is configured for deployment on **Vercel**:
 
-- **Trigger**: Pushes to the `main` branch that modify `src/**`, `.eleventy.js`, `package.json`, `package-lock.json`, `README.md`, or `docs/README_zh-cn.md`
-- **Build environment**: Latest Ubuntu + Node.js 24
-- **Pipeline**: `npm ci` → `npm run build` → upload `_site/` artifact → deploy to the `github-pages` environment
-- **Concurrency**: Only one deployment runs at a time; queued runs in between are skipped
-- **Live URL**: <https://hjx-25pc1.github.io>
+### One-Click Deploy on Vercel
 
-To trigger a deployment manually, go to the repository's **Actions** tab, select the `Deploy static content to Pages` workflow, and click **Run workflow**.
+1. Fork this repository to your GitHub account
+2. Visit [Vercel](https://vercel.com) and sign in with GitHub
+3. Click "New Project" and import your forked repository
+4. Vercel will automatically detect the project configuration (`vercel.json` at root)
+5. Simply click "Deploy" and wait for the build to complete
+
+### Configuration
+
+The `vercel.json` at the project root contains the complete deployment configuration:
+
+- **Build Command**: `npm run build`
+- **Output Directory**: `_site`
+- **Clean URLs**: Enabled (`cleanUrls: true`)
+- **Trailing Slash**: Enabled (`trailingSlash: true`)
+- **Rewrites**: Supports clean URL routing generated by Eleventy
+
+### Automatic Deployment
+
+Pushing to the `main` branch automatically triggers a Vercel deployment. After successful deployment, you can view the assigned domain in the Vercel dashboard.
 
 ## 👥 Contributors
 
@@ -262,16 +275,6 @@ Documentation in this repository follows a **Chinese-first → translate to Engl
 - When submitting changes, please update the Chinese version first, then sync the English translation, to keep both versions semantically consistent.
 
 ---
-
-## ⭐ Star History
-
-<a href="https://www.star-history.com/?repos=hjx-25pc1%2Fhjx-25pc1.github.io&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&theme=dark&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO[...]">
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO1BAP1lC6rG[...]">
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=hjx-25pc1/hjx-25pc1.github.io&type=date&legend=top-left&sealed_token=1uUsgyjqwNyC4JYWSO1BAP1lC6rGqjaptq0hEm43RiPnW3K[...]">
- </picture>
-</a>
 
 ## 📑 License
 

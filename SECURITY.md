@@ -61,7 +61,7 @@ Please include the following in your email:
 ### 🔒 GitHub Private Vulnerability Reporting (Recommended)
 
 1. Go to the repository's **Security** tab → **Report a vulnerability** → choose "Private vulnerability reporting"
-2. Direct link: <https://github.com/hjx-25pc1/hjx-25pc1.github.io/security/advisories/new>
+2. Direct link: <https://github.com/mantoujun-lab/class-website/security/advisories/new>
 3. Fill in the details and submit
 
 ---
