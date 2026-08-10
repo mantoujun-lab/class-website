@@ -17,7 +17,7 @@ This repository hosts the source code of the official class website for **Class 
 
 The site is organized into three main content sections — **Events / Articles / Wiki** — plus a handful of "Zone" entry points (discussion, study, activities, etc.).
 
-- **Author**: hjx-25pc1
+- **Author**: mantoujun-lab
 - **License**: MIT
 - **Live Site**: Deployed on Vercel (domain assigned after connecting the repository)
 - **Repository**: <https://github.com/mantoujun-lab/class-website>
