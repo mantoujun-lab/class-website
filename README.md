@@ -119,7 +119,7 @@ Follow these steps to run the dev server locally:
    npm run bump -- major          # 1.2.3 → 2.0.0
    npm run bump -- 1.2.3          # set explicitly
    ```
-> This command uses **bump-version.js** Script.
+> This command uses the **bump-version.js** script.
 
 9. **Regenerate the contributors avatar wall** (same effect as the `Generate contributors image` workflow)
 
