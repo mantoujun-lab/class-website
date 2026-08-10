@@ -1,5 +1,0 @@
-# Dev container 内部的临时文件，避免误提交进仓库
-node_modules/
-_site/
-dist/
-npm-debug.log*
