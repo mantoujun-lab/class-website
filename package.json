@@ -24,7 +24,7 @@
         "autoprefixer": "^10.5.4",
         "lodash.get": "^4.4.2",
         "luxon": "^3.7.2",
-        "postcss": "^8.5.22",
+        "postcss": "^8.5.26",
         "sass": "^1.101.3",
         "templite": "^1.2.0"
     },
