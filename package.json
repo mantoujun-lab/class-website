@@ -25,7 +25,7 @@
         "lodash.get": "^4.4.2",
         "luxon": "^3.7.2",
         "postcss": "^8.5.26",
-        "sass": "^1.101.3",
+        "sass": "^1.102.0",
         "templite": "^1.2.0"
     },
     "overrides": {
