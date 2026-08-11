@@ -36,11 +36,13 @@ updates:
     labels:
       - "dependencies"
       - "javascript"
+      - "security"
     # 版本更新策略：
     #   - 不使用 allow 限制依赖类型，确保生产依赖和安全更新都能被检测到
-    #     （原配置错误只allow development，导致生产依赖安全告警无法自修复）
     #   - major更新单独PR需人工审核，minor/patch分组处理
     #   - 安全更新(Security updates)不受groups限制，总是单独创建PR
+    #   - 对于 npm 生态的传递依赖(Transitive Dependencies)安全漏洞，
+    #     Dependabot 天生无法直接创建 PR，需配合 package.json 中的 overrides 手动修复
     groups:
       # 所有 major 版本更新单独分组，必须人工审查兼容性
       major-updates:
@@ -55,3 +57,8 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    # 非安全的大版本更新保持忽略（安全更新不受此影响，Dependabot 安全更新会自动跳过 ignore）
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
