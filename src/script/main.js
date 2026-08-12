@@ -166,3 +166,91 @@ import { initModal, isModalOpen, closeTopModal } from './popup-modal.js';
 
     console.debug('[main] 初始化完成 ✓');
 })();
+
+// ============================================================
+// Vercel Web Analytics + Speed Insights 注入
+// ------------------------------------------------------------
+// 目的：在纯静态站（Eleventy，无打包器）中复刻 `inject()` /
+//       `injectSpeedInsights()` 的行为，避免因 5 个布局都需要
+//       接入而新增多处 <script> 标签。
+//
+// 工作原理：
+//   1. Vercel 平台在部署后会自动挂载两个边缘函数路由：
+//        /_vercel/insights/script.js
+//        /_vercel/speed-insights/script.js
+//      它们负责收集 pageview / 性能指标并上报。
+//   2. 我们在 main.js 末尾动态 createElement + appendChild，
+//      等价于 npm 包里的 `inject()` / `injectSpeedInsights()`：
+//        - Web Analytics：先建立 `window.va` 队列（用于 track()），
+//          再注入 insights/script.js
+//        - Speed Insights：先建立 `window.si` 队列，再注入
+//          speed-insights/script.js
+//   3. 因为 main.js 是 type="module" 且 defer，自动在 DOMContentLoaded
+//      之后异步加载，不会影响 LCP / FCP。
+//   4. 重复执行保护：querySelector 检查 src 是否已存在，避免反复注入。
+// ============================================================
+
+(function injectVercelAnalytics() {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
+    // ============================================================
+    // 主机名闸门：
+    //   Vercel 的 /_vercel/insights/* 路由只在部署后由平台边缘函数
+    //   提供。本地 dev server（localhost/127.0.0.1/0.0.0.0/*.local）
+    //   没有这些路由，请求必然 404/ABORT，污染 console。
+    //   这里直接跳过注入，本地预览保持静默。
+    // ============================================================
+    var host = window.location.hostname || '';
+    if (
+        host === 'localhost' ||
+        host === '127.0.0.1' ||
+        host === '0.0.0.0' ||
+        host === '[::1]' ||
+        /\.local$/.test(host)
+    ) {
+        return;
+    }
+
+    // ---------- Vercel Web Analytics ----------
+    // 等价于 @vercel/analytics 的 inject()
+    if (!window.va) {
+        window.va = function () {
+            (window.vaq = window.vaq || []).push(arguments);
+        };
+    }
+
+    var insightsSrc = '/_vercel/insights/script.js';
+    if (!document.head.querySelector('script[src*="' + insightsSrc + '"]')) {
+        var insightsScript = document.createElement('script');
+        insightsScript.src = insightsSrc;
+        insightsScript.defer = true;
+        // 与 npm 包的 loadProps() 输出对齐：告知 Vercel 后台 SDK 信息
+        insightsScript.dataset.sdkn = '@vercel/analytics';
+        insightsScript.dataset.sdkv = '2.0.1';
+        // 静默处理：上线后偶发网络抖动不值得污染 console。
+        // 真要排查时，把这一段改成 console.warn(...) 即可。
+        insightsScript.onerror = null;
+        document.head.appendChild(insightsScript);
+    }
+
+    // ---------- Vercel Speed Insights ----------
+    // 等价于 @vercel/speed-insights 的 injectSpeedInsights()
+    if (!window.si) {
+        window.si = function () {
+            (window.siq = window.siq || []).push(arguments);
+        };
+    }
+
+    var speedSrc = '/_vercel/speed-insights/script.js';
+    if (!document.head.querySelector('script[src*="' + speedSrc + '"]')) {
+        var speedScript = document.createElement('script');
+        speedScript.src = speedSrc;
+        speedScript.defer = true;
+        speedScript.dataset.sdkn = '@vercel/speed-insights';
+        speedScript.dataset.sdkv = '2.0.0';
+        // 静默处理（与 Web Analytics 同样的收敛策略）。
+        // 如需排查，把这一段改成 console.warn(...) 即可。
+        speedScript.onerror = null;
+        document.head.appendChild(speedScript);
+    }
+})();
