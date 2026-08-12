@@ -27,6 +27,32 @@ The `vercel.json` at the project root includes the following configuration:
 - **Trailing Slash**: Enabled (`trailingSlash: true`)
 - **Rewrites**: All paths rewrite to `/$1/index.html`, supporting SPA-style routing
 
+## Vercel Analytics & Speed Insights
+
+This project integrates Vercel's Web Analytics and Speed Insights for monitoring visitor data and performance metrics:
+
+- **Web Analytics**: Tracks page views and custom events
+- **Speed Insights**: Collects real user performance metrics (LCP, FCP, CLS, etc.)
+
+### Implementation
+
+The project uses a pure static injection approach, dynamically loading Vercel-provided edge functions at the end of `src/script/main.js`:
+
+```javascript
+// Dynamically injects /_vercel/insights/script.js
+// Dynamically injects /_vercel/speed-insights/script.js
+```
+
+These scripts are automatically provided by the Vercel platform after deployment and asynchronously collect and report data after the page loads.
+
+### Local Development
+
+The local development server (localhost / 127.0.0.1) does not load these scripts to avoid 404 errors. Analytics and Speed Insights only activate in the production environment after Vercel deployment.
+
+### Viewing Data
+
+After successful deployment, you can view real-time data and historical reports in the **Analytics** and **Speed Insights** tabs of the Vercel dashboard.
+
 ## Deployment Path Prefix
 
 Since the site is deployed at the root path `/`, all asset references must use the `| url` filter:
