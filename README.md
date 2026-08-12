@@ -50,6 +50,7 @@ This project is a fully static site built with the following technologies:
   - Directory data files (`*.11tydata.js` / `*.json`) — Auto-inject locale and permalink prefix for `src/zh-cn/` and `src/en/`
   - Custom filters: `i18n` (translate), `localUrl` (locale-aware URL), `switchLang` (language switch URL), `lang` (current language code)
 - **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency
+- **[@vercel/analytics](https://vercel.com/docs/analytics) & [@vercel/speed-insights](https://vercel.com/docs/speed-insights)** — Visitor analytics and real-user performance monitoring, dynamically injected via `src/script/main.js`
 - **GitHub Actions** — Automated CI/CD
 - **Vercel** — Static site hosting platform
 
