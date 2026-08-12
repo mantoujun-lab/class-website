@@ -27,6 +27,32 @@ order: 3
 - **尾部斜杠**：启用（`trailingSlash: true`）
 - **重写规则**：所有路径重写到 `/$1/index.html`，支持 SPA 风格路由
 
+## Vercel Analytics 与 Speed Insights
+
+本项目已集成 Vercel 提供的 Web Analytics 和 Speed Insights 功能，用于监控网站访问数据和性能指标：
+
+- **Web Analytics**：跟踪页面访问量（pageview）和自定义事件
+- **Speed Insights**：收集真实用户的性能指标（LCP、FCP、CLS 等）
+
+### 实现方式
+
+项目使用了纯静态注入方案，在 `src/script/main.js` 末尾动态加载 Vercel 提供的边缘函数：
+
+```javascript
+// 动态注入 /_vercel/insights/script.js
+// 动态注入 /_vercel/speed-insights/script.js
+```
+
+这两个脚本由 Vercel 平台在部署后自动提供，会在页面加载后异步收集数据并上报。
+
+### 本地开发
+
+本地开发服务器（localhost / 127.0.0.1）不会加载这些脚本，避免产生 404 错误。只有在 Vercel 部署后的生产环境中，Analytics 和 Speed Insights 才会生效。
+
+### 查看数据
+
+部署成功后，可在 Vercel 控制台的 **Analytics** 和 **Speed Insights** 标签页查看实时数据和历史报告。
+
 ## 部署路径前缀
 
 由于网站部署在根路径 `/`，所有资源引用必须使用 `| url` 过滤器：
