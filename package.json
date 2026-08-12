@@ -21,8 +21,6 @@
         "@11ty/eleventy-img": "^7.0.0",
         "@11ty/eleventy-navigation": "^1.0.5",
         "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
-        "@vercel/analytics": "^2.0.1",
-        "@vercel/speed-insights": "^2.0.0",
         "autoprefixer": "^10.5.4",
         "lodash.get": "^4.4.2",
         "luxon": "^3.7.2",
