@@ -7,154 +7,146 @@
 [![Eleventy](https://img.shields.io/badge/Eleventy-000000?style=for-the-badge&logo=eleventy&logoColor=white)](https://www.11ty.dev)
 [![Nunjucks](https://img.shields.io/badge/nunjucks-green?logo=nunjucks&style=for-the-badge)](https://mozilla.github.io/nunjucks/)
 [![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)](https://sass-lang.com/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![JavaScript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=javascript)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
 
 </div>
 
-## 🔭 Overview
+## 🔭 项目简介
 
-This repository hosts the source code of the official class website for **Class 1, Computer Application, Grade 2025**. It is used to showcase the class, share learning materials, document everyday moments, and serves as a practice project for students learning web development.
+本仓库托管 **2025 级计算机应用1班** 班级网站的源代码。网站用于展示班级风貌、分享学习资料、记录日常点滴，同时也是同学们学习 Web 开发的练手项目。
 
-The site is organized into three main content sections — **Events / Articles / Wiki** — plus a handful of "Zone" entry points (discussion, study, activities, etc.).
+站点主要包含三大内容板块——**动态 / 文章 / 百科**——以及若干“专区”入口（讨论、学习、活动等）。
 
-- **Author**: mantoujun-lab
-- **License**: MIT
-- **Live Site**: Deployed on Vercel (domain assigned after connecting the repository)
-- **Repository**: <https://github.com/mantoujun-lab/class-website>
+- **作者**：mantoujun-lab
+- **许可证**：MIT
+- **在线站点**：部署于 Vercel（连接仓库后分配域名）
+- **仓库地址**：<https://github.com/mantoujun-lab/class-website>
 
-### Page Metadata
+### 页面元数据
 
-All content pages should include the following front matter:
+所有内容页面都应包含以下 front matter：
 
 ```yaml
 ---
-title: Page Title          # Required; appears in <title> and page header
-permalink: /page-slug/     # Semantic path, no language prefix (auto-added)
-layout: layouts/default    # Layout template
+title: 页面标题            # 必填；用于 <title> 和页面头部
+permalink: /page-slug/    # 语义化路径，不带语言前缀（由系统自动添加）
+layout: layouts/default    # 布局模板
 ---
 ```
 
-## Tech Stack
+## 技术栈
 
-This project is a fully static site built with the following technologies:
+本项目是一个完全静态的站点，基于以下技术构建：
 
-- **[Eleventy (11ty)](https://www.11ty.dev/)** v3 — Static Site Generator (SSG)
-- **Nunjucks (`.njk`)** — Templating engine for layouts, reusable components, and page rendering
-- **Markdown (`.md`)** — Primary content format for easy writing and reading
-- **Sass / SCSS** — CSS preprocessor, compiled into compressed CSS
-- **PostCSS + Autoprefixer** — Automatically adds vendor prefixes for broad browser compatibility
-- **[@11ty/eleventy-img](https://www.11ty.dev/docs/plugins/image/)** — Responsive image processing, auto-generates `webp` and `jpeg` at multiple sizes
-- **[@11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Syntax highlighting for Markdown code blocks
-- **i18n Internationalization** — Directory-based multi-language solution:
-  - `lodash.get` + `templite` — Custom `i18n` filter with variable interpolation
-  - Directory data files (`*.11tydata.js` / `*.json`) — Auto-inject locale and permalink prefix for `src/zh-cn/` and `src/en/`
-  - Custom filters: `i18n` (translate), `localUrl` (locale-aware URL), `switchLang` (language switch URL), `lang` (current language code)
-- **Vanilla JavaScript (ES Modules)** — A small amount of client-side interaction; scripts are organized as native ES modules under `src/script/` with no front-end framework or bundler dependency
-- **[@vercel/analytics](https://vercel.com/docs/analytics) & [@vercel/speed-insights](https://vercel.com/docs/speed-insights)** — Visitor analytics and real-user performance monitoring, dynamically injected via `src/script/main.js`
-- **GitHub Actions** — Automated CI/CD
-- **Vercel** — Static site hosting platform
+- **[Eleventy (11ty)](https://www.11ty.dev/)** v3 — 静态站点生成器（SSG）
+- **Nunjucks（`.njk`）** — 用于布局、可复用组件和页面渲染的模板引擎
+- **Markdown（`.md`）** — 主要内容格式，便于书写与阅读
+- **Sass / SCSS** — CSS 预处理器，编译为压缩后的 CSS
+- **PostCSS + Autoprefixer** — 自动添加浏览器厂商前缀，提升兼容性
+- **[@11ty/eleventy-img](https://www.11ty.dev/docs/plugins/image/)** — 响应式图片处理，自动生成多种尺寸的 `webp` 与 `jpeg`
+- **[@11ty/eleventy-plugin-syntaxhighlight](https://www.11ty.dev/docs/plugins/syntaxhighlight/)** — Markdown 代码块的语法高亮
+- **i18n 国际化** — 基于目录的多语言方案：
+  - `lodash.get` + `templite` — 自定义 `i18n` 过滤器，支持变量插值
+  - 目录数据文件（`*.11tydata.js` / `*.json`）— 为 `src/zh-cn/` 和 `src/en/` 自动注入语言与 permalink 前缀
+  - 自定义过滤器：`i18n`（翻译）、`localUrl`（按语言生成 URL）、`switchLang`（语言切换 URL）、`lang`（当前语言代码）
+- **原生 JavaScript（ES Modules）** — 少量客户端交互，脚本以原生 ES 模块组织在 `src/script/` 下，不依赖任何前端框架或打包工具
+- **[@vercel/analytics](https://vercel.com/docs/analytics) 与 [@vercel/speed-insights](https://vercel.com/docs/speed-insights)** — 访问统计与真实用户性能监控，由 `src/script/main.js` 动态注入
+- **GitHub Actions** — 自动化 CI/CD
+- **Vercel** — 静态站点托管平台
 
-## 🖥️ Development Requirements
+## 🖥️ 开发要求
 
-Before you start, make sure the following tools are installed locally:
+开始之前，请确保本地已安装以下工具：
 
-| Tool | Version | Description |
-| --- | --- | --- |
-| **Node.js** | 24.x (LTS; the latest LTS is recommended) | Runtime and package management |
-| **npm** | 11.x or newer (installed with Node.js) | Dependency management and script execution |
-| **Git** | Latest stable | Version control and commits |
+| 工具          | 版本                          | 说明              |
+| ----------- | --------------------------- | --------------- |
+| **Node.js** | 24.x（LTS，建议使用最新 LTS 版本）    | 运行时与包管理        |
+| **npm**     | 11.x 或更高（随 Node.js 一起安装）    | 依赖管理与脚本执行     |
+| **Git**     | 最新稳定版                       | 版本控制与提交        |
 
-## 💻 Local Development
+## 💻 本地开发
 
-Follow these steps to run the dev server locally:
+按照以下步骤在本地启动开发服务器：
 
-1. **Clone the repository**
+1. **克隆仓库**
 
    ```bash
    git clone https://github.com/mantoujun-lab/class-website.git
    cd class-website
    ```
 
-2. **Install dependencies**
+2. **安装依赖**
 
    ```bash
    npm install
    ```
 
-3. **Start the dev server** (default URL: <http://localhost:8080>, with hot reload)
+3. **启动开发服务器**（默认地址：<http://localhost:8080>，支持热更新）
 
    ```bash
    npm run serve
    ```
 
-4. **Build once** (without starting a server; output is written to `_site/`)
+4. **构建一次**（不启动服务器，产物输出到 `_site/`）
 
    ```bash
    npm run build
    ```
 
-5. **Watch files and rebuild on change** (without a local server)
+5. **监听文件变化并自动重新构建**（不启动本地服务器）
 
    ```bash
    npm run watch
    ```
 
-6. **Sync the knowledge base to the Wiki repository** (requires push permission)
+6. **同步知识库到 Wiki 仓库**（需要推送权限）
 
    ```bash
    npm run sync:wiki
    ```
 
-7. **Package a release** (writes `<name>-<version>-<date>-<short>.zip` into `dist/`)
+7. **打包发布版本**（在 `dist/` 下生成 `<name>-<version>-<date>-<short>.zip`）
 
    ```bash
-   npm run release                # reads the version from package.json
-   npm run release -- 1.2.3       # override the version explicitly
+   npm run release                # 从 package.json 读取版本号
+   npm run release -- 1.2.3       # 显式指定版本号
    ```
 
-8. **Bump the version** in `package.json` (and `package-lock.json`)
+8. **更新 `package.json` 中的版本号**（同时更新 `package-lock.json`）
 
    ```bash
    npm run bump -- patch          # 1.2.3 → 1.2.4
    npm run bump -- minor          # 1.2.3 → 1.3.0
    npm run bump -- major          # 1.2.3 → 2.0.0
-   npm run bump -- 1.2.3          # set explicitly
+   npm run bump -- 1.2.3          # 显式指定版本
    ```
-> This command uses the **bump-version.js** script.
+   > 该命令使用 **bump-version.js** 脚本。
 
-9. **Regenerate the contributors avatar wall** (same effect as the `Generate contributors image` workflow)
+9. **重新生成贡献者头像墙**（与 `Generate contributors image` 工作流效果一致）
 
    ```bash
    npm run generate:contributors
    ```
 
-## 🐛 Feedback & Suggestions
+## 🚀 部署
 
-This repository ships with **5 Issue templates** — pick the one that fits your case:
+本项目已为 **Vercel** 部署做好准备
 
-| Template            | Purpose                                                              |
-| ------------------- | -------------------------------------------------------------------- |
-| `bug-report`        | Report broken functionality, display glitches, dead links             |
+### 配置说明
 
-## 🚀 Deployment
+项目根目录下的 `vercel.json` 包含完整的部署配置：
 
-This project is configured for deployment on **Vercel**:
+- **构建命令**：`npm run build`
+- **输出目录**：`_site`
+- **Clean URL**：已启用（`cleanUrls: true`）
+- **尾部斜杠**：已启用（`trailingSlash: true`）
+- **Rewrites**：支持 Eleventy 生成的 clean URL 路由
 
-### Configuration
+### 自动部署
 
-The `vercel.json` at the project root contains the complete deployment configuration:
+推送到 `main` 分支会自动触发 Vercel 部署。部署成功后，可在 Vercel 控制台查看分配的域名。
 
-- **Build Command**: `npm run build`
-- **Output Directory**: `_site`
-- **Clean URLs**: Enabled (`cleanUrls: true`)
-- **Trailing Slash**: Enabled (`trailingSlash: true`)
-- **Rewrites**: Supports clean URL routing generated by Eleventy
-
-### Automatic Deployment
-
-Pushing to the `main` branch automatically triggers a Vercel deployment. After successful deployment, you can view the assigned domain in the Vercel dashboard.
-
-## 👥 Contributors
+## 👥 贡献者
 
 <!-- CONTRIBUTORS START -->
 <a href="https://github.com/mantoujun12" title="mantoujun12"><img src="https://avatars.githubusercontent.com/u/202384594?v=4" width="80" alt="mantoujun12"/></a>
@@ -162,22 +154,10 @@ Pushing to the `main` branch automatically triggers a Vercel deployment. After s
 <a href="https://github.com/mantoujun6" title="mantoujun6"><img src="https://avatars.githubusercontent.com/u/91870686?v=4" width="80" alt="mantoujun6"/></a>
 <!-- CONTRIBUTORS END -->
 
-## 👋 Contributing
+## 📊 统计信息
 
-Welcome to contributing to this project! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting.
+![Alt](https://repobeats.axiom.co/api/embed/7c0f674f2e91e3c96247c872ef2f4e202b86e11e.svg "Repobeats analytics image")
 
-A short version of the workflow:
+## 📑 许可证
 
-1. Fork this repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m "Add some feature"`)
-4. Push to your branch (`git push origin feature/your-feature`)
-5. Open a Pull Request
-
----
-
-## 📑 License
-
-This project is open source under the [MIT License](LICENSE).
-
-> Some content generated by AI. (Project information, code...)
+本项目基于 [MIT 许可证](LICENSE)开源。
