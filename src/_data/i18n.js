@@ -18,7 +18,6 @@ module.exports = {
     "nav.wiki":         { "zh-cn": "Wiki",       "en": "Wiki" },
     "nav.zone":         { "zh-cn": "分区",       "en": "Zones" },
     "nav.github":       { "zh-cn": "此 Github 项目", "en": "GitHub Repo" },
-    "nav.astro":        { "zh-cn": "Astro Playground", "en": "Astro Playground" },
     "nav.siteMap":      { "zh-cn": "导航",       "en": "Sitemap" },
     "nav.themeToggle":  { "zh-cn": "切换主题",   "en": "Theme" },
     "nav.themeAuto":    { "zh-cn": "跟随系统",   "en": "Auto" },
@@ -85,8 +84,8 @@ module.exports = {
         "en":    "We are the Class of 2025 — Computer Applications, a small collective of 37 students from Hainan Province Economical Technical School.",
     },
     "home.aboutP2":      {
-        "zh-cn": "网站使用 GitHub 托管代码,GitHub Pages 部署静态页面,Eleventy 作为静态站点生成器。",
-        "en":    "Source code is hosted on GitHub, static pages are deployed via GitHub Pages, and Eleventy powers the build.",
+        "zh-cn": "网站使用 GitHub 托管代码,Vercel 部署静态页面,Eleventy 作为静态站点生成器。",
+        "en":    "Source code is hosted on GitHub, static pages are deployed via Vercel, and Eleventy powers the build.",
     },
     "home.aboutP3":      {
         "zh-cn": "目前处于半完成状态,内容会随时变化,欢迎每次都回来看看～",
@@ -99,7 +98,6 @@ module.exports = {
     "home.btnLearnMore":    { "zh-cn": "了解更多", "en": "Learn More" },
     "home.btnMoreEvents":   { "zh-cn": "查看更多事件", "en": "More Events" },
     "home.btnMoreArticles": { "zh-cn": "查看更多文章", "en": "More Articles" },
-    "home.btnAstro":        { "zh-cn": "Astro 站点",  "en": "Astro Site" },
     "home.sectionZones":    { "zh-cn": "📌 分区", "en": "📌 Zones" },
     "home.sectionEvents":   { "zh-cn": "🔔 事件", "en": "🔔 Events" },
     "home.sectionArticles": { "zh-cn": "📰 文章", "en": "📰 Articles" },
