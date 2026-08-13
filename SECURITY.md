@@ -42,9 +42,7 @@
 
 ### 📧 电子邮件
 
-发送邮件至 **3881679030@qq.com** 或 **2064074143@qq.com**。
-
-> 这些个人邮箱仅在 GitHub 私密咨询渠道不可用时作为备用方式，建议优先使用下方的 GitHub 渠道。
+发送邮件至 <contact@mantoujun-lab.com>
 
 请在邮件中包含以下内容：
 
@@ -84,7 +82,6 @@
 
 - 在修复公告中为你署名
 - 将你的贡献添加到 `CONTRIBUTORS.md`
-- 在下方的“安全名人堂”中记录你的 GitHub 用户名（需征得你的同意）
 
 ---
 
@@ -97,15 +94,6 @@
 - ✅ 依赖项通过 Dependabot 自动更新
 - ✅ 关键变更必须通过 Pull Request 进行审查
 - ✅ GitHub Actions 自动运行 CodeQL 安全扫描
-- ✅ CODEOWNERS 强制对构建、配置和文档的修改进行维护者审查
-
----
-
-## 🙌 安全名人堂
-
-我们将在修复发布后在此处列出报告者名单（需征得本人同意）。
-
-- _尚无记录_
 
 ---
 
@@ -116,4 +104,4 @@
 - Eleventy 安全公告：<https://github.com/11ty/eleventy/security/advisories>
 - GitHub 私密漏洞上报文档：<https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability>
 
-> 安全是每个人的责任——感谢你帮助我们把这个项目做得更好 ✨
+> 安全是每个人的责任 —— 感谢你帮助我们把这个项目做得更好 ✨
