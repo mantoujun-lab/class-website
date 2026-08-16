@@ -38,11 +38,25 @@
 </script>
 
 {% include "components/styles.njk" %}
+{# CDN 资源加固：主源 bootcdn + 备用源 cdnjs（两者文件字节一致，SRI 哈希通用）。
+   integrity 校验失败或主源故障时，onerror 自动切换到 cdnjs。 #}
 <!-- Font Awesome（同步加载，确保图标一定能显示） -->
-<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha384-/o6I2CkkWC//PSjvWC/eYN7l3xM3tJm8ZzVkCOfp//W05QcE3mlGskpoHB6XqI+B"
+      crossorigin="anonymous"
+      onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'">
 <!-- 代码高亮主题：Prism tomorrow-night，配合 @11ty/eleventy-plugin-syntaxhighlight 使用 -->
-<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      integrity="sha384-wFjoQjtV1y5jVHbt0p35Ui8aV8GVpEZkyF99OXWqP/eNJDU93D3Ugxkoyh6Y2I4A"
+      crossorigin="anonymous"
+      onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css'">
 <!-- 代码块行号 + 工具栏样式（Prism 官方插件） -->
-<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
-<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css">
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css"
+      integrity="sha384-nUkTNLI8COlMCRJ0FHIdX76If83145OTCLUx4gQyfnO0gGeO/sD9czGEUBxtkcUv"
+      crossorigin="anonymous"
+      onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css'">
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css"
+      integrity="sha384-EUzJ34/1CCeefTGUKLgvA5Z/vYIwi+Jyu8aAaCfFDxfwZ3Xs3OfkkIeegsLRM11e"
+      crossorigin="anonymous"
+      onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css'">
 <!-- Prism 核心与插件 JS 由 src/script/prism.js 在 main.js 入口串行加载，避免 defer 时机问题 -->
