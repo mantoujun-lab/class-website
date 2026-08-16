@@ -29,22 +29,22 @@
                 {{ button("fa-brands fa-github", ('home.btnRepo' | i18n), "https://github.com/mantoujun-lab/class-website", target="_blank") }}
             </div>
 
-            {# 统计数字 + 浏览量图片（more counter 保留,作为附加信息） #}
+            {# 统计数字（来自 src/_data/stats.js）+ 浏览量图片（more counter 保留,作为附加信息） #}
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <div class="hero-stat-num">37</div>
+                    <div class="hero-stat-num">{{ stats.students }}</div>
                     <div class="hero-stat-label">{{ 'home.stat.students' | i18n }}</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-num">2</div>
+                    <div class="hero-stat-num">{{ stats.maintainers }}</div>
                     <div class="hero-stat-label">{{ 'home.stat.maintainers' | i18n }}</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-num">5</div>
+                    <div class="hero-stat-num">{{ stats.zones }}</div>
                     <div class="hero-stat-label">{{ 'home.stat.zones' | i18n }}</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-num hero-stat-num--text">Eleventy</div>
+                    <div class="hero-stat-num hero-stat-num--text">{{ stats.stack }}</div>
                     <div class="hero-stat-label">{{ 'home.stat.stack' | i18n }}</div>
                 </div>
                 <div class="hero-stat hero-stat--counter">
