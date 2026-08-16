@@ -22,10 +22,13 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          # 完整克隆，避免脚本运行期间其他 push 导致 git push 时 non-fast-forward 失败
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
