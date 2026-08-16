@@ -1,0 +1,12 @@
+# 统一提交者身份（Git 贡献者统计与溯源）
+# 格式: 规范名 <规范邮箱> <历史别名> <历史邮箱>
+
+# 同一邮箱、不同用户名 → 统一为 GitHub 用户名
+mantoujun12 <3881679030@qq.com> 一张白纸 <3881679030@qq.com>
+mantoujun6 <2064074143@qq.com> 一张黑纸 <2064074143@qq.com>
+
+# mantoujun12 的 GitHub noreply 邮箱 → 并入同一身份
+mantoujun12 <3881679030@qq.com> mantoujun12 <202384594+mantoujun12@users.noreply.github.com>
+
+# AI 代理使用假邮箱 → 统一为 GitHub noreply 地址
+traeagent <traeagent@users.noreply.github.com> traeagent <traeagent@example.com>
