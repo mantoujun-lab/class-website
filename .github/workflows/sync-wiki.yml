@@ -35,4 +35,6 @@ jobs:
       - name: Sync Wiki
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN 只能推送当前仓库的 Wiki（fork 上运行即为 fork 的 Wiki）
+          WIKI_REPO_URL: https://github.com/${{ github.repository }}.wiki.git
         run: node scripts/sync-wiki.js

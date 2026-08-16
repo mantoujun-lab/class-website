@@ -1,6 +1,6 @@
 /**
  * 拉取当前仓库的贡献者列表，生成可点击跳转的 Markdown 头像墙，
- * 然后替换 README.md / docs/README_zh-cn.md / src/zh-cn/index.md / src/en/index.md 中的占位符。
+ * 然后替换 README.md / src/zh-cn/index.md / src/en/index.md 中的占位符。
  *
  * 占位符格式（每个文件都需要这一对标记）：
  *   <!-- CONTRIBUTORS START -->
@@ -31,7 +31,6 @@ const END_MARK = '<!-- CONTRIBUTORS END -->';
 // 根路径 / 由 src/index-redirect.md 处理（JS 跳板，不含贡献者区块），不在此列。
 const TARGET_FILES = [
     'README.md',
-    'docs/README_zh-cn.md',
     'src/zh-cn/index.md',
     'src/en/index.md',
 ];

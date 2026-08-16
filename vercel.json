@@ -2,8 +2,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": "_site",
   "cleanUrls": true,
-  "trailingSlash": true,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/$1/index.html" }
-  ]
+  "trailingSlash": true
 }

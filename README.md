@@ -60,9 +60,12 @@ layout: layouts/default    # 布局模板
 
 | 工具          | 版本                          | 说明              |
 | ----------- | --------------------------- | --------------- |
-| **Node.js** | 24.x（LTS，建议使用最新 LTS 版本）    | 运行时与包管理        |
-| **npm**     | 11.x 或更高（随 Node.js 一起安装）    | 依赖管理与脚本执行     |
+| **Node.js** | 20.x 或更高（推荐 24 LTS，仓库 `.nvmrc` 已锁定 24） | 运行时与包管理        |
+| **npm**     | 10.x 或更高（随 Node.js 一起安装）    | 依赖管理与脚本执行     |
 | **Git**     | 最新稳定版                       | 版本控制与提交        |
+
+> 💡 推荐使用 [nvm](https://github.com/nvm-sh/nvm) 管理 Node.js 版本：
+> 仓库根目录的 `.nvmrc` 已锁定推荐版本，执行 `nvm use` 即可一键切换。
 
 ## 💻 本地开发
 
@@ -102,8 +105,13 @@ layout: layouts/default    # 布局模板
 6. **同步知识库到 Wiki 仓库**（需要推送权限）
 
    ```bash
-   npm run sync:wiki
+   npm run sync:wiki              # 默认推送到上游仓库的 Wiki
+   # 指定目标 Wiki 仓库（例如在 fork 上运行时推送 fork 自己的 Wiki）：
+   WIKI_REPO_URL=https://github.com/<owner>/<repo>.wiki.git npm run sync:wiki
    ```
+
+   > 注意：GitHub Actions 的 `GITHUB_TOKEN` 只能推送当前仓库的 Wiki，
+   > `sync-wiki.yml` 工作流会自动把 `WIKI_REPO_URL` 设为当前仓库的 Wiki 地址。
 
 7. **打包发布版本**（在 `dist/` 下生成 `<name>-<version>-<date>-<short>.zip`）
 
@@ -140,7 +148,7 @@ layout: layouts/default    # 布局模板
 - **输出目录**：`_site`
 - **Clean URL**：已启用（`cleanUrls: true`）
 - **尾部斜杠**：已启用（`trailingSlash: true`）
-- **Rewrites**：支持 Eleventy 生成的 clean URL 路由
+- **路由**：`cleanUrls` + `trailingSlash` 直接映射 Eleventy 生成的目录式页面（如 `/about/` → `_site/about/index.html`），无需自定义 rewrite
 
 ### 自动部署
 

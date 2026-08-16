@@ -25,7 +25,7 @@ order: 3
 - **输出目录**：`_site`
 - **简洁 URL**：启用（`cleanUrls: true`）
 - **尾部斜杠**：启用（`trailingSlash: true`）
-- **重写规则**：所有路径重写到 `/$1/index.html`，支持 SPA 风格路由
+- **路由规则**：`cleanUrls` + `trailingSlash` 会把 `/about/` 这类路径直接映射到 `_site/about/index.html`，无需自定义 rewrite（原 catch-all rewrite 已移除，避免与静态资源路径冲突）
 
 ## Vercel Analytics 与 Speed Insights
 
@@ -68,7 +68,7 @@ order: 3
 - **触发方式**：Actions 页面手动 Run workflow
 - **执行流程**：
   1. 调用 GitHub API 拉取贡献者列表
-  2. 替换 `README.md` / `docs/README_zh-cn.md` / `src/index.md` 中 `<!-- CONTRIBUTORS START/END -->` 占位符内的内容
+  2. 替换 `README.md` / `src/zh-cn/index.md` / `src/en/index.md` 中 `<!-- CONTRIBUTORS START/END -->` 占位符内的内容
   3. 自动 commit 并 push 到 main
 - **本地调试**：可以用 `ALLOW_FALLBACK=1` 环境变量使用占位数据运行
 

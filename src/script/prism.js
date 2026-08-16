@@ -13,26 +13,63 @@
 // ============================================================
 
 const PRISM_BASE = 'https://cdn.bootcdn.net/ajax/libs/prism/1.29.0';
+const PRISM_FALLBACK_BASE = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0';
+
+// 按路径存放 SRI 哈希（bootcdn 与 cdnjs 上对应文件字节一致，同一份哈希两处通用）
+const PRISM_INTEGRITY = {
+    '/prism.min.js': 'sha384-06z5D//U/xpvxZHuUz92xBvq3DqBBFi7Up53HRrbV7Jlv7Yvh/MZ7oenfUe9iCEt',
+    '/plugins/line-numbers/prism-line-numbers.min.js': 'sha384-6QJu8apxMmB9TiPVWzYKF5pRgKcz7snO0/QU+MrWmgBLECQjoa6erxX2VQ5t41Jd',
+    '/plugins/toolbar/prism-toolbar.min.js': 'sha384-jC1G68eGEXJpPwMDNqyIUQsQlcUCdCU+a7GGuoV4TUZvM1gLYTMJUDvqBnxtZLWA',
+    '/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js': 'sha384-ZdEfx8sYX8i4IVXU1tUbqwOp4PBUCCmnpagpiHchnstXkEczkzPfUd9fvBrntM+F',
+};
+
+// 脚本加载顺序（相对路径；加载失败时自动换到 cdnjs 备用源）
+const PRISM_PATHS = [
+    '/prism.min.js',
+    '/plugins/line-numbers/prism-line-numbers.min.js',
+    '/plugins/toolbar/prism-toolbar.min.js',
+    '/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js',
+];
+
+/**
+ * 加载单个脚本；失败时若提供了 fallbackUrl 则重试一次。
+ * integrity + crossOrigin 一起使用才能启用 SRI 校验（CORS 获取）。
+ * @param {string} url
+ * @param {string} integrity
+ * @param {string|null} fallbackUrl
+ */
+function loadScript(url, integrity, fallbackUrl) {
+    return new Promise(function (resolve, reject) {
+        if (document.querySelector('script[data-prism="' + url + '"]')) {
+            return resolve();
+        }
+        var s = document.createElement('script');
+        s.async = false;
+        s.dataset.prism = url;
+        s.crossOrigin = 'anonymous';
+        s.integrity = integrity;
+        s.onload = function () { resolve(); };
+        s.onerror = function () {
+            if (fallbackUrl) {
+                loadScript(fallbackUrl, integrity, null).then(resolve, reject);
+            } else {
+                reject(new Error('加载失败: ' + url));
+            }
+        };
+        // src 必须在 crossOrigin/integrity 之后赋值，浏览器才会按 CORS 方式获取
+        s.src = url;
+        document.head.appendChild(s);
+    });
+}
 
 /**
  * 顺序加载一组脚本：上一个完成后才开始下一个。
- * @param {string[]} urls
+ * @param {{url: string, integrity: string, fallbackUrl: string|null}[]} entries
  */
-function loadScriptsSequentially(urls) {
-    return urls.reduce(function (promise, url) {
+function loadScriptsSequentially(entries) {
+    return entries.reduce(function (promise, entry) {
         return promise.then(function () {
-            return new Promise(function (resolve, reject) {
-                if (document.querySelector('script[data-prism="' + url + '"]')) {
-                    return resolve();
-                }
-                var s = document.createElement('script');
-                s.src = url;
-                s.async = false;
-                s.dataset.prism = url;
-                s.onload = function () { resolve(); };
-                s.onerror = function () { reject(new Error('加载失败: ' + url)); };
-                document.head.appendChild(s);
-            });
+            return loadScript(entry.url, entry.integrity, entry.fallbackUrl);
         });
     }, Promise.resolve());
 }
@@ -46,12 +83,13 @@ export async function initPrism() {
     console.debug('[Prism] 开始加载脚本链');
 
     try {
-        await loadScriptsSequentially([
-            PRISM_BASE + '/prism.min.js',
-            PRISM_BASE + '/plugins/line-numbers/prism-line-numbers.min.js',
-            PRISM_BASE + '/plugins/toolbar/prism-toolbar.min.js',
-            PRISM_BASE + '/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js',
-        ]);
+        await loadScriptsSequentially(PRISM_PATHS.map(function (p) {
+            return {
+                url: PRISM_BASE + p,
+                integrity: PRISM_INTEGRITY[p],
+                fallbackUrl: PRISM_FALLBACK_BASE + p,
+            };
+        }));
 
         if (!window.Prism || typeof window.Prism.highlightAll !== 'function') {
             console.warn('[Prism] window.Prism 不可用');

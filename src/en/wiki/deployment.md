@@ -25,7 +25,7 @@ The `vercel.json` at the project root includes the following configuration:
 - **Output directory**: `_site`
 - **Clean URLs**: Enabled (`cleanUrls: true`)
 - **Trailing Slash**: Enabled (`trailingSlash: true`)
-- **Rewrites**: All paths rewrite to `/$1/index.html`, supporting SPA-style routing
+- **Routing**: `cleanUrls` + `trailingSlash` map paths like `/about/` directly to `_site/about/index.html` — no custom rewrites needed (the old catch-all rewrite was removed to avoid conflicts with static asset paths)
 
 ## Vercel Analytics & Speed Insights
 
@@ -68,7 +68,7 @@ The `Generate contributors image` workflow (`.github/workflows/contributors.yml`
 - **Trigger**: Manually run the workflow from the Actions page
 - **Workflow**:
   1. Call the GitHub API to fetch the contributor list
-  2. Replace content between the `<!-- CONTRIBUTORS START/END -->` placeholders in `README.md` / `docs/README_zh-cn.md` / `src/index.md`
+  2. Replace content between the `<!-- CONTRIBUTORS START/END -->` placeholders in `README.md` / `src/zh-cn/index.md` / `src/en/index.md`
   3. Auto-commit and push to `main`
 - **Local debugging**: you can use the `ALLOW_FALLBACK=1` environment variable to run with placeholder data
 
