@@ -46,8 +46,8 @@ async function compileSass() {
 }
 
 module.exports = function (eleventyConfig) {
-    // 允许处理的模板格式：Markdown + Nunjucks
-    eleventyConfig.setTemplateFormats(['md', 'njk']);
+    // 模板格式统一由 return 中的 templateFormats: ["njk", "html", "md"] 声明，
+    // 不再重复调用 setTemplateFormats（两者曾重复且互相矛盾）。
 
     // 注：eleventy-plugin-i18n 已移除（package.json），改用自定义实现
     // 原因：插件的 lodash.get 路径解析将 "nav.home" 视为嵌套，与我们的点号键名冲突
