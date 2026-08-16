@@ -123,7 +123,7 @@ eleventyNavigation:
 ) }}
 
 <div align="center">
-{{ button("fa-solid fa-book", "阅读项目 README", "https://github.com/mantoujun-lab/class-website/blob/main/docs/README_zh-cn.md", target="_blank") }}
+{{ button("fa-solid fa-book", "阅读项目 README", "https://github.com/mantoujun-lab/class-website/blob/main/README.md", target="_blank") }}
 {{ button("fa-brands fa-github", "提交 Issue / PR", "https://github.com/mantoujun-lab/class-website", target="_blank") }}
 </div>
 

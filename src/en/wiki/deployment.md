@@ -68,7 +68,7 @@ The `Generate contributors image` workflow (`.github/workflows/contributors.yml`
 - **Trigger**: Manually run the workflow from the Actions page
 - **Workflow**:
   1. Call the GitHub API to fetch the contributor list
-  2. Replace content between the `<!-- CONTRIBUTORS START/END -->` placeholders in `README.md` / `docs/README_zh-cn.md` / `src/index.md`
+  2. Replace content between the `<!-- CONTRIBUTORS START/END -->` placeholders in `README.md` / `src/zh-cn/index.md` / `src/en/index.md`
   3. Auto-commit and push to `main`
 - **Local debugging**: you can use the `ALLOW_FALLBACK=1` environment variable to run with placeholder data
 

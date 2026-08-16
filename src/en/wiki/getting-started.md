@@ -24,7 +24,7 @@ Welcome aboard! This guide shows how to contribute to the class website.
 
 ## How to contribute to the Wiki
 
-Similar to writing an article, just create or edit a `.md` file under `src/wiki/`.
+Similar to writing an article, just create or edit a `.md` file under `src/en/wiki/`.
 - Before adding a page, check if a similar topic already exists
 - Use lowercase letters and hyphens in filenames for easier management and linking
 - Wiki pages should include a complete title, description, and clear paragraph structure

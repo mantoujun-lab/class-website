@@ -68,7 +68,7 @@ order: 3
 - **触发方式**：Actions 页面手动 Run workflow
 - **执行流程**：
   1. 调用 GitHub API 拉取贡献者列表
-  2. 替换 `README.md` / `docs/README_zh-cn.md` / `src/index.md` 中 `<!-- CONTRIBUTORS START/END -->` 占位符内的内容
+  2. 替换 `README.md` / `src/zh-cn/index.md` / `src/en/index.md` 中 `<!-- CONTRIBUTORS START/END -->` 占位符内的内容
   3. 自动 commit 并 push 到 main
 - **本地调试**：可以用 `ALLOW_FALLBACK=1` 环境变量使用占位数据运行
 
