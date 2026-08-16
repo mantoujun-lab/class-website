@@ -145,7 +145,7 @@ layout: layouts/default    # 布局模板
 - **输出目录**：`_site`
 - **Clean URL**：已启用（`cleanUrls: true`）
 - **尾部斜杠**：已启用（`trailingSlash: true`）
-- **Rewrites**：支持 Eleventy 生成的 clean URL 路由
+- **路由**：`cleanUrls` + `trailingSlash` 直接映射 Eleventy 生成的目录式页面（如 `/about/` → `_site/about/index.html`），无需自定义 rewrite
 
 ### 自动部署
 

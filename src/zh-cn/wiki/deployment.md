@@ -25,7 +25,7 @@ order: 3
 - **输出目录**：`_site`
 - **简洁 URL**：启用（`cleanUrls: true`）
 - **尾部斜杠**：启用（`trailingSlash: true`）
-- **重写规则**：所有路径重写到 `/$1/index.html`，支持 SPA 风格路由
+- **路由规则**：`cleanUrls` + `trailingSlash` 会把 `/about/` 这类路径直接映射到 `_site/about/index.html`，无需自定义 rewrite（原 catch-all rewrite 已移除，避免与静态资源路径冲突）
 
 ## Vercel Analytics 与 Speed Insights
 

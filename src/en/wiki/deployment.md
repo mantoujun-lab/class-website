@@ -25,7 +25,7 @@ The `vercel.json` at the project root includes the following configuration:
 - **Output directory**: `_site`
 - **Clean URLs**: Enabled (`cleanUrls: true`)
 - **Trailing Slash**: Enabled (`trailingSlash: true`)
-- **Rewrites**: All paths rewrite to `/$1/index.html`, supporting SPA-style routing
+- **Routing**: `cleanUrls` + `trailingSlash` map paths like `/about/` directly to `_site/about/index.html` — no custom rewrites needed (the old catch-all rewrite was removed to avoid conflicts with static asset paths)
 
 ## Vercel Analytics & Speed Insights
 
