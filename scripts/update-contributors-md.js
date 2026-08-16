@@ -98,10 +98,15 @@ function filterContributors(list) {
         if (!c || !c.login) {
             return false;
         }
+        // 匿名贡献者：无法生成头像墙
         if (c.type === 'Anonymous') {
             return false;
         }
-        if (c.type === 'Bot' && !includeBots) {
+        const login = String(c.login);
+        // 有些机器人账号是 User 类型，但 login 以 [bot] 结尾，例如: dependabot[bot]
+        const isBotLogin = /\[bot\]$/i.test(login);
+        // 未设置 INCLUDE_BOTS=1 时排除机器人与以 [bot] 结尾的账号
+        if (!includeBots && (c.type === 'Bot' || isBotLogin)) {
             return false;
         }
         return true;
