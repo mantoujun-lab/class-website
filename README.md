@@ -102,8 +102,13 @@ layout: layouts/default    # 布局模板
 6. **同步知识库到 Wiki 仓库**（需要推送权限）
 
    ```bash
-   npm run sync:wiki
+   npm run sync:wiki              # 默认推送到上游仓库的 Wiki
+   # 指定目标 Wiki 仓库（例如在 fork 上运行时推送 fork 自己的 Wiki）：
+   WIKI_REPO_URL=https://github.com/<owner>/<repo>.wiki.git npm run sync:wiki
    ```
+
+   > 注意：GitHub Actions 的 `GITHUB_TOKEN` 只能推送当前仓库的 Wiki，
+   > `sync-wiki.yml` 工作流会自动把 `WIKI_REPO_URL` 设为当前仓库的 Wiki 地址。
 
 7. **打包发布版本**（在 `dist/` 下生成 `<name>-<version>-<date>-<short>.zip`）
 

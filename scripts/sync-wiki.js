@@ -21,7 +21,11 @@ const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const WIKI_DIR = path.join(ROOT, '.wiki-tmp');
-const WIKI_REPO = 'https://github.com/mantoujun-lab/class-website.wiki.git';
+// Wiki 仓库地址：优先读取环境变量 WIKI_REPO_URL。
+// GitHub Actions 的 GITHUB_TOKEN 只能推送“当前仓库”的 Wiki，
+// 因此 CI 中由 sync-wiki.yml 按 github.repository 动态注入；
+// 本地直接运行时回退到上游仓库地址。
+const WIKI_REPO = process.env.WIKI_REPO_URL || 'https://github.com/mantoujun-lab/class-website.wiki.git';
 
 /** 语言配置: code 必须和 src/ 下的目录名一致 */
 const LOCALES = [
