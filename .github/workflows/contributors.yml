@@ -28,8 +28,7 @@ jobs:
         run: node scripts/update-contributors-md.js
 
       - name: Commit and push
-        # 后续部署由 .github/workflows/static.yml 的 push 事件自动触发
-        # （static.yml 的 push.paths 已加入 README.md / docs/README_zh-cn.md）
+        # static.yml 已随 GitHub Pages 迁移删除；推送到 main 后由 Vercel 自动部署
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
