@@ -33,7 +33,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md docs/README_zh-cn.md src/index.md
+          git add README.md src/zh-cn/index.md src/en/index.md
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
