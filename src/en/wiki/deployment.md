@@ -63,13 +63,14 @@ Since the site is deployed at the root path `/`, all asset references must use t
 
 ## Contributors Wall
 
-The `Generate contributors image` workflow (`.github/workflows/contributors.yml`) automatically maintains the "Contributors" section on `main`:
+The `Generate contributors` workflow (`.github/workflows/contributors.yml`) automatically maintains the "Contributors" section on `main`:
 
-- **Trigger**: Manually run the workflow from the Actions page
+- **Trigger**: Run workflow manually from the Actions page, push to `main`, or weekly schedule (Sunday 03:00 UTC)
 - **Workflow**:
-  1. Call the GitHub API to fetch the contributor list
-  2. Replace content between the `<!-- CONTRIBUTORS START/END -->` placeholders in `README.md` / `src/zh-cn/index.md` / `src/en/index.md`
-  3. Auto-commit and push to `main`
+  1. Call the GitHub API to fetch the contributor list (bots, anonymous contributors and AI agent accounts such as traeagent / codex / claude are excluded by default; extend via `IGNORE_LOGINS`)
+  2. Generate `CONTRIBUTORS.md` (avatar wall + leaderboard) from `templates/contributors.tpl.md`
+  3. Replace content between the `<!-- CONTRIBUTORS START/END -->` placeholders in `README.md` / `src/zh-cn/index.md` / `src/en/index.md`
+  4. Auto-commit and push to `main`
 - **Local debugging**: you can use the `ALLOW_FALLBACK=1` environment variable to run with placeholder data
 
 ```bash
@@ -78,4 +79,4 @@ ALLOW_FALLBACK=1 \
 npm run generate:contributors
 ```
 
-> **Tip**: The placeholders `<!-- CONTRIBUTORS START -->` and `<!-- CONTRIBUTORS END -->` must be kept, otherwise the Action can't find the replacement location and will skip that file.
+> **Tip**: The placeholders `<!-- CONTRIBUTORS START -->` and `<!-- CONTRIBUTORS END -->` (plus `<!-- CONTRIBUTORS TABLE START/END -->` in `CONTRIBUTORS.md`) must be kept, otherwise the Action can't find the replacement location and will skip that file.

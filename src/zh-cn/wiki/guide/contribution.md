@@ -16,7 +16,7 @@ wikiCategoryOrder: 1
 
 ## 注意事项
 
-- 贡献者头像墙（`README.md` / `src/zh-cn/index.md` / `src/en/index.md`）中 `<!-- CONTRIBUTORS START/END -->` 之间的内容由 GitHub Action 自动生成，**不要手动修改**，否则下次 Action 跑时会被覆盖
+- 贡献者头像墙（`README.md` / `src/zh-cn/index.md` / `src/en/index.md`）以及 `CONTRIBUTORS.md` 中 `<!-- CONTRIBUTORS START/END -->`（`CONTRIBUTORS.md` 还有 `<!-- CONTRIBUTORS TABLE START/END -->`）之间的内容由 GitHub Actions 自动生成，**不要手动修改**，否则下次 Action 跑时会被覆盖
 - 头像是 GitHub 自动拉取的，无需手动同步
 ## 提交身份规范
 

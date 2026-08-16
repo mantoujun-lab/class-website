@@ -65,11 +65,12 @@ order: 3
 
 `.github/workflows/contributors.yml` 工作流会在 main 分支上自动维护"贡献者"区块：
 
-- **触发方式**：Actions 页面手动 Run workflow
+- **触发方式**：Actions 页面手动 Run workflow、push 到 `main`、每周定时（周日 03:00 UTC）
 - **执行流程**：
-  1. 调用 GitHub API 拉取贡献者列表
-  2. 替换 `README.md` / `src/zh-cn/index.md` / `src/en/index.md` 中 `<!-- CONTRIBUTORS START/END -->` 占位符内的内容
-  3. 自动 commit 并 push 到 main
+  1. 调用 GitHub API 拉取贡献者列表（默认排除机器人、匿名贡献者与 traeagent / codex / claude 等 AI 代理账号，可用 `IGNORE_LOGINS` 增补）
+  2. 根据 `templates/contributors.tpl.md` 生成 `CONTRIBUTORS.md`（头像墙 + 贡献榜）
+  3. 替换 `README.md` / `src/zh-cn/index.md` / `src/en/index.md` 中 `<!-- CONTRIBUTORS START/END -->` 占位符内的内容
+  4. 自动 commit 并 push 到 main
 - **本地调试**：可以用 `ALLOW_FALLBACK=1` 环境变量使用占位数据运行
 
 ```bash
@@ -78,4 +79,4 @@ ALLOW_FALLBACK=1 \
 npm run generate:contributors
 ```
 
-> **提示**：占位符 `<!-- CONTRIBUTORS START -->` 和 `<!-- CONTRIBUTORS END -->` 一定要保留，否则 Action 找不到替换位置会跳过该文件。
+> **提示**：占位符 `<!-- CONTRIBUTORS START -->` 和 `<!-- CONTRIBUTORS END -->`（`CONTRIBUTORS.md` 还需要 `<!-- CONTRIBUTORS TABLE START/END -->`）一定要保留，否则 Action 找不到替换位置会跳过该文件。
