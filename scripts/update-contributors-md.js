@@ -16,6 +16,8 @@
  *   GH_TOKEN              GITHUB_TOKEN 的别名
  *   MAX_CONTRIBUTORS      头像墙/贡献榜最多人数（默认 100）
  *   INCLUDE_BOTS          设为 1 时把机器人（dependabot 等）也计入（默认排除）
+ *   IGNORE_LOGINS         额外忽略的 AI 代理账号，逗号/空格分隔；默认已忽略
+ *                         traeagent / codex / claude / copilot / openai / anthropic / gemini
  *   ALLOW_FALLBACK        设为 1 时 API 拉取失败则使用本地占位数据（仅用于调试）
  *   CONTRIBUTORS_JSON_FILE 指定一个本地 JSON 文件作为贡献者数据源（跳过 API 请求，
  *                          便于本地调试，例如先用 gh api 把数据导出到文件）
@@ -31,6 +33,14 @@ const path = require('path');
 // ========== 配置 ==========
 const AVATAR_WIDTH = 80; // 头像宽度（px）
 const DEFAULT_MAX_CONTRIBUTORS = 100;
+
+// AI 代理账号关键词（登录名不区分大小写，包含即忽略）：
+// traeagent（Trae）、codex（OpenAI Codex）、claude（Anthropic）等 AI 工具账号
+// 不是人工贡献者，不出现在贡献者名单里；可用 IGNORE_LOGINS 环境变量增补。
+const DEFAULT_IGNORED_TOKENS = [
+    'traeagent', 'codex', 'claude',
+    'copilot', 'openai', 'anthropic', 'gemini',
+];
 const REPO_ROOT = path.resolve(__dirname, '..');
 const TEMPLATE_FILE = path.join(REPO_ROOT, 'templates', 'contributors.tpl.md');
 const CONTRIBUTORS_FILE = path.join(REPO_ROOT, 'CONTRIBUTORS.md');
@@ -91,7 +101,21 @@ async function fetchContributors(repo, token) {
  *   - 没有 login 的条目
  *   - 匿名贡献者（没有头像和主页链接，无法生成头像墙）
  *   - 机器人（dependabot[bot] 等），除非设置 INCLUDE_BOTS=1
+ *   - AI 代理账号（traeagent / codex / claude 等，见 DEFAULT_IGNORED_TOKENS）
  */
+function getIgnoredTokens() {
+    const extra = (process.env.IGNORE_LOGINS || '')
+        .split(/[\s,]+/)
+        .map(s => s.trim().toLowerCase())
+        .filter(Boolean);
+    return [...DEFAULT_IGNORED_TOKENS, ...extra];
+}
+
+function isAiAgentLogin(login) {
+    const lower = login.toLowerCase();
+    return getIgnoredTokens().some(token => lower.includes(token));
+}
+
 function filterContributors(list) {
     const includeBots = process.env.INCLUDE_BOTS === '1';
     return list.filter(c => {
@@ -107,6 +131,10 @@ function filterContributors(list) {
         const isBotLogin = /\[bot\]$/i.test(login);
         // 未设置 INCLUDE_BOTS=1 时排除机器人与以 [bot] 结尾的账号
         if (!includeBots && (c.type === 'Bot' || isBotLogin)) {
+            return false;
+        }
+        // AI 代理账号：不属于人工贡献者，直接排除
+        if (isAiAgentLogin(login)) {
             return false;
         }
         return true;
@@ -241,7 +269,7 @@ async function main() {
     if (contributors.length > max) {
         contributors = contributors.slice(0, max);
     }
-    console.log(`  共 ${contributors.length} 位贡献者（已排除机器人与匿名贡献者）`);
+    console.log(`  共 ${contributors.length} 位贡献者（已排除机器人、匿名与 AI 代理账号）`);
 
     const wall = buildAvatarWall(contributors);
     const leaderboard = buildLeaderboard(contributors);

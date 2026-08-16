@@ -67,7 +67,7 @@ order: 3
 
 - **触发方式**：Actions 页面手动 Run workflow、push 到 `main`、每周定时（周日 03:00 UTC）
 - **执行流程**：
-  1. 调用 GitHub API 拉取贡献者列表（默认排除机器人与匿名贡献者）
+  1. 调用 GitHub API 拉取贡献者列表（默认排除机器人、匿名贡献者与 traeagent / codex / claude 等 AI 代理账号，可用 `IGNORE_LOGINS` 增补）
   2. 根据 `templates/contributors.tpl.md` 生成 `CONTRIBUTORS.md`（头像墙 + 贡献榜）
   3. 替换 `README.md` / `src/zh-cn/index.md` / `src/en/index.md` 中 `<!-- CONTRIBUTORS START/END -->` 占位符内的内容
   4. 自动 commit 并 push 到 main

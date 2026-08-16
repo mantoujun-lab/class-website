@@ -67,7 +67,7 @@ The `Generate contributors` workflow (`.github/workflows/contributors.yml`) auto
 
 - **Trigger**: Run workflow manually from the Actions page, push to `main`, or weekly schedule (Sunday 03:00 UTC)
 - **Workflow**:
-  1. Call the GitHub API to fetch the contributor list (bots and anonymous contributors are excluded by default)
+  1. Call the GitHub API to fetch the contributor list (bots, anonymous contributors and AI agent accounts such as traeagent / codex / claude are excluded by default; extend via `IGNORE_LOGINS`)
   2. Generate `CONTRIBUTORS.md` (avatar wall + leaderboard) from `templates/contributors.tpl.md`
   3. Replace content between the `<!-- CONTRIBUTORS START/END -->` placeholders in `README.md` / `src/zh-cn/index.md` / `src/en/index.md`
   4. Auto-commit and push to `main`

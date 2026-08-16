@@ -5,7 +5,6 @@ Thanks to everyone who contributed to this project!
 
 <!-- CONTRIBUTORS START -->
 <a href="https://github.com/mantoujun12" title="mantoujun12"><img src="https://avatars.githubusercontent.com/u/202384594?v=4" width="80" alt="mantoujun12"/></a>
-<a href="https://github.com/traeagent" title="traeagent"><img src="https://avatars.githubusercontent.com/u/272135137?v=4" width="80" alt="traeagent"/></a>
 <a href="https://github.com/zswcft34567890" title="zswcft34567890"><img src="https://avatars.githubusercontent.com/u/300807762?v=4" width="80" alt="zswcft34567890"/></a>
 <a href="https://github.com/mantoujun6" title="mantoujun6"><img src="https://avatars.githubusercontent.com/u/91870686?v=4" width="80" alt="mantoujun6"/></a>
 <!-- CONTRIBUTORS END -->
@@ -16,9 +15,8 @@ Thanks to everyone who contributed to this project!
 | # | Contributor | Contributions |
 |---|-------------|--------------|
 | 1 | [mantoujun12](https://github.com/mantoujun12) | 443 |
-| 2 | [traeagent](https://github.com/traeagent) | 23 |
-| 3 | [zswcft34567890](https://github.com/zswcft34567890) | 5 |
-| 4 | [mantoujun6](https://github.com/mantoujun6) | 4 |
+| 2 | [zswcft34567890](https://github.com/zswcft34567890) | 5 |
+| 3 | [mantoujun6](https://github.com/mantoujun6) | 4 |
 <!-- CONTRIBUTORS TABLE END -->
 
 ---
