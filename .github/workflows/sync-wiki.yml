@@ -18,6 +18,8 @@ concurrency:
 
 jobs:
   sync:
+    # fork 上运行时 GITHUB_TOKEN 只能推 fork 的 Wiki，对上游无意义，只在主仓库执行
+    if: github.repository == 'mantoujun12/class-website'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
