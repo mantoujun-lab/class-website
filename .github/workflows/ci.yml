@@ -8,6 +8,11 @@ on:
 permissions:
   contents: read
 
+# PR 更新时自动取消旧 run，节省 Actions 分钟数
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
