@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit 审查配置文件
+# 官方文档: https://docs.coderabbit.ai/getting-started/yaml-configuration
+# 配置参考: https://docs.coderabbit.ai/reference/configuration
+
+language: "en-US"
+early_access: false
+enable_free_tier: true
+
+reviews:
+  # 审查严格程度: quiet(只报阻塞问题) / chill(平衡) / assertive(事无巨细)
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  review_details: true
+  collapse_walkthrough: false
+
+  # 排除构建产物、依赖与生成文件，避免噪音
+  path_filters:
+    - "!**_site/**"
+    - "!**/node_modules/**"
+    - "!**/dist/**"
+    - "!**/package-lock.json"
+
+  # 按路径定制的审查指令
+  path_instructions:
+    - path: "**/*.{md,markdown}"
+      instructions: |
+        这是基于 Eleventy 的双语班级网站项目（中文 zh-cn 与英文 en 目录并存）。
+        - 检查 Markdown 前置数据 (front matter) 的完整性与字段一致性
+        - 检查 wiki / 文章页面之间的相对链接是否有效
+        - 检查 en 与 zh-cn 目录下对应内容是否保持同步（结构、链接、图片路径）
+        - 对占位内容或示例文章不要吹毛求疵
+    - path: "**/*.{html,njk,nunjucks}"
+      instructions: |
+        Eleventy 模板文件 (Nunjucks)。
+        - 检查模板语法与布局 (layouts) 引用是否正确
+        - 检查是否合理复用了 _includes/components 中的现有组件
+        - 检查基础可访问性 (a11y) 要求，如 alt 文本、语义化标签
+        - 避免重复造轮子，优先复用项目现有宏 (macros) 与组件
+    - path: "src/style/**"
+      instructions: |
+        SCSS 样式源文件。
+        - 检查是否合理使用 _variables.scss / _theme-vars.scss / _mixins.scss 中的变量与混合宏
+        - 检查与现有主题变量命名的一致性（如主题切换 theme.css 相关变量）
+        - 保持样式文件的组织与命名规范，避免内联魔法值
+    - path: "src/script/**"
+      instructions: |
+        浏览器端原生 JavaScript（无框架）。
+        - 检查 DOM 操作的安全性（避免 XSS，如 innerHTML 的滥用）
+        - 检查是否复用了项目已有的工具函数（如 _dom.js、history-stack.js）
+        - 注意浏览器兼容性与性能（事件委托、避免重复查询 DOM）
+        - 保持与现有脚本的代码风格一致
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "main"
+
+  # 针对本项目文件类型启用的工具
+  tools:
+    markdownlint:
+      enabled: true
+    htmlhint:
+      enabled: true
+    stylelint:
+      enabled: true
+
+chat:
+  auto_reply: true
