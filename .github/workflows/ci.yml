@@ -3,7 +3,19 @@ name: CI
 on:
   push:
     branches: [main]
+    # 纯文档改动跳过构建；contributors 工作流 push 的 README/CONTRIBUTORS 带 [skip ci]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - 'CONTRIBUTORS.md'
+      - 'README.md'
   pull_request:
+    # PR 始终构建，即使只改文档
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+      - 'CONTRIBUTORS.md'
+      - 'README.md'
 
 permissions:
   contents: read
