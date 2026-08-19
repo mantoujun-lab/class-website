@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version-file: .nvmrc
 
       # 串行执行两个操作：
       #   1. 运行 scripts/update-contributors-md.js，从 GitHub API 拉取贡献者
