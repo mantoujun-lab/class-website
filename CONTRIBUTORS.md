@@ -14,7 +14,7 @@ Thanks to everyone who contributed to this project!
 <!-- CONTRIBUTORS TABLE START -->
 | # | Contributor | Contributions |
 |---|-------------|--------------|
-| 1 | [mantoujun12](https://github.com/mantoujun12) | 443 |
+| 1 | [mantoujun12](https://github.com/mantoujun12) | 445 |
 | 2 | [zswcft34567890](https://github.com/zswcft34567890) | 5 |
 | 3 | [mantoujun6](https://github.com/mantoujun6) | 4 |
 <!-- CONTRIBUTORS TABLE END -->

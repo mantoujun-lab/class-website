@@ -3,10 +3,23 @@ name: CI
 on:
   push:
     branches: [main]
+    # 纯文档改动跳过构建；contributors 工作流 push 的 README/CONTRIBUTORS 带 [skip ci]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
   pull_request:
+    # PR 始终构建，即使只改文档
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
 
 permissions:
   contents: read
+
+# PR 更新时自动取消旧 run，节省 Actions 分钟数
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -19,7 +32,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install dependencies
@@ -27,3 +40,10 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: _site
+          path: _site
+          if-no-files-found: error

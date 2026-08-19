@@ -57,8 +57,3 @@ updates:
         update-types:
           - "minor"
           - "patch"
-    # 非安全的大版本更新保持忽略（安全更新不受此影响，Dependabot 安全更新会自动跳过 ignore）
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - "version-update:semver-major"
