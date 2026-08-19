@@ -11,6 +11,11 @@ on:
 permissions:
   contents: write
 
+# Wiki 同步写同一仓库，串行执行避免并发 push 冲突
+concurrency:
+  group: sync-wiki-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
