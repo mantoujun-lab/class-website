@@ -1,12 +1,12 @@
 ## Development
 
-When starting the dev server, use background mode:
+Do NOT run `npm run dev` or `astro dev`. For verification, use `npm run build` only:
 
-```
-astro dev --background
+```bash
+npm run build
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+The build output goes to `dist/`. Inspect `dist/index.html` to verify the result.
 
 ## Git commit
 
