@@ -2,13 +2,24 @@
 import '../styles/global.css';
 ---
 
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/png" href="/logo.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>25 级计算机应用 1 班</title>
+		<script is:inline>
+			const html = document.documentElement;
+			const saved = localStorage.getItem('theme');
+			if (saved === 'light' || saved === 'dark') {
+				html.setAttribute('data-theme', saved);
+			} else if (saved === 'auto') {
+				html.removeAttribute('data-theme');
+			} else {
+				html.setAttribute('data-theme', 'light');
+			}
+		</script>
 	</head>
 	<body class="min-h-screen bg-base-100 text-base-content">
 		<!-- Navbar -->
@@ -19,29 +30,29 @@ import '../styles/global.css';
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
 					</div>
 					<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-						<li><a>首页</a></li>
-						<li><a>动态</a></li>
-						<li><a>关于</a></li>
+						<li><a href="#hero">首页</a></li>
+						<li><span class="opacity-50 cursor-not-allowed">动态</span></li>
+						<li><span class="opacity-50 cursor-not-allowed">关于</span></li>
 					</ul>
 				</div>
-				<a class="btn btn-ghost btn-circle" aria-label="25 计算机1">
+				<a class="btn btn-ghost btn-circle" href="#hero" aria-label="25 计算机1">
 					<img src="/logo.png" alt="logo"/>
 				</a>
 			</div>
 			<div class="navbar-end">
 				<ul class="menu menu-horizontal px-1 mr-2 hidden lg:flex">
-					<li><a>首页</a></li>
-					<li><a>动态</a></li>
-					<li><a>关于</a></li>
+					<li><a href="#hero">首页</a></li>
+					<li><span class="opacity-50 cursor-not-allowed">动态</span></li>
+					<li><span class="opacity-50 cursor-not-allowed">关于</span></li>
 				</ul>
 				<div class="dropdown dropdown-end">
-					<div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label="theme">
+					<button type="button" tabindex="0" class="btn btn-ghost btn-circle" aria-label="theme">
 						<svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 2a10 10 0 0 0 0 20Z" /></svg>
-					</div>
+					</button>
 					<ul tabindex="0" class="dropdown-content menu menu-sm z-1 mt-3 p-2 shadow bg-base-100 rounded-box w-40">
-						<li><a data-set-theme="light">浅色</a></li>
-						<li><a data-set-theme="dark">深色</a></li>
-						<li><a data-set-theme="auto">跟随系统</a></li>
+						<li><button type="button" data-set-theme="light">浅色</button></li>
+						<li><button type="button" data-set-theme="dark">深色</button></li>
+						<li><button type="button" data-set-theme="auto">跟随系统</button></li>
 					</ul>
 				</div>
 				<a class="btn btn-ghost btn-circle" href="https://github.com/mantoujun-lab/class-website" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -51,7 +62,7 @@ import '../styles/global.css';
 		</div>
 
 		<!-- Hero -->
-		<section class="hero bg-base-200">
+		<section id="hero" class="hero bg-base-200">
 			<div class="hero-content text-center py-16">
 				<div class="max-w-md">
 					<h1 class="text-4xl font-bold">25 级计算机应用 1 班</h1>
@@ -89,17 +100,17 @@ import '../styles/global.css';
 		<footer class="footer grid-cols-3 p-10 bg-base-200 text-base-content">
 			<nav>
 				<h6 class="footer-title">关于</h6>
-				<a class="link link-hover">班级介绍</a>
-				<a class="link link-hover">技术栈</a>
+				<span class="opacity-50">班级介绍</span>
+				<span class="opacity-50">技术栈</span>
 			</nav>
 			<nav>
 				<h6 class="footer-title">资源</h6>
 				<a class="link link-hover" href="https://github.com/mantoujun-lab/class-website" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
-				<a class="link link-hover">Issue 反馈</a>
+				<a class="link link-hover" href="https://github.com/mantoujun-lab/class-website/issues" target="_blank" rel="noopener noreferrer">Issue 反馈</a>
 			</nav>
 			<nav>
 				<h6 class="footer-title">支持</h6>
-				<a class="link link-hover">微信赞赏</a>
+				<span class="opacity-50">微信赞赏</span>
 			</nav>
 		</footer>
 		<footer class="footer px-10 py-4 border-t bg-base-200 border-base-300 text-base-content/60">
@@ -108,16 +119,10 @@ import '../styles/global.css';
 			</aside>
 		</footer>
 	<script is:inline>
-		const html = document.documentElement;
-		const saved = localStorage.getItem('theme');
-		if (saved === 'light' || saved === 'dark') {
-			html.setAttribute('data-theme', saved);
-		} else if (saved === 'auto') {
-			html.removeAttribute('data-theme');
-		}
 		document.querySelectorAll('[data-set-theme]').forEach((el) => {
 			el.addEventListener('click', (e) => {
 				e.preventDefault();
+				const html = document.documentElement;
 				const t = el.dataset.setTheme;
 				if (t === 'auto') {
 					html.removeAttribute('data-theme');

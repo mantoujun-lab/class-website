@@ -2,7 +2,7 @@
 
 Do NOT run `npm run dev` or `astro dev`. For verification, use `npm run build` only:
 
-```
+```bash
 npm run build
 ```
 
