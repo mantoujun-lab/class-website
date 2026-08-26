@@ -5,7 +5,7 @@
 <!-- Badges -->
 
 [![GitHub License](https://img.shields.io/github/license/mantoujun-lab/class-website?style=for-the-badge)](LICENSE)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mantoujun-lab/class-website/node.yml?style=for-the-badge)](https://github.com/mantoujun-lab/class-website/actions/workflows/node.yml)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mantoujun-lab/class-website/node.yml?style=for-the-badge&event=pull_request)](https://github.com/mantoujun-lab/class-website/actions/workflows/node.yml)
 [![Static Badge](https://img.shields.io/badge/Vercel-black?style=for-the-badge&logo=Vercel)](https://vercel.com)
 [![Astro](https://img.shields.io/badge/Astro-black?style=for-the-badge&logo=astro)](https://astro.build/)
 
