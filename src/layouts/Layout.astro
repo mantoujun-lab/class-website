@@ -22,10 +22,9 @@ const { title } = Astro.props;
 			const saved = localStorage.getItem('theme');
 			if (saved === 'light' || saved === 'dark') {
 				html.setAttribute('data-theme', saved);
-			} else if (saved === 'auto') {
-				html.removeAttribute('data-theme');
 			} else {
-				html.setAttribute('data-theme', 'light');
+				// 'auto' or first visit → follow system preference via DaisyUI --prefersdark
+				html.removeAttribute('data-theme');
 			}
 		</script>
 	</head>
