@@ -74,8 +74,6 @@ jobs:
           languages: ${{ matrix.language }}
           # Point to project-specific CodeQL analysis config (queries, paths, exclusions)
           config-file: ./.github/codeql/codeql-config.yml
-          # Use category tag so results from different languages/matrices don't collide
-          category: "/language:${{ matrix.language }}"
 
       # Autobuild is a no-op for JavaScript/TypeScript, but we keep the step
       # for consistency and forward-compatibility if a compiled language is added.
