@@ -1,0 +1,53 @@
+---
+// Shared page shell: HTML head, theme bootstrap, Navbar, slot, Footer, theme toggle script.
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+	title: string;
+}
+const { title } = Astro.props;
+---
+
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/png" href="/logo.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<script is:inline>
+			const html = document.documentElement;
+			const saved = localStorage.getItem('theme');
+			if (saved === 'light' || saved === 'dark') {
+				html.setAttribute('data-theme', saved);
+			} else {
+				// 'auto' or first visit → follow system preference via DaisyUI --prefersdark
+				html.removeAttribute('data-theme');
+			}
+		</script>
+	</head>
+	<body class="min-h-screen flex flex-col bg-base-100 text-base-content">
+		<Navbar />
+		<div class="flex-1">
+			<slot />
+		</div>
+		<Footer />
+		<script is:inline>
+			document.querySelectorAll('[data-set-theme]').forEach((el) => {
+				el.addEventListener('click', (e) => {
+					e.preventDefault();
+					const html = document.documentElement;
+					const t = el.dataset.setTheme;
+					if (t === 'auto') {
+						html.removeAttribute('data-theme');
+					} else {
+						html.setAttribute('data-theme', t);
+					}
+					localStorage.setItem('theme', t);
+				});
+			});
+		</script>
+	</body>
+</html>

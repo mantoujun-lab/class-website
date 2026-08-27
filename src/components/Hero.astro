@@ -1,0 +1,17 @@
+---
+// Centered hero section with title + subtitle.
+interface Props {
+	title: string;
+	subtitle?: string;
+}
+const { title, subtitle } = Astro.props;
+---
+
+<section id="hero" class="hero bg-base-200">
+	<div class="hero-content text-center py-16">
+		<div class="max-w-md">
+			<h1 class="text-4xl font-bold">{title}</h1>
+			{subtitle && <p class="py-4 opacity-70">{subtitle}</p>}
+		</div>
+	</div>
+</section>

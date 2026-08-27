@@ -1,0 +1,43 @@
+---
+// Site navbar: mobile dropdown, logo, desktop menu, theme switcher, GitHub link.
+---
+
+<div class="navbar bg-base-100 shadow-sm sticky top-0 z-10">
+	<div class="navbar-start">
+		<div class="dropdown">
+			<div tabindex="0" role="button" class="btn btn-ghost lg:hidden" aria-label="menu">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+			</div>
+			<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+				<li><a href="/">首页</a></li>
+				<li><span class="opacity-50 cursor-not-allowed">动态</span></li>
+				<li><span class="opacity-50 cursor-not-allowed">关于</span></li>
+			</ul>
+		</div>
+		<a class="btn btn-ghost btn-circle" href="/" aria-label="25 计算机1">
+			<img src="/logo.png" alt="logo" />
+		</a>
+	</div>
+	<div class="navbar-center hidden lg:flex">
+		<ul class="menu menu-horizontal px-1">
+			<li><a href="/">首页</a></li>
+			<li><span class="opacity-50 cursor-not-allowed">动态</span></li>
+			<li><span class="opacity-50 cursor-not-allowed">关于</span></li>
+		</ul>
+	</div>
+	<div class="navbar-end gap-2">
+		<div class="dropdown dropdown-end">
+			<button type="button" tabindex="0" class="btn btn-ghost btn-circle btn-sm group" aria-label="theme">
+				<svg class="h-5 w-5 transition-transform duration-300 ease-out group-hover:rotate-180 group-focus:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 2a10 10 0 0 0 0 20Z" /></svg>
+			</button>
+			<ul tabindex="0" class="dropdown-content menu menu-sm z-1 mt-3 p-2 shadow bg-base-100 rounded-box w-40">
+				<li><button type="button" data-set-theme="light">浅色</button></li>
+				<li><button type="button" data-set-theme="dark">深色</button></li>
+				<li><button type="button" data-set-theme="auto">跟随系统</button></li>
+			</ul>
+		</div>
+		<a class="btn btn-ghost btn-circle btn-sm" href="https://github.com/mantoujun-lab/class-website" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+			<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.804 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
+		</a>
+	</div>
+</div>
