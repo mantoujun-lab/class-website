@@ -22,11 +22,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
-    # Major version bumps get their own PR for review
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - "version-update:semver-major"
 
   # GitHub Actions versions
   - package-ecosystem: "github-actions"
