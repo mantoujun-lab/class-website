@@ -1,0 +1,86 @@
+# For most repositories, this workflow file does not need to be modified.
+#
+# CodeQL analysis workflow for class-website (Astro + JavaScript/TypeScript)
+#
+# References:
+# - https://docs.github.com/en/code-security/reference/code-scanning/workflow-configuration-options
+# - github/codeql-action init@v4 (official)
+# - Community examples: LobeHub SAST skill, argo-rollouts codeql.yml
+
+name: "CodeQL"
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+    # Skip workflow runs for pure-documentation changes (workflow-level filter)
+    paths-ignore:
+      - "**/*.md"
+      - "**/*.txt"
+      - "docs/**"
+
+# Concurrency: cancel in-progress runs for the same branch/PR to save minutes
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      # Required for github/codeql-action/init to fetch workflow details
+      actions: read
+      # Required for actions/checkout to fetch code
+      contents: read
+      # Required for github/codeql-action/analyze to upload SARIF results to the Security tab
+      security-events: write
+
+    strategy:
+      # Don't cancel other languages if one fails
+      fail-fast: false
+      matrix:
+        # Astro project source is primarily JavaScript + TypeScript (including .mjs config)
+        # Use the combined language key: javascript-typescript (covers both)
+        language: ["javascript-typescript"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js (for dependency-aware taint analysis)
+        uses: actions/setup-node@v4
+        with:
+          # Match existing Node.js CI matrix
+          node-version: "24.x"
+          cache: "npm"
+
+      # Install dependencies BEFORE CodeQL init so the JavaScript extractor
+      # can resolve package imports for better inter-procedural dataflow
+      - name: Install npm dependencies
+        run: npm ci --ignore-scripts
+        env:
+          # Suppress allowScripts prompts; esbuild binary is cached
+          HUSKY: "0"
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          # Point to project-specific CodeQL analysis config (queries, paths, exclusions)
+          config-file: ./.github/codeql/codeql-config.yml
+
+      # Autobuild is a no-op for JavaScript/TypeScript, but we keep the step
+      # for consistency and forward-compatibility if a compiled language is added.
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v4
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"

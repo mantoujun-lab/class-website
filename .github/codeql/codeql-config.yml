@@ -1,0 +1,17 @@
+# CodeQL custom configuration for class-website (Astro + TypeScript)
+# Loose mode: no hard paths whitelist, only skip truly noisy folders
+
+name: "CodeQL Config - class-website"
+
+# Default queries + a bit of extra security coverage (no quality rules to keep noise low)
+queries:
+  - uses: security-extended
+
+# Only skip folders/files that are obviously third-party or generated.
+# JS/TS extractor naturally ignores .astro/.css/.md/.yml, so no need to list them all.
+paths-ignore:
+  - node_modules
+  - dist
+  - .astro
+  - .vercel
+  - coverage
