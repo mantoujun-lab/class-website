@@ -1,0 +1,8 @@
+# Disallow blank issues — contributors must use a template.
+blank_issues_enabled: false
+
+# Optional links shown alongside the issue templates.
+contact_links:
+  - name: 📚 README
+    url: https://github.com/mantoujun-lab/class-website#readme
+    about: Read the project overview and setup guide before filing an issue.
