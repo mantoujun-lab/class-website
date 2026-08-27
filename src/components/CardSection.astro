@@ -1,0 +1,22 @@
+---
+// Section with heading + responsive grid of cards.
+import Card from './Card.astro';
+
+interface CardItem {
+	title: string;
+	description: string;
+	actionLabel?: string;
+}
+interface Props {
+	title?: string;
+	cards: readonly CardItem[];
+}
+const { title = '导航', cards } = Astro.props;
+---
+
+<main class="container mx-auto p-8">
+	<h2 class="text-2xl font-bold mb-6">{title}</h2>
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+		{cards.map((card) => <Card {...card} />)}
+	</div>
+</main>
