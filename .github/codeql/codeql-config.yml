@@ -1,0 +1,54 @@
+# CodeQL custom configuration for class-website (Astro + TypeScript)
+# Referenced from:
+# - https://docs.github.com/en/code-security/reference/code-scanning/workflow-configuration-options
+# - Context7: /websites/codeql_github (CodeQL official docs)
+# - Community reference: Hack23/blacktrigram PR #1199, tgerighty/ai-dev-tasks examples
+
+name: "CodeQL Config - class-website"
+
+# Query suites: default + extended security + quality rules
+# security-extended: adds more security queries on top of default (lower precision, higher recall)
+# security-and-quality: adds maintainability and reliability queries
+queries:
+  - uses: security-extended
+  - uses: security-and-quality
+
+# Source directories to include in analysis
+paths:
+  - src
+
+# Exclude generated artifacts, dependencies, and non-code assets from analysis
+# Note: these are CodeQL-level analysis filters (different from workflow paths-ignore)
+paths-ignore:
+  # Build artifacts and output
+  - dist
+  - build
+  - out
+  - .astro
+  - .output
+  - .vercel
+
+  # Dependencies
+  - node_modules
+  - "**/node_modules/**"
+
+  # Static assets (images, fonts, binary)
+  - public
+  - "public/**"
+
+  # Documentation and text files
+  - "**/*.md"
+  - "**/*.txt"
+  - "**/*.rst"
+  - docs
+  - "docs/**"
+  - README.md
+  - LICENSE
+  - AGENTS.md
+
+  # IDE and editor config
+  - ".vscode/**"
+  - ".idea/**"
+
+  # CI/CD workflow files (they are YAML, not JS/TS source)
+  - ".github/**"
