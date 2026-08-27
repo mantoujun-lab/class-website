@@ -4,16 +4,19 @@ interface Props {
 	title: string;
 	description: string;
 	actionLabel?: string;
+	href?: string;
 }
-const { title, description, actionLabel = '跳转' } = Astro.props;
+const { title, description, actionLabel = '跳转', href } = Astro.props;
 ---
 
 <div class="card bg-base-100 shadow">
 	<div class="card-body">
 		<h3 class="card-title">{title}</h3>
 		<p class="opacity-70">{description}</p>
-		<div class="card-actions justify-end">
-			<button class="btn btn-primary btn-sm">{actionLabel}</button>
-		</div>
+		{href && (
+			<div class="card-actions justify-end">
+				<a href={href} class="btn btn-primary btn-sm">{actionLabel}</a>
+			</div>
+		)}
 	</div>
 </div>
