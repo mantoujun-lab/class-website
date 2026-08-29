@@ -16,18 +16,17 @@
 //   </Modal>
 //
 // Props:
-//   id:          unique HTML id for the <dialog> (required for showModal() / close())
-//   title:       optional heading rendered at the top
-//   closeLabel:  label for the built-in close button inside modal-action.
-//                Default: 'Close'. Pass empty string '' to hide the built-in close button.
-//   showCloseX:  show the X button in the top-right corner. Default: true
+//   id:              unique HTML id for the <dialog> (required)
+//   title:           optional heading rendered at the top
+//   closeLabel:      label for the built-in close button inside modal-action.
+//                    Default: '' (no default close button). Pass e.g. 'Close' to show it.
+//   showCloseX:      show the X button in the top-right corner. Default: true
 //   closeOnBackdrop: clicking the backdrop closes the modal. Default: true
-//   placement:   vertical position. 'middle'(default) | 'top' | 'bottom'
-//   hPlacement:  horizontal position. 'middle'(default) | 'start' | 'end'
-//   widthClass:  extra classes for modal-box to control width, e.g. 'max-w-lg'.
-//                Default: '' (DaisyUI default ~ 32rem)
-//   bodyClass:   extra classes for the body wrapper
-//   class:       extra classes forwarded to the <dialog> element itself
+//   placement:       vertical position. 'middle'(default) | 'top' | 'bottom'
+//   hPlacement:      horizontal position. 'middle'(default) | 'start' | 'end'
+//   widthClass:      extra classes for modal-box width, e.g. 'max-w-lg'. Default: ''
+//   bodyClass:       extra classes for the body wrapper. Default: ''
+//   class:           extra classes forwarded to the <dialog> element
 interface Props {
 	id: string;
 	title?: string;
@@ -43,7 +42,7 @@ interface Props {
 const {
 	id,
 	title,
-	closeLabel = 'Close',
+	closeLabel = '',
 	showCloseX = true,
 	closeOnBackdrop = true,
 	placement = 'middle',
@@ -66,39 +65,51 @@ const hPlacementClass =
 		: hPlacement === 'end'
 			? 'modal-end'
 			: '';
+
+// Render the modal-action wrapper when either the close button or actions slot is present.
+const hasActionsSlot = Astro.slots.has('actions');
+const renderActionWrap = !!closeLabel || hasActionsSlot;
 ---
 
 <dialog
 	id={id}
 	class={`modal ${placementClass} ${hPlacementClass} ${extraClass}`.trim()}
 >
-	<div class={`modal-box ${widthClass}`.trim()}>
+	<div
+		class={`modal-box overflow-x-hidden ${widthClass}`.trim()}
+	>
+		{/* Top-right close button — directly call .close() instead of form submit for reliability */}
 		{showCloseX && (
-			<form method="dialog" class="absolute right-2 top-2">
-				<button
-					class="btn btn-sm btn-circle btn-ghost"
-					aria-label="Close"
-					type="submit"
-				>
-					✕
-				</button>
-			</form>
+			<button
+				type="button"
+				class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10 shrink-0"
+				aria-label="Close"
+				onclick={`this.closest('dialog').close()`}
+			>
+				✕
+			</button>
 		)}
 
-		{title && <h3 class="text-lg font-bold pr-8">{title}</h3>}
+		{title && (
+			<h3 class="text-lg font-bold pr-8 shrink-0 leading-7">{title}</h3>
+		)}
 
-		<div class={bodyClass}>
+		{/* Body — never collapses, keeps predictable height */}
+		<div class={`shrink-0 ${bodyClass}`.trim()}>
 			<slot />
 		</div>
 
-		{closeLabel && (
-			<div class="modal-action">
-				<form method="dialog">
-					<button class="btn" type="submit">{closeLabel}</button>
-				</form>
-				<slot name="actions" />
+		{/* Footer actions — wrap only when needed, shrink-0 to avoid flex height bugs */}
+		{renderActionWrap && (
+			<div class="modal-action shrink-0">
+				{closeLabel && (
+					<form method="dialog">
+						<button class="btn" type="submit">{closeLabel}</button>
+					</form>
+				)}
+				{hasActionsSlot && <slot name="actions" />}
 			</div>
-		) || <slot name="actions" />}
+		)}
 	</div>
 
 	{closeOnBackdrop && (
