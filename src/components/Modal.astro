@@ -1,0 +1,109 @@
+---
+// Reusable modal component based on native HTML <dialog> + DaisyUI modal classes.
+//
+// Usage:
+//   <!-- Trigger button outside -->
+//   <button class="btn" onclick="document.getElementById('my_modal').showModal()">
+//     Open
+//   </button>
+//
+//   <!-- Modal with title + body + custom actions -->
+//   <Modal id="my_modal" title="Hello" closeLabel="Close">
+//     <p>Modal body content goes here.</p>
+//     <Fragment slot="actions">
+//       <button class="btn btn-primary" onclick="submitForm()">Confirm</button>
+//     </Fragment>
+//   </Modal>
+//
+// Props:
+//   id:          unique HTML id for the <dialog> (required for showModal() / close())
+//   title:       optional heading rendered at the top
+//   closeLabel:  label for the built-in close button inside modal-action.
+//                Default: 'Close'. Pass empty string '' to hide the built-in close button.
+//   showCloseX:  show the X button in the top-right corner. Default: true
+//   closeOnBackdrop: clicking the backdrop closes the modal. Default: true
+//   placement:   vertical position. 'middle'(default) | 'top' | 'bottom'
+//   hPlacement:  horizontal position. 'middle'(default) | 'start' | 'end'
+//   widthClass:  extra classes for modal-box to control width, e.g. 'max-w-lg'.
+//                Default: '' (DaisyUI default ~ 32rem)
+//   bodyClass:   extra classes for the body wrapper
+//   class:       extra classes forwarded to the <dialog> element itself
+interface Props {
+	id: string;
+	title?: string;
+	closeLabel?: string;
+	showCloseX?: boolean;
+	closeOnBackdrop?: boolean;
+	placement?: 'top' | 'middle' | 'bottom';
+	hPlacement?: 'start' | 'middle' | 'end';
+	widthClass?: string;
+	bodyClass?: string;
+	class?: string;
+}
+const {
+	id,
+	title,
+	closeLabel = 'Close',
+	showCloseX = true,
+	closeOnBackdrop = true,
+	placement = 'middle',
+	hPlacement = 'middle',
+	widthClass = '',
+	bodyClass = '',
+	class: extraClass = '',
+} = Astro.props;
+
+const placementClass =
+	placement === 'top'
+		? 'modal-top'
+		: placement === 'bottom'
+			? 'modal-bottom'
+			: 'modal-middle';
+
+const hPlacementClass =
+	hPlacement === 'start'
+		? 'modal-start'
+		: hPlacement === 'end'
+			? 'modal-end'
+			: '';
+---
+
+<dialog
+	id={id}
+	class={`modal ${placementClass} ${hPlacementClass} ${extraClass}`.trim()}
+>
+	<div class={`modal-box ${widthClass}`.trim()}>
+		{showCloseX && (
+			<form method="dialog" class="absolute right-2 top-2">
+				<button
+					class="btn btn-sm btn-circle btn-ghost"
+					aria-label="Close"
+					type="submit"
+				>
+					✕
+				</button>
+			</form>
+		)}
+
+		{title && <h3 class="text-lg font-bold pr-8">{title}</h3>}
+
+		<div class={bodyClass}>
+			<slot />
+		</div>
+
+		{closeLabel && (
+			<div class="modal-action">
+				<form method="dialog">
+					<button class="btn" type="submit">{closeLabel}</button>
+				</form>
+				<slot name="actions" />
+			</div>
+		) || <slot name="actions" />}
+	</div>
+
+	{closeOnBackdrop && (
+		<form method="dialog" class="modal-backdrop">
+			<button aria-label="Close modal" type="submit"></button>
+		</form>
+	)}
+</dialog>
