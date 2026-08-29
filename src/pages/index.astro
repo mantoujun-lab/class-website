@@ -4,12 +4,12 @@ import Hero from '../components/Hero.astro';
 import CardSection from '../components/CardSection.astro';
 
 const cards = [
-	{ title: '占位符 1', description: '这里是动态摘要占位, 稍后替换为真实内容.', href: '/' },
-	{ title: '占位符 2', description: '这里是动态摘要占位, 稍后替换为真实内容.', href: '/' },
+	{ title: '文档', description: '班级的文档' },
+	{ title: '博客', description: '班级的博客' },
 ];
 ---
 
 <Layout title="25 级计算机应用 1 班">
-	<Hero title="25 级计算机应用 1 班" subtitle="记录班级点滴, 留下属于我们的回忆." />
+	<Hero title="25 级计算机应用 1 班" subtitle="记录班级点滴，留下属于我们的回忆。" />
 	<CardSection cards={cards} />
 </Layout>
