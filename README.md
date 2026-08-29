@@ -6,7 +6,7 @@
 
 [![GitHub License](https://img.shields.io/github/license/mantoujun-lab/class-website?style=for-the-badge)](LICENSE)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mantoujun-lab/class-website/node.yml?style=for-the-badge)](https://github.com/mantoujun-lab/class-website/actions/workflows/node.yml)
-[![Static Badge](https://img.shields.io/badge/Vercel-black?style=for-the-badge&logo=Vercel)](https://vercel.com)
+[![Vercel](https://img.shields.io/badge/Vercel-black?style=for-the-badge&logo=Vercel)](https://vercel.com)
 [![Astro](https://img.shields.io/badge/Astro-black?style=for-the-badge&logo=astro)](https://astro.build/)
 
 <!-- Badges -->
@@ -87,7 +87,7 @@ npm run preview
 
 ### 赞赏开发者
 
-如果你愿意支持我们，可以扫描下方的微信赞赏码
+如果你愿意支持，可以扫描下方的微信赞赏码
 
 项目维护不易，感谢你的鼓励 ☕
 

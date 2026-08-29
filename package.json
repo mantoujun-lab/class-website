@@ -1,7 +1,7 @@
 {
   "name": "class-website",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "25 级计算机应用 1 班的班级网站",
   "author": {
     "name": "mantoujun-lab",
@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "astro": "^7.0.7",
     "daisyui": "^5.7.22",
     "tailwindcss": "^4.3.3"
