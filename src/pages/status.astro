@@ -50,7 +50,10 @@ import Hero from '../components/Hero.astro';
 
 	function formatTime(iso: string): string {
 		try {
-			return new Date(iso).toLocaleString('zh-CN', {
+			const date = new Date(iso);
+			if (Number.isNaN(date.getTime())) return iso;
+
+			return date.toLocaleString('zh-CN', {
 				year: 'numeric',
 				month: '2-digit',
 				day: '2-digit',

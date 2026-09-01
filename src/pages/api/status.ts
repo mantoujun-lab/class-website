@@ -1,9 +1,11 @@
-// GET /api/status - read all status cards from Vercel KV.
-// Other CRUD operations are intentionally omitted; update via Vercel Dashboard.
-import { kv } from '@vercel/kv';
+// GET /api/status - read all status cards from Upstash Redis.
+// Other CRUD operations are intentionally omitted; update via the Upstash dashboard.
+import { Redis } from '@upstash/redis';
 import type { APIRoute } from 'astro';
 
 export const prerender = false;
+
+const redis = Redis.fromEnv();
 
 interface StatusCard {
   id: string;
@@ -15,7 +17,7 @@ interface StatusCard {
 
 export const GET: APIRoute = async () => {
   try {
-    const cards = (await kv.get<StatusCard[]>('status_cards')) ?? [];
+    const cards = (await redis.get<StatusCard[]>('status_cards')) ?? [];
     return new Response(JSON.stringify(cards), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
