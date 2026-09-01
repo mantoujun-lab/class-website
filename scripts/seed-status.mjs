@@ -1,7 +1,9 @@
 // One-time seed script: write valid JSON to Upstash Redis status_cards key.
 // Run: npx vercel env pull .env.local  (if needed)
 //      node --env-file=.env.local scripts/seed-status.mjs
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const redis = Redis.fromEnv();
 
 const cards = [
   {
@@ -14,7 +16,7 @@ const cards = [
 ];
 
 // SDK auto JSON.stringify so quotes are preserved
-await kv.set('status_cards', cards);
+await redis.set('status_cards', cards);
 
-const verify = await kv.get('status_cards');
+const verify = await redis.get('status_cards');
 console.log('✅ status_cards written, verify:', JSON.stringify(verify, null, 2));
