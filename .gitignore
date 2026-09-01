@@ -1,6 +1,5 @@
 # build output
 dist/
-.vercel/
 # generated types
 .astro/
 
@@ -24,3 +23,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 .trae/
+.vercel
+.env*
