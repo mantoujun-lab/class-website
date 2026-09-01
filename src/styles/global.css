@@ -4,6 +4,28 @@
   themes: light --default, dark --prefersdark;
 }
 
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+  --color-primary: #2563eb;
+  --color-primary-content: #ffffff;
+  --color-secondary: #f97316;
+  --color-secondary-content: #ffffff;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+  --color-primary: #3b82f6;
+  --color-primary-content: #ffffff;
+  --color-secondary: #fb923c;
+  --color-secondary-content: #ffffff;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
 }
