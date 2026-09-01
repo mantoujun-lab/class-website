@@ -21,8 +21,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/vercel": "^11.0.9",
     "@tailwindcss/vite": "^4.3.3",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/kv": "^2.0.0",
     "@vercel/speed-insights": "^2.0.0",
     "astro": "^7.0.7",
     "daisyui": "^5.7.22",

@@ -1,0 +1,130 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+---
+
+<Layout title="班级状态 - 25 级计算机应用 1 班">
+	<Hero title="班级状态" subtitle="班级公告、安排与近况。" />
+	<main class="container mx-auto p-8 max-w-2xl">
+		<!-- Single-column card list -->
+		<div id="status-list" class="flex flex-col gap-4">
+			<!-- Loading skeleton -->
+			<div id="status-loading" class="flex flex-col gap-4">
+				<div class="card bg-base-100 shadow">
+					<div class="card-body animate-pulse">
+						<div class="h-5 bg-base-300 rounded w-1/3"></div>
+						<div class="h-4 bg-base-300 rounded w-full mt-2"></div>
+						<div class="h-4 bg-base-300 rounded w-2/3 mt-1"></div>
+					</div>
+				</div>
+				<div class="card bg-base-100 shadow">
+					<div class="card-body animate-pulse">
+						<div class="h-5 bg-base-300 rounded w-1/4"></div>
+						<div class="h-4 bg-base-300 rounded w-full mt-2"></div>
+					</div>
+				</div>
+			</div>
+			<!-- Empty state -->
+			<div id="status-empty" class="hidden card bg-base-100 shadow">
+				<div class="card-body items-center text-center">
+					<p class="opacity-60">暂无状态卡片</p>
+				</div>
+			</div>
+			<!-- Error state -->
+			<div id="status-error" class="hidden alert alert-error">
+				<span>加载失败，请稍后重试</span>
+			</div>
+			<!-- Cards injected here -->
+		</div>
+	</main>
+</Layout>
+
+<script>
+	interface StatusCard {
+		id: string;
+		title: string;
+		content: string;
+		time: string;
+		tags: string[];
+	}
+
+	function formatTime(iso: string): string {
+		try {
+			return new Date(iso).toLocaleString('zh-CN', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+				hour: '2-digit',
+				minute: '2-digit',
+			});
+		} catch {
+			return iso;
+		}
+	}
+
+	function escapeHtml(str: string): string {
+		const div = document.createElement('div');
+		div.textContent = str;
+		return div.innerHTML;
+	}
+
+	function renderCard(card: StatusCard): string {
+		const tags = Array.isArray(card.tags)
+			? card.tags
+					.map(
+						(t) =>
+							`<span class="badge badge-primary badge-sm">${escapeHtml(t)}</span>`
+					)
+					.join('')
+			: '';
+		return `
+			<article class="card bg-base-100 shadow">
+				<div class="card-body gap-2">
+					<h3 class="card-title">${escapeHtml(card.title || '')}</h3>
+					<p class="whitespace-pre-wrap break-words opacity-80">${escapeHtml(
+						card.content || ''
+					)}</p>
+					<div class="flex flex-wrap gap-1 mt-1">${tags}</div>
+					<time class="text-xs opacity-50 mt-1">${formatTime(card.time)}</time>
+				</div>
+			</article>
+		`;
+	}
+
+	async function loadStatus() {
+		const listEl = document.getElementById('status-list')!;
+		const loadingEl = document.getElementById('status-loading')!;
+		const emptyEl = document.getElementById('status-empty')!;
+		const errorEl = document.getElementById('status-error')!;
+
+		try {
+			const res = await fetch('/api/status', { cache: 'no-store' });
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+			const cards: StatusCard[] = await res.json();
+
+			loadingEl.classList.add('hidden');
+			if (!Array.isArray(cards) || cards.length === 0) {
+				emptyEl.classList.remove('hidden');
+				return;
+			}
+			// Sort by time desc (latest first), fallback to original order
+			cards.sort((a, b) => {
+				const ta = a?.time ? Date.parse(a.time) : 0;
+				const tb = b?.time ? Date.parse(b.time) : 0;
+				return tb - ta;
+			});
+			cards.forEach((c) => {
+				const wrapper = document.createElement('div');
+				wrapper.innerHTML = renderCard(c);
+				listEl.appendChild(wrapper.firstElementChild as HTMLElement);
+			});
+		} catch (err) {
+			loadingEl.classList.add('hidden');
+			errorEl.classList.remove('hidden');
+			// eslint-disable-next-line no-console
+			console.error('[status] load failed:', err);
+		}
+	}
+
+	loadStatus();
+</script>
