@@ -36,6 +36,37 @@
 - [Node.js](https://nodejs.org/) 22.12+ — 本地开发与构建所需的运行时环境
 - [Vercel](https://vercel.com) — 托管与部署平台，提供全球 CDN 与自动化发布能力
 - [GitHub Actions](https://github.com/features/actions) — 持续集成与持续部署（CI/CD）工具
+- [Upstash Redis](https://upstash.com) — Serverless Redis 数据库，用于状态卡片数据存储
+
+### 项目结构
+
+项目包含以下主要功能模块：
+
+- **首页** (`/`) — 展示班级概览与快捷入口
+- **关于页面** (`/about`) — 介绍班级与网站信息
+- **状态页面** (`/status`) — 展示班级公告、安排与近况，按时间倒序排列
+- **状态接口** (`/api/status`) — 从 Upstash Redis 中获取状态卡片数据
+
+状态卡片数据存储在 Upstash Redis 的 `status_cards` 键中，格式为 JSON 数组。每张卡片包含以下字段：
+
+- `id` — 卡片唯一标识
+- `title` — 标题
+- `content` — 正文内容
+- `time` — ISO 8601 格式的时间戳
+- `tags` — 标签数组
+
+### 环境变量
+
+状态页面功能需要配置 Upstash Redis。在项目根目录创建 `.env` 文件：
+
+```
+UPSTASH_REDIS_REST_URL=your_upstash_redis_rest_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_rest_token
+```
+
+从 Upstash Redis 控制台获取这些凭据：https://upstash.com/
+
+**注意**：状态卡片数据通过 Upstash 控制台或 CLI 管理，接口仅提供读取功能。
 
 ### 本地构建
 
@@ -64,9 +95,17 @@ npm run preview
 
 启动开发服务器后，打开浏览器访问 [http://localhost:4321](http://localhost:4321) 即可预览网站。
 
-### 杂项
+### 部署
 
-如需部署到自己的环境，可参考 [Astro 部署指南](https://docs.astro.build/en/guides/deploy/)，支持 Vercel、Netlify、Cloudflare Pages 等多种平台。
+项目已配置 Vercel 适配器，可直接部署到 Vercel：
+
+1. 将仓库连接到 Vercel
+2. 在 Vercel 控制台中添加环境变量 `UPSTASH_REDIS_REST_URL` 和 `UPSTASH_REDIS_REST_TOKEN`
+3. 触发部署
+
+Vercel 适配器已在 `astro.config.mjs` 中配置完成。
+
+如需部署到其他平台，可参考 [Astro 部署指南](https://docs.astro.build/en/guides/deploy/)，支持 Netlify、Cloudflare Pages 等多种平台。
 
 ## 🤝 贡献
 
