@@ -21,6 +21,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^11.0.9",
     "@tailwindcss/vite": "^4.3.3",
     "@upstash/redis": "^1.38.3",

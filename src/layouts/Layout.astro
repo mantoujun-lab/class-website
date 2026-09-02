@@ -1,24 +1,69 @@
 ---
-// Shared page shell: HTML head, theme bootstrap, Navbar, slot, Footer, theme toggle script.
+// Shared page shell: HTML head, SEO meta, theme bootstrap, Navbar, slot, Footer, theme toggle script.
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '@vercel/analytics/astro';
 import SpeedInsights from "@vercel/speed-insights/astro";
 
+const SITE_NAME = '25 级计算机应用 1 班';
+const DEFAULT_DESCRIPTION =
+	'海南省经济技术学校 25 级计算机应用 1 班的班级网站，记录班级点滴，留下属于我们的回忆。';
+const DEFAULT_IMAGE = '/cover.png';
+
 interface Props {
 	title: string;
+	/** Page description for search engines and social cards. */
+	description?: string;
+	/** Social share image, site-root relative or absolute. */
+	image?: string;
+	/** Ask crawlers not to index this page. */
+	noindex?: boolean;
 }
-const { title } = Astro.props;
+const {
+	title,
+	description = DEFAULT_DESCRIPTION,
+	image = DEFAULT_IMAGE,
+	noindex = false,
+} = Astro.props;
+
+// Astro.site comes from `site` in astro.config.mjs; fall back to the request origin.
+const siteOrigin = Astro.site ?? new URL(Astro.url.origin);
+const canonicalURL = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', siteOrigin);
+const socialImageURL = new URL(image, siteOrigin);
 ---
 
 <html lang="zh-CN">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/png" href="/logo.png" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
+
 		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+		<link rel="icon" type="image/png" href="/logo.png" />
+		<link rel="apple-touch-icon" href="/logo.png" />
+		<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={SITE_NAME} />
+		<meta property="og:locale" content="zh_CN" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:image" content={socialImageURL} />
+		<meta property="og:image:alt" content={title} />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={socialImageURL} />
+
 		<script is:inline>
 			const html = document.documentElement;
 			const saved = localStorage.getItem('theme');
