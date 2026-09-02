@@ -29,7 +29,9 @@ const {
 
 // Astro.site comes from `site` in astro.config.mjs; fall back to the request origin.
 const siteOrigin = Astro.site ?? new URL(Astro.url.origin);
-const canonicalURL = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', siteOrigin);
+// Keep the trailing slash: `build.format: 'directory'` serves pages as /about/,
+// which is also the form @astrojs/sitemap emits. Canonical must match it exactly.
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
 const socialImageURL = new URL(image, siteOrigin);
 ---
 
