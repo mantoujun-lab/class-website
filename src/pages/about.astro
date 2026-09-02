@@ -34,28 +34,26 @@ const daily = [
 	description="认识海南省经济技术学校 25 级计算机应用 1 班这个集体,了解班级的组成、氛围与日常。"
 >
 	<Hero title="班级介绍" subtitle="认识 25 级计算机应用 1 班这个集体" />
-	<main class="container mx-auto p-8 max-w-5xl">
-		<section class="prose prose-lg max-w-none mb-12 text-center">
-			<p>
-				欢迎来到 <strong>25 级计算机应用 1 班</strong>。<br>
-				我们是 海南省经济技术学校 的一支充满活力的集体,<br>
-				由 37 名同学组成,共同度过了的校园生活。<br>
-			</p>
-			<p>
-				在这里,我们一起学习 计算机应用 的专业技能,也一起经历成长的酸甜苦辣。<br>
-				本页面将带你快速了解班级的基本情况、文化氛围与日常点滴。<br>
-			</p>
-		</section>
+	<section class="prose prose-lg max-w-none p-8 max-w-5xl mx-auto mb-12 text-center">
+		<p>
+			欢迎来到 <strong>25 级计算机应用 1 班</strong>。<br>
+			我们是 海南省经济技术学校 的一支充满活力的集体,<br>
+			由 37 名同学组成,共同度过的校园生活。<br>
+		</p>
+		<p>
+			在这里,我们一起学习 计算机应用 的专业技能,也一起经历成长的酸甜苦辣。<br>
+			本页面将带你快速了解班级的基本情况、文化氛围与日常点滴。<br>
+		</p>
+	</section>
 
-		<CardSection title="班级概况" cards={overview} />
-		<CardSection title="班级文化" cards={culture} />
-		<CardSection title="日常与风采" cards={daily} />
+	<CardSection title="班级概况" cards={overview} />
+	<CardSection title="班级文化" cards={culture} />
+	<CardSection title="日常与风采" cards={daily} />
 
-		<section class="prose prose-lg max-w-none mt-12 text-center">
-			<p>
-				更多内容持续完善中,如果你愿意为班级介绍补充信息,
-				欢迎在 GitHub 仓库 告诉我们。
-			</p>
-		</section>
-	</main>
+	<section class="prose prose-lg max-w-none p-8 max-w-5xl mx-auto mt-12 text-center">
+		<p>
+			更多内容持续完善中,如果你愿意为班级介绍补充信息,
+			欢迎通过 <a href="https://github.com/mantoujun-lab/class-website/issues" target="_blank" rel="noopener noreferrer">GitHub Issue</a> 告诉我们。
+		</p>
+	</section>
 </Layout>
