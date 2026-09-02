@@ -1,18 +1,59 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import CardSection from '../components/CardSection.astro';
+
+const overview = [
+	{ title: '班级名称', description: '25 级计算机应用 1 班' },
+	{ title: '所在学校', description: '海南省经济技术学校' },
+	{ title: '专业方向', description: '计算机应用' },
+	{ title: '班级人数', description: '37 人' },
+];
+
+const culture = [
+	{
+		title: '班级愿景',
+		description: '团结、勤奋、创新、奉献,争做新时代中职学生。',
+	},
+	{
+		title: '班级氛围',
+		description: '同学之间团结友爱,互帮互助,课堂积极活跃,课余生活丰富多彩。',
+	},
+];
+
+const daily = [
+	{
+		title: '学习日常',
+		description: '同学们认真听讲、积极实践,在专业技能与文化课上都能保持专注。',
+	},
+];
 ---
 
 <Layout
 	title="班级介绍 - 25 级计算机应用 1 班"
-	description="认识海南省经济技术学校 25 级计算机应用 1 班这个集体，了解班级的组成、氛围与日常。"
+	description="认识海南省经济技术学校 25 级计算机应用 1 班这个集体,了解班级的组成、氛围与日常。"
 >
 	<Hero title="班级介绍" subtitle="认识 25 级计算机应用 1 班这个集体" />
-	<main class="container mx-auto p-8 max-w-3xl">
-		<div class="prose prose-lg max-w-none">
-			<p>
-				这里是 25 级计算机应用 1 班的班级介绍页面
-			</p>
-		</div>
-	</main>
+	<section class="prose prose-lg max-w-none p-8 max-w-5xl mx-auto mb-12 text-center">
+		<p>
+			欢迎来到 <strong>25 级计算机应用 1 班</strong>。<br>
+			我们是 海南省经济技术学校 的一支充满活力的集体,<br>
+			由 37 名同学组成,共同度过的校园生活。<br>
+		</p>
+		<p>
+			在这里,我们一起学习 计算机应用 的专业技能,也一起经历成长的酸甜苦辣。<br>
+			本页面将带你快速了解班级的基本情况、文化氛围与日常点滴。<br>
+		</p>
+	</section>
+
+	<CardSection title="班级概况" cards={overview} />
+	<CardSection title="班级文化" cards={culture} />
+	<CardSection title="日常与风采" cards={daily} />
+
+	<section class="prose prose-lg max-w-none p-8 max-w-5xl mx-auto mt-12 text-center">
+		<p>
+			更多内容持续完善中,如果你愿意为班级介绍补充信息,
+			欢迎通过 <a href="https://github.com/mantoujun-lab/class-website/issues" target="_blank" rel="noopener noreferrer">GitHub Issue</a> 告诉我们。
+		</p>
+	</section>
 </Layout>
