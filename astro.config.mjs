@@ -2,11 +2,19 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import vercel from '@astrojs/vercel';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
+  // Canonical origin, required for absolute URLs in SEO meta tags and sitemap.
+  site: 'https://hjx-25pc1.xyz',
+  // Pages build to /about/index.html and are served as /about/. Stated
+  // explicitly so canonical links and the sitemap share one URL form.
+  build: { format: 'directory' },
+  trailingSlash: 'always',
   output: 'static',
   adapter: vercel(),
+  integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },
