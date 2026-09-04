@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - package.json
 
 permissions:
   contents: write
@@ -14,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 2
 
@@ -22,7 +24,7 @@ jobs:
         id: version
         run: |
           NEW_VERSION=$(jq -r .version package.json)
-          OLD_VERSION=$(git show HEAD~1:package.json 2>/dev/null | jq -r .version 2>/dev/null || echo "0.0.0")
+          OLD_VERSION=$(git show HEAD~1:package.json | jq -r .version)
           echo "old_version=$OLD_VERSION" >> "$GITHUB_OUTPUT"
           echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
           if [ "$OLD_VERSION" != "$NEW_VERSION" ]; then
@@ -33,7 +35,7 @@ jobs:
 
       - name: Create Release
         if: steps.version.outputs.changed == 'true'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ steps.version.outputs.new_version }}
           name: Release v${{ steps.version.outputs.new_version }}
