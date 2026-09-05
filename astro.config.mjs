@@ -11,7 +11,7 @@ export default defineConfig({
   // Pages build to /about/index.html and are served as /about/. Stated
   // explicitly so canonical links and the sitemap share one URL form.
   build: { format: 'directory' },
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
   output: 'static',
   adapter: vercel(),
   integrations: [sitemap()],
