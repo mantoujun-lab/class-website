@@ -21,15 +21,12 @@ import Layout from '../layouts/Layout.astro';
 		</div>
 	</main>
 
-	<style>
-		@media (prefers-reduced-motion: reduce) {
-			* { animation: none !important; }
-		}
-	</style>
-
 	<script is:inline>
 		const backBtn = document.getElementById('go-back');
 		backBtn?.addEventListener('click', () => {
+			// history.length counts the whole session stack, so `> 1` doesn't
+			// guarantee the previous page is on this site (e.g. arrived from an
+			// external search engine). Accepting that as a trade-off.
 			if (window.history.length > 1) {
 				window.history.back();
 			} else {
