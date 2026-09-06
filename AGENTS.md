@@ -8,6 +8,23 @@ npm run build
 
 The build output goes to `dist/`. Inspect `dist/index.html` to verify the result.
 
+## Status Feature
+
+The class status feature is split across three files:
+
+| File | Role |
+|------|------|
+| `src/pages/status.astro` | Frontend page: client-side fetch, loading/empty/error states, cards sorted by time desc, HTML-escaped rendering |
+| `src/pages/api/status.ts` | `GET /api/status` endpoint, `prerender = false`, reads `status_cards` from Upstash Redis, `normalizeCards()` for type safety |
+| `scripts/seed-status.mjs` | One-time seed script to write initial cards into Redis |
+
+Key design decisions:
+
+- The API is **read-only**. Writes go through the Upstash dashboard or `scripts/seed-status.mjs`. Do not add write endpoints without explicit request.
+- `normalizeCards()` handles both array and JSON-string return shapes from the Upstash SDK; keep it when refactoring.
+- `prerender = false` is required so the endpoint reads live data at request time.
+- The frontend uses `cache: 'no-store'` to avoid stale data; sort is done client-side by `time` descending.
+
 ## Git commit
 
 Please use English to write git commit to push. Use Conventional Commits.

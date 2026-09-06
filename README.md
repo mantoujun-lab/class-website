@@ -46,6 +46,33 @@
 - **关于页面** (`/about`) — 介绍班级与网站信息
 - **状态页面** (`/status`) — 展示班级公告、安排与近况，按时间倒序排列
 - **状态接口** (`/api/status`) — 从 Upstash Redis 中获取状态卡片数据
+- **数据初始化脚本** (`scripts/seed-status.mjs`) — 向 Upstash Redis 写入初始状态卡片数据
+
+#### 状态页面行为
+
+状态页面 (`src/pages/status.astro`) 在客户端通过 `fetch('/api/status')` 拉取数据（`cache: 'no-store'` 确保实时），并按 `time` 字段倒序渲染卡片。页面内置三种状态：
+
+- **加载中**：展示带脉冲动画的骨架屏
+- **空状态**：无数据时显示"暂无状态卡片"
+- **错误状态**：请求失败时显示"加载失败，请稍后重试"
+
+每张卡片渲染标题、正文（保留换行 `whitespace-pre-wrap`）、标签（badge 样式）和格式化后的时间。所有用户内容均经过 HTML 转义，防止 XSS 注入。
+
+#### 状态接口
+
+状态接口 (`src/pages/api/status.ts`) 仅提供 `GET /api/status` 读取功能，设置了 `prerender = false` 以在请求时实时读取 Redis 数据。接口通过 `normalizeCards()` 兼容 Upstash SDK 返回的数组或 JSON 字符串两种格式，确保返回值始终为数组。写入操作不通过接口完成。
+
+#### 数据初始化脚本
+
+`scripts/seed-status.mjs` 用于向 Upstash Redis 的 `status_cards` 键写入初始数据：
+
+```bash
+node --env-file=.env.local scripts/seed-status.mjs
+```
+
+脚本使用 `@upstash/redis` SDK（自动对数组/对象执行 `JSON.stringify`），写入后会回读数据并打印以验证写入成功。
+
+#### 数据格式
 
 状态卡片数据存储在 Upstash Redis 的 `status_cards` 键中，格式为 JSON 数组。每张卡片包含以下字段：
 
