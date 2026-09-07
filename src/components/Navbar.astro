@@ -1,20 +1,13 @@
 ---
-// Site navbar: mobile dropdown, logo, desktop menu, theme switcher, GitHub link.
+// Site navbar: mobile sidebar drawer trigger, logo, desktop menu, theme switcher, GitHub link.
 ---
 
-<div class="navbar bg-base-100 shadow-sm sticky top-0 z-10">
+<div class="navbar bg-base-100 shadow-sm sticky top-0 z-30">
 	<div class="navbar-start">
-		<div class="dropdown">
-			<div tabindex="0" role="button" class="btn btn-ghost lg:hidden" aria-label="menu">
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
-			</div>
-			<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-				<li><a href="/">首页</a></li>
-			<li><a href="/status/">动态</a></li>
-			<li><a href="/about/">关于</a></li>
-		</ul>
-	</div>
-	<a class="btn btn-ghost btn-circle" href="/" aria-label="25 计算机1">
+		<label for="mobile-nav-drawer" class="btn btn-ghost lg:hidden" aria-label="菜单">
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+		</label>
+		<a class="btn btn-ghost btn-circle" href="/" aria-label="25 计算机1">
 			<img src="/logo.png" alt="logo" />
 		</a>
 	</div>
