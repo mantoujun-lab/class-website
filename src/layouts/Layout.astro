@@ -78,11 +78,25 @@ const socialImageURL = new URL(image, siteOrigin);
 		</script>
 	</head>
 	<body class="min-h-screen flex flex-col bg-base-100 text-base-content">
-		<Navbar />
-		<div class="flex-1">
-			<slot />
+		<!-- 移动端侧边栏抽屉：drawer-toggle 由 Navbar 的按钮触发，仅在 lg 以下生效 -->
+		<div class="drawer flex-1">
+			<input id="mobile-nav-drawer" type="checkbox" class="drawer-toggle" aria-hidden="true" />
+			<div class="drawer-content flex flex-col flex-1">
+				<Navbar />
+				<div class="flex-1">
+					<slot />
+				</div>
+				<Footer />
+			</div>
+			<div class="drawer-side z-20 lg:hidden">
+				<label for="mobile-nav-drawer" aria-label="关闭菜单" class="drawer-overlay"></label>
+				<ul class="menu bg-base-100 min-h-full w-64 p-4 text-base gap-1">
+					<li><a href="/">首页</a></li>
+					<li><a href="/status/">动态</a></li>
+					<li><a href="/about/">关于</a></li>
+				</ul>
+			</div>
 		</div>
-		<Footer />
 		<Analytics />
 		<SpeedInsights />
 		<script is:inline>
