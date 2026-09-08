@@ -1,0 +1,61 @@
+# filepath: .gitattributes
+# Normalize line endings for all text files to LF on commit.
+* text=auto eol=lf
+
+# Documentation written in Simplified Chinese.
+*.md text eol=lf
+*.md diff=markdown
+
+# VitePress site configuration and Vue components.
+*.vue text eol=lf
+*.ts text eol=lf
+*.mts text eol=lf
+*.cts text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Styles and templates.
+*.css text eol=lf
+*.scss text eol=lf
+*.less text eol=lf
+*.html text eol=lf
+
+# Shell and tooling scripts.
+*.sh text eol=lf
+*.ps1 text eol=lf
+*.bat text eol=lf
+*.cmd text eol=lf
+
+# Lockfiles must keep platform-specific endings as authored by tools.
+package-lock.json -text
+pnpm-lock.yaml text eol=lf
+yarn.lock text eol=lf
+
+# Plain text resources.
+*.txt text eol=lf
+
+# Binary assets must never be touched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.svg binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.mp4 binary
+*.mp3 binary
+*.wav binary
+*.zip binary
+*.gz binary
+*.7z binary
+*.tar binary
