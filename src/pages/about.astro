@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import CardSection from '../components/CardSection.astro';
 
 const overview = [
 	{ title: '班级名称', description: '25 级计算机应用 1 班' },
@@ -34,26 +33,81 @@ const daily = [
 	description="认识海南省经济技术学校 25 级计算机应用 1 班这个集体,了解班级的组成、氛围与日常。"
 >
 	<Hero title="班级介绍" subtitle="认识 25 级计算机应用 1 班这个集体" />
-	<section class="prose prose-lg max-w-none p-8 max-w-5xl mx-auto mb-12 text-center">
-		<p>
-			欢迎来到 <strong>25 级计算机应用 1 班</strong>。<br>
-			我们是 海南省经济技术学校 的一支充满活力的集体,<br>
-			由 37 名同学组成,共同度过的校园生活。<br>
-		</p>
-		<p>
-			在这里,我们一起学习 计算机应用 的专业技能,也一起经历成长的酸甜苦辣。<br>
-			本页面将带你快速了解班级的基本情况、文化氛围与日常点滴。<br>
-		</p>
-	</section>
 
-	<CardSection title="班级概况" cards={overview} />
-	<CardSection title="班级文化" cards={culture} />
-	<CardSection title="日常与风采" cards={daily} />
+	<main class="container mx-auto p-6 md:p-8 max-w-5xl space-y-6">
+		<!-- 欢迎语 -->
+		<section class="card bg-base-100 shadow-sm">
+			<div class="card-body">
+				<h2 class="card-title">👋 欢迎来到 25 级计算机应用 1 班</h2>
+				<p>
+					欢迎来到 <strong>25 级计算机应用 1 班</strong>。我们是海南省经济技术学校的一支充满活力的集体,由 37 名同学组成,共同度过的校园生活。
+				</p>
+				<p>
+					在这里,我们一起学习 <strong class="text-primary">计算机应用</strong> 的专业技能,也一起经历成长的酸甜苦辣。本页面将带你快速了解班级的基本情况、文化氛围与日常点滴。
+				</p>
+			</div>
+		</section>
 
-	<section class="prose prose-lg max-w-none p-8 max-w-5xl mx-auto mt-12 text-center">
-		<p>
-			更多内容持续完善中,如果你愿意为班级介绍补充信息,
-			欢迎通过 <a href="https://github.com/mantoujun-lab/class-website/issues" target="_blank" rel="noopener noreferrer">GitHub Issue</a> 告诉我们。
-		</p>
-	</section>
+		<!-- 班级概况 -->
+		<section class="space-y-3">
+			<h2 class="text-2xl font-bold px-1">班级概况</h2>
+			<div class="stats stats-vertical lg:stats-horizontal shadow w-full bg-base-100">
+				{overview.map((item) => (
+					<div class="stat">
+						<div class="stat-title">{item.title}</div>
+						<div class="stat-value text-primary text-lg md:text-xl break-words leading-tight">
+							{item.description}
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- 班级文化 -->
+		<section class="space-y-3">
+			<h2 class="text-2xl font-bold px-1">班级文化</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				{culture.map((item) => (
+					<div class="card bg-base-100 shadow-sm">
+						<div class="card-body">
+							<h3 class="card-title">{item.title}</h3>
+							<p class="opacity-80">{item.description}</p>
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- 日常与风采 -->
+		<section class="space-y-3">
+			<h2 class="text-2xl font-bold px-1">日常与风采</h2>
+			<div class="card bg-base-100 shadow-sm">
+				<div class="card-body">
+					<h3 class="card-title">📚 {daily[0].title}</h3>
+					<p class="opacity-80">{daily[0].description}</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 持续完善 CTA -->
+		<section class="card bg-base-100 shadow-sm border border-base-300">
+			<div class="card-body items-center text-center">
+				<h2 class="card-title">✨ 持续完善中</h2>
+				<p class="opacity-80 max-w-xl">
+					更多内容持续完善中,如果你愿意为班级介绍补充信息,欢迎通过 GitHub Issue 告诉我们。
+				</p>
+				<div class="card-actions mt-2">
+					<a
+						class="btn btn-primary btn-sm"
+						href="https://github.com/mantoujun-lab/class-website/issues"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.804 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
+						提交 Issue
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
 </Layout>
