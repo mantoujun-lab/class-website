@@ -1,11 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import CardSection from '../components/CardSection.astro';
+import Card from '../components/Card.astro';
 
-const cards = [
-	{ title: '文档', description: '班级的文档', href: 'https://docs.hjx-25pc1.xyz', actionLabel: '跳转' },
-	{ title: '博客', description: '班级的博客', href: 'https://blog.hjx-25pc1.xyz', actionLabel: '跳转' },
+const navCards = [
+	{ title: '文档', description: '班级的文档', href: 'https://docs.hjx-25pc1.xyz', actionLabel: '前往文档' },
+	{ title: '博客', description: '班级的博客', href: 'https://blog.hjx-25pc1.xyz', actionLabel: '前往博客' },
 ];
 ---
 
@@ -14,5 +14,14 @@ const cards = [
 	description="海南省经济技术学校 25 级计算机应用 1 班的班级网站，记录班级点滴，留下属于我们的回忆。这里汇集了班级的文档与博客入口。"
 >
 	<Hero title="25 级计算机应用 1 班" subtitle="记录班级点滴，留下属于我们的回忆。" />
-	<CardSection cards={cards} />
+
+	<main class="container mx-auto p-6 md:p-8 max-w-5xl space-y-6">
+		<!-- 导航 -->
+		<section class="space-y-3">
+			<h2 class="text-2xl font-bold px-1">导航</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				{navCards.map((card) => <Card {...card} />)}
+			</div>
+		</section>
+	</main>
 </Layout>
