@@ -18,7 +18,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "preinstall": "node scripts/check-package-manager.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -36,5 +37,6 @@
   },
   "allowScripts": {
     "esbuild": true
-  }
+  },
+  "packageManager": "npm@12.0.2"
 }
