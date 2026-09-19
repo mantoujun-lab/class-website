@@ -92,7 +92,17 @@ function normalizeCards(raw: unknown): StatusCard[] {
     if (!Array.isArray(parsed)) return [];
 
     return parsed
-      .map(normalizeStatusCard)
+      .map((value, index) => {
+        const card = normalizeStatusCard(value);
+        if (!card) {
+          const label =
+            isRecord(value) && value.id != null
+              ? `id=${String(value.id)}`
+              : `index=${index}`;
+          console.warn(`Skipping invalid status card (${label})`);
+        }
+        return card;
+      })
       .filter((card): card is StatusCard => card !== null)
       .slice(0, MAX_STATUS_CARDS);
   } catch {
