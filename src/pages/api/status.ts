@@ -7,6 +7,13 @@ export const prerender = false;
 
 const redis = Redis.fromEnv();
 
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Cache-Control': 'no-store, max-age=0',
+  'CDN-Cache-Control': 'no-store',
+  'Vercel-CDN-Cache-Control': 'no-store',
+};
+
 const MAX_STATUS_CARDS = 100;
 const MAX_ID_LENGTH = 100;
 const MAX_TITLE_LENGTH = 120;
@@ -99,13 +106,13 @@ export const GET: APIRoute = async () => {
     const cards = normalizeCards(raw);
     return new Response(JSON.stringify(cards), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: JSON_HEADERS,
     });
   } catch (err) {
     console.error('Failed to fetch status cards', err);
     return new Response(
       JSON.stringify({ ok: false, error: 'Internal server error' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: JSON_HEADERS }
     );
   }
 };
