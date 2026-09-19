@@ -10,9 +10,10 @@ import Hero from '../components/Hero.astro';
 	<Hero title="班级状态" subtitle="班级公告、安排与近况。" />
 	<main class="container mx-auto p-8 max-w-2xl">
 		<!-- Single-column card list -->
-		<div id="status-list" class="flex flex-col gap-4">
+		<div id="status-list" class="flex flex-col gap-4" aria-busy="true">
 			<!-- Loading skeleton -->
-			<div id="status-loading" class="flex flex-col gap-4">
+			<div id="status-loading" class="flex flex-col gap-4" role="status">
+				<span class="sr-only">正在加载班级动态...</span>
 				<div class="card bg-base-100 shadow">
 					<div class="card-body animate-pulse">
 						<div class="h-5 bg-base-300 rounded w-1/3"></div>
@@ -27,15 +28,25 @@ import Hero from '../components/Hero.astro';
 					</div>
 				</div>
 			</div>
+
+			<noscript>
+				<style>#status-loading { display: none; }</style>
+				<div class="alert alert-warning">
+					<span>需要启用 JavaScript 才能加载班级动态。</span>
+				</div>
+			</noscript>
+
 			<!-- Empty state -->
 			<div id="status-empty" class="hidden card bg-base-100 shadow">
 				<div class="card-body items-center text-center">
 					<p class="opacity-60">暂无状态卡片</p>
 				</div>
 			</div>
+
 			<!-- Error state -->
-			<div id="status-error" class="hidden alert alert-error">
-				<span>加载失败，请稍后重试</span>
+			<div id="status-error" class="hidden alert alert-error" role="alert">
+				<span id="status-error-message">加载失败，请稍后重试</span>
+				<button id="status-retry" type="button" class="btn btn-sm">重新加载</button>
 			</div>
 			<!-- Cards injected here -->
 		</div>
@@ -50,6 +61,8 @@ import Hero from '../components/Hero.astro';
 		time: string;
 		tags: string[];
 	}
+
+	const STATUS_TIMEOUT_MS = 8000;
 
 	function formatTime(iso: string): string {
 		try {
@@ -74,6 +87,13 @@ import Hero from '../components/Hero.astro';
 		return div.innerHTML;
 	}
 
+	function getTimestamp(value: string | undefined): number {
+		if (!value) return 0;
+
+		const timestamp = Date.parse(value);
+		return Number.isNaN(timestamp) ? 0 : timestamp;
+	}
+
 	function renderCard(card: StatusCard): string {
 		const tags = Array.isArray(card.tags)
 			? card.tags
@@ -83,54 +103,102 @@ import Hero from '../components/Hero.astro';
 					)
 					.join('')
 			: '';
+
 		return `
-			<article class="card bg-base-100 shadow">
+			<article class="card bg-base-100 shadow" data-status-card>
 				<div class="card-body gap-2">
 					<h3 class="card-title">${escapeHtml(card.title || '')}</h3>
 					<p class="whitespace-pre-wrap break-words opacity-80">${escapeHtml(
 						card.content || ''
 					)}</p>
 					<div class="flex flex-wrap gap-1 mt-1">${tags}</div>
-					<time class="text-xs opacity-50 mt-1">${formatTime(card.time)}</time>
+					<time class="text-xs opacity-50 mt-1" datetime="${escapeHtml(
+						card.time
+					)}">${escapeHtml(formatTime(card.time))}</time>
 				</div>
 			</article>
 		`;
 	}
 
+	function getErrorMessage(error: unknown): string {
+		if (error instanceof DOMException && error.name === 'AbortError') {
+			return '请求超时，请稍后重试';
+		}
+
+		return '加载失败，请稍后重试';
+	}
+
+	let isLoading = false;
+
 	async function loadStatus() {
+		if (isLoading) return;
+
 		const listEl = document.getElementById('status-list')!;
 		const loadingEl = document.getElementById('status-loading')!;
 		const emptyEl = document.getElementById('status-empty')!;
 		const errorEl = document.getElementById('status-error')!;
+		const errorMessageEl = document.getElementById('status-error-message')!;
+		const retryEl = document.getElementById('status-retry') as HTMLButtonElement;
+
+		isLoading = true;
+		retryEl.disabled = true;
+		loadingEl.classList.remove('hidden');
+		emptyEl.classList.add('hidden');
+		errorEl.classList.add('hidden');
+		listEl.setAttribute('aria-busy', 'true');
+		listEl.querySelectorAll('[data-status-card]').forEach((card) => card.remove());
+
+		const controller = new AbortController();
+		const timeoutId = window.setTimeout(() => controller.abort(), STATUS_TIMEOUT_MS);
 
 		try {
-			const res = await fetch('/api/status', { cache: 'no-store' });
+			const res = await fetch('/api/status', {
+				cache: 'no-store',
+				signal: controller.signal,
+			});
 			if (!res.ok) throw new Error(`HTTP ${res.status}`);
-			const cards: StatusCard[] = await res.json();
 
+			const payload: unknown = await res.json();
+			if (!Array.isArray(payload)) {
+				throw new Error('Invalid status response');
+			}
+
+			const cards = payload as StatusCard[];
 			loadingEl.classList.add('hidden');
-			if (!Array.isArray(cards) || cards.length === 0) {
+			listEl.setAttribute('aria-busy', 'false');
+
+			if (cards.length === 0) {
 				emptyEl.classList.remove('hidden');
 				return;
 			}
-			// Sort by time desc (latest first), fallback to original order
-			cards.sort((a, b) => {
-				const ta = a?.time ? Date.parse(a.time) : 0;
-				const tb = b?.time ? Date.parse(b.time) : 0;
-				return tb - ta;
-			});
-			cards.forEach((c) => {
+
+			cards.sort(
+				(a, b) => getTimestamp(b.time) - getTimestamp(a.time)
+			);
+
+			const fragment = document.createDocumentFragment();
+			cards.forEach((card) => {
 				const wrapper = document.createElement('div');
-				wrapper.innerHTML = renderCard(c);
-				listEl.appendChild(wrapper.firstElementChild as HTMLElement);
+				wrapper.innerHTML = renderCard(card);
+				const element = wrapper.firstElementChild;
+				if (element) fragment.appendChild(element);
 			});
+			listEl.appendChild(fragment);
 		} catch (err) {
 			loadingEl.classList.add('hidden');
+			errorMessageEl.textContent = getErrorMessage(err);
 			errorEl.classList.remove('hidden');
-			// eslint-disable-next-line no-console
+			listEl.setAttribute('aria-busy', 'false');
 			console.error('[status] load failed:', err);
+		} finally {
+			window.clearTimeout(timeoutId);
+			isLoading = false;
+			retryEl.disabled = false;
 		}
 	}
+
+	const retryEl = document.getElementById('status-retry');
+	retryEl?.addEventListener('click', loadStatus);
 
 	loadStatus();
 </script>
