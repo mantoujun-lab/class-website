@@ -29,8 +29,8 @@
     "@upstash/redis": "^1.38.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "astro": "^7.3.2",
-    "daisyui": "^5.7.37",
+    "astro": "^7.3.3",
+    "daisyui": "^5.7.42",
     "tailwindcss": "^4.3.3"
   },
   "overrides": {
