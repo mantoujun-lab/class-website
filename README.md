@@ -84,7 +84,7 @@ node --env-file=.env.local scripts/seed-status.mjs
 
 ### 环境变量
 
-状态页面功能需要配置 Upstash Redis。在项目根目录创建 `.env` 文件：
+状态页面功能需要配置 Upstash Redis。在项目根目录创建 `.env.local` 文件：
 
 ```
 UPSTASH_REDIS_REST_URL=your_upstash_redis_rest_url
@@ -94,6 +94,20 @@ UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_rest_token
 从 Upstash Redis 控制台获取这些凭据：https://upstash.com/
 
 **注意**：状态卡片数据通过 Upstash 控制台或 CLI 管理，接口仅提供读取功能。
+
+### 安全审计
+
+在 npmmirror 等国内镜像源下，`npm audit` 会因镜像未实现 audit 接口而失败。审计请使用官方源：
+
+```bash
+npm audit --registry=https://registry.npmjs.org
+```
+
+修复依赖漏洞同理：
+
+```bash
+npm audit fix --registry=https://registry.npmjs.org
+```
 
 ### 本地构建
 
@@ -115,6 +129,9 @@ npm run dev
 
 # 构建生产版本
 npm run build
+
+# 运行单元测试
+npm test
 
 # 本地预览构建产物
 npm run preview
