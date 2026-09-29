@@ -1,12 +1,14 @@
 ## Development
 
-Do NOT run `npm run dev` or `astro dev`. For verification, use `npm run build` only:
+Do NOT run `npm run dev` or `astro dev`. For verification, use:
 
 ```bash
+npm run check
+npm test
 npm run build
 ```
 
-The build output goes to `dist/`. Inspect `dist/index.html` to verify the result.
+The Vercel adapter stages the build output under `dist/client/` (not `dist/` root). Inspect `dist/client/index.html` to verify the result.
 
 ## Status Feature
 
@@ -15,7 +17,8 @@ The class status feature is split across three files:
 | File | Role |
 |------|------|
 | `src/pages/status.astro` | Frontend page: client-side fetch, loading/empty/error states, cards sorted by time desc, HTML-escaped rendering |
-| `src/pages/api/status.ts` | `GET /api/status` endpoint, `prerender = false`, reads `status_cards` from Upstash Redis, `normalizeCards()` for type safety |
+| `src/pages/api/status.ts` | `GET /api/status` endpoint, `prerender = false`, reads `status_cards` from Upstash Redis via a lazily-created client (clear error when env vars are missing) |
+| `src/lib/status-cards.ts` | `normalizeCards()` pure validation/normalization logic, unit-tested in `src/lib/status-cards.test.ts` |
 | `scripts/seed-status.mjs` | One-time seed script to write initial cards into Redis |
 
 Key design decisions:
