@@ -2,10 +2,24 @@
 // Other CRUD operations are intentionally omitted; update via the Upstash dashboard.
 import { Redis } from '@upstash/redis';
 import type { APIRoute } from 'astro';
+import { normalizeCards } from '../../lib/status-cards';
 
 export const prerender = false;
 
-const redis = Redis.fromEnv();
+// 懒初始化：不在模块加载阶段创建客户端，环境变量缺失时在请求阶段
+// 返回明确的配置错误，而不是无提示的 500（本地未配置 .env.local 时
+// 更友好；Vercel 上已配置变量，不受影响）。注意 SDK 还接受 KV_REST_API_*
+// 回退命名，但本项目只用文档中的 UPSTASH_* 变量，这里也只检查它们。
+let redis: Redis | null = null;
+
+function getRedis(): Redis | null {
+  if (redis) return redis;
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    return null;
+  }
+  redis = Redis.fromEnv();
+  return redis;
+}
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
@@ -14,105 +28,19 @@ const JSON_HEADERS = {
   'Vercel-CDN-Cache-Control': 'no-store',
 };
 
-const MAX_STATUS_CARDS = 100;
-const MAX_ID_LENGTH = 100;
-const MAX_TITLE_LENGTH = 120;
-const MAX_CONTENT_LENGTH = 5000;
-const MAX_TAG_LENGTH = 32;
-const MAX_TAGS = 8;
-
-interface StatusCard {
-  id: string;
-  title: string;
-  content: string;
-  time: string;
-  tags: string[];
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function normalizeRequiredText(value: unknown, maxLength: number): string | null {
-  if (typeof value !== 'string') return null;
-
-  const normalized = value.trim();
-  if (!normalized) return null;
-
-  return normalized.slice(0, maxLength);
-}
-
-function normalizeTags(value: unknown): string[] {
-  if (!Array.isArray(value)) return [];
-
-  const tags = new Set<string>();
-  for (const item of value) {
-    const tag = normalizeRequiredText(item, MAX_TAG_LENGTH);
-    if (!tag) continue;
-
-    tags.add(tag);
-    if (tags.size === MAX_TAGS) break;
-  }
-
-  return [...tags];
-}
-
-function normalizeTime(value: unknown): string | null {
-  if (typeof value !== 'string') return null;
-
-  const timestamp = Date.parse(value.trim());
-  if (Number.isNaN(timestamp)) return null;
-
-  return new Date(timestamp).toISOString();
-}
-
-function normalizeStatusCard(value: unknown): StatusCard | null {
-  if (!isRecord(value)) return null;
-
-  const id = normalizeRequiredText(value.id, MAX_ID_LENGTH);
-  const title = normalizeRequiredText(value.title, MAX_TITLE_LENGTH);
-  const content = normalizeRequiredText(value.content, MAX_CONTENT_LENGTH);
-  const time = normalizeTime(value.time);
-
-  if (!id || !title || !content || !time) return null;
-
-  return {
-    id,
-    title,
-    content,
-    time,
-    tags: normalizeTags(value.tags),
-  };
-}
-
-// Normalize KV reads and validate every card before exposing it to clients.
-function normalizeCards(raw: unknown): StatusCard[] {
-  try {
-    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
-    if (!Array.isArray(parsed)) return [];
-
-    return parsed
-      .map((value, index) => {
-        const card = normalizeStatusCard(value);
-        if (!card) {
-          const label =
-            isRecord(value) && value.id != null
-              ? `id=${String(value.id)}`
-              : `index=${index}`;
-          console.warn(`Skipping invalid status card (${label})`);
-        }
-        return card;
-      })
-      .filter((card): card is StatusCard => card !== null)
-      .slice(0, MAX_STATUS_CARDS);
-  } catch {
-    return [];
-  }
-}
+const NOT_CONFIGURED_ERROR =
+  'Upstash Redis is not configured: set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN';
 
 export const GET: APIRoute = async () => {
+  const client = getRedis();
+  if (!client) {
+    return new Response(
+      JSON.stringify({ ok: false, error: NOT_CONFIGURED_ERROR }),
+      { status: 500, headers: JSON_HEADERS }
+    );
+  }
   try {
-    const raw = await redis.get<unknown>('status_cards');
+    const raw = await client.get<unknown>('status_cards');
     const cards = normalizeCards(raw);
     return new Response(JSON.stringify(cards), {
       status: 200,
