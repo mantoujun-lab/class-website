@@ -25,13 +25,13 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vercel": "^11.0.10",
+    "@astrojs/vercel": "^11.0.11",
     "@tailwindcss/vite": "^4.3.3",
-    "@upstash/redis": "^1.38.4",
+    "@upstash/redis": "^1.39.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "astro": "^7.3.3",
-    "daisyui": "^5.7.42",
+    "astro": "^7.3.5",
+    "daisyui": "^5.7.46",
     "tailwindcss": "^4.3.3"
   },
   "overrides": {
