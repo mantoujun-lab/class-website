@@ -3,24 +3,98 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Card from '../components/Card.astro';
 
+// 班级概况（静态数据，与 /about 保持一致）
+const overview = [
+	{ title: '班级名称', description: '25 级计算机应用 1 班' },
+	{ title: '专业方向', description: '计算机应用' },
+	{ title: '班级人数', description: '37 人' },
+];
+
+// 站内导航 + 外部资源入口
 const navCards = [
-	{ title: '文档', description: '班级的文档', href: 'https://docs.hjx-25pc1.xyz', actionLabel: '前往文档' },
-	{ title: '博客', description: '班级的博客', href: 'https://blog.hjx-25pc1.xyz', actionLabel: '前往博客' },
+	{ title: '动态', description: '班级公告、活动安排与近况。', href: '/status/', actionLabel: '查看动态' },
+	{ title: '班级介绍', description: '认识这个集体，了解班级的组成、氛围与日常。', href: '/about/', actionLabel: '了解班级' },
+	{ title: '关于我们', description: '了解网站背后的 mantoujun\'s Lab 组织。', href: '/intro/', actionLabel: '查看详情' },
+	{ title: '文档', description: '班级的文档。', href: 'https://docs.hjx-25pc1.xyz', actionLabel: '前往文档' },
+	{ title: '博客', description: '班级的博客。', href: 'https://blog.hjx-25pc1.xyz', actionLabel: '前往博客' },
 ];
 ---
 
 <Layout
 	title="25 级计算机应用 1 班"
-	description="25 级计算机应用 1 班的班级网站，记录班级点滴，留下属于我们的回忆。这里汇集了班级的文档与博客入口。"
+	description="25 级计算机应用 1 班的班级网站，记录班级点滴，留下属于我们的回忆。这里汇集了班级的动态、介绍与文档、博客入口。"
 >
 	<Hero title="25 级计算机应用 1 班" subtitle="记录班级点滴，留下属于我们的回忆。" />
 
 	<main class="container mx-auto p-6 md:p-8 max-w-5xl space-y-6">
+		<!-- 欢迎语 -->
+		<section class="card bg-base-100 shadow-sm">
+			<div class="card-body">
+				<h2 class="card-title">👋 欢迎来到 25 级计算机应用 1 班</h2>
+				<p>
+					我们是一支由 37 名同学组成的集体，一起学习
+					<strong class="text-primary">计算机应用</strong>
+					的专业技能，也一起经历成长的酸甜苦辣。
+				</p>
+				<p class="opacity-80">这个网站记录了班级里那些有趣的、实用的、值得记住的瞬间，欢迎随便逛逛。</p>
+				<div class="card-actions justify-end mt-2">
+					<a href="/about/" class="btn btn-primary btn-sm">了解更多</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- 班级概况 -->
+		<section class="stats stats-vertical lg:stats-horizontal shadow w-full bg-base-100">
+			{overview.map((item) => (
+				<div class="stat">
+					<div class="stat-title">{item.title}</div>
+					<div class="stat-value text-primary text-lg md:text-xl break-words leading-tight">
+						{item.description}
+					</div>
+				</div>
+			))}
+		</section>
+
 		<!-- 导航 -->
 		<section class="space-y-3">
 			<h2 class="text-2xl font-bold px-1">导航</h2>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 				{navCards.map((card) => <Card {...card} />)}
+			</div>
+		</section>
+
+		<!-- 快捷入口 -->
+		<section class="space-y-3">
+			<h2 class="text-2xl font-bold px-1">快捷入口</h2>
+			<div class="flex flex-wrap gap-2">
+				<a class="btn btn-outline btn-sm" href="https://github.com/mantoujun-lab" target="_blank" rel="noopener noreferrer">
+					<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.804 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
+					GitHub
+				</a>
+				<a class="btn btn-outline btn-sm" href="https://qm.qq.com/q/Y31MDEbxWE" target="_blank" rel="noopener noreferrer">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 1024 1024" aria-hidden="true"><path d="M0 0h1024v1024H0z" fill="none"/><path fill="currentColor" d="M824.8 613.2c-16-51.4-34.4-94.6-62.7-165.3C766.5 262.2 689.3 112 511.5 112C331.7 112 256.2 265.2 261 447.9c-28.4 70.8-46.7 113.7-62.7 165.3c-34 109.5-23 154.8-14.6 155.8c18 2.2 70.1-82.4 70.1-82.4c0 49 25.2 112.9 79.8 159c-26.4 8.1-85.7 29.9-71.6 53.8c11.4 19.3 196.2 12.3 249.5 6.3c53.3 6 238.1 13 249.5-6.3c14.1-23.8-45.3-45.7-71.6-53.8c54.6-46.2 79.8-110.1 79.8-159c0 0 52.1 84.6 70.1 82.4c8.5-1.1 19.5-46.4-14.5-155.8"/></svg>
+					QQ 群
+				</a>
+				<a class="btn btn-outline btn-sm" href="https://discord.gg/hFEYKH3M4" target="_blank" rel="noopener noreferrer">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.6 18.6 0 0 0-5.487 0a12 12 0 0 0-.617-1.23A.08.08 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.1.1 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055a20 20 0 0 0 5.993 2.98a.08.08 0 0 0 .084-.026a14 14 0 0 0 1.226-1.963a.074.074 0 0 0-.041-.104a13 13 0 0 1-1.872-.878a.075.075 0 0 1-.008-.125q.19-.14.372-.287a.08.08 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.08.08 0 0 1 .079.009q.18.148.372.288a.075.075 0 0 1-.006.125q-.895.515-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.08.08 0 0 0 .084.028a20 20 0 0 0 6.002-2.981a.08.08 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028M8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38c0-1.312.956-2.38 2.157-2.38c1.21 0 2.176 1.077 2.157 2.38c0 1.312-.956 2.38-2.157 2.38m7.975 0c-1.183 0-2.157-1.069-2.157-2.38c0-1.312.955-2.38 2.157-2.38c1.21 0 2.176 1.077 2.157 2.38c0 1.312-.946 2.38-2.157 2.38"/></svg>
+					Discord
+				</a>
+				<a class="btn btn-outline btn-sm" href="https://gitee.com/mantoujun-lab" target="_blank" rel="noopener noreferrer">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m-1.852 4.444a3.704 3.704 0 0 0-3.704 3.704v6.913c0 .273.222.495.494.495h7.285a3.334 3.334 0 0 0 3.333-3.333v-2.84a.494.494 0 0 0-.495-.494h-5.678a.495.495 0 0 0-.494.494v1.234c0 .273.22.494.493.494h3.458c.272 0 .493.221.493.493v.248a1.48 1.48 0 0 1-1.481 1.481H9.16a.494.494 0 0 1-.494-.493v-4.692c0-.818.663-1.48 1.482-1.481h6.913a.495.495 0 0 0 .494-.494V6.938a.493.493 0 0 0-.494-.494z"/></svg>
+					Gitee
+				</a>
+				<a class="btn btn-outline btn-sm" href="mailto:contact@mantoujun-lab.com">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M18.75 12a6.75 6.75 0 1 0-3.375 5.846a.75.75 0 0 1 .75 1.299A8.251 8.251 0 1 1 20.25 12a.75.75 0 0 1-1.5 0"/><path fill="currentColor" d="M15.75 13a1.5 1.5 0 0 0 3 0h1.5a3 3 0 0 1-6 0z"/><path fill="currentColor" d="M14.25 12a2.25 2.25 0 1 0-4.5 0a2.25 2.25 0 0 0 4.5 0m1.5 0a3.75 3.75 0 1 1-7.5 0a3.75 3.75 0 0 1 7.5 0m4.5-.75V13h-1.5v-1.75z"/><path fill="currentColor" d="M14.25 14V9a.75.75 0 0 1 1.5 0v5a.75.75 0 0 1-1.5 0"/></svg>
+					邮箱
+				</a>
+				<button
+					type="button"
+					class="btn btn-outline btn-sm"
+					onclick="document.getElementById('modal_funding').showModal()"
+				>
+					<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" aria-hidden="true"><path d="M0 0h1024v1024H0z" fill="none" /><path fill="currentColor" d="M690.1 377.4c5.9 0 11.8.2 17.6.5c-24.4-128.7-158.3-227.1-319.9-227.1C209 150.8 64 271.4 64 420.2c0 81.1 43.6 154.2 111.9 203.6a21.5 21.5 0 0 1 9.1 17.6c0 2.4-.5 4.6-1.1 6.9c-5.5 20.3-14.2 52.8-14.6 54.3c-.7 2.6-1.7 5.2-1.7 7.9c0 5.9 4.8 10.8 10.8 10.8c2.3 0 4.2-.9 6.2-2l70.9-40.9c5.3-3.1 11-5 17.2-5c3.2 0 6.4.5 9.5 1.4c33.1 9.5 68.8 14.8 105.7 14.8c6 0 11.9-.1 17.8-.4c-7.1-21-10.9-43.1-10.9-66c0-135.8 132.2-245.8 295.3-245.8m-194.3-86.5c23.8 0 43.2 19.3 43.2 43.1s-19.3 43.1-43.2 43.1c-23.8 0-43.2-19.3-43.2-43.1s19.4-43.1 43.2-43.1m-215.9 86.2c-23.8 0-43.2-19.3-43.2-43.1s19.3-43.1 43.2-43.1s43.2 19.3 43.2 43.1s-19.4 43.1-43.2 43.1m586.8 415.6c56.9-41.2 93.2-102 93.2-169.7c0-124-120.8-224.5-269.9-224.5c-149 0-269.9 100.5-269.9 224.5S540.9 847.5 690 847.5c30.8 0 60.6-4.4 88.1-12.3c2.6-.8 5.2-1.2 7.9-1.2c5.2 0 9.9 1.6 14.3 4.1l59.1 34c1.7 1 3.3 1.7 5.2 1.7a9 9 0 0 0 6.4-2.6a9 9 0 0 0 2.6-6.4c0-2.2-.9-4.4-1.4-6.6c-.3-1.2-7.6-28.3-12.2-45.3c-.5-1.9-.9-3.8-.9-5.7c.1-5.9 3.1-11.2 7.6-14.5M600.2 587.2c-19.9 0-36-16.1-36-35.9s16.1-35.9 36-35.9s36 16.1 36 35.9s-16.2 35.9-36 35.9m179.9 0c-19.9 0-36-16.1-36-35.9s16.1-35.9 36-35.9s36 16.1 36 35.9a36.08 36.08 0 0 1-36 35.9" /></svg>
+					微信赞赏
+				</button>
 			</div>
 		</section>
 	</main>
