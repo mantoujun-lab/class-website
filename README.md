@@ -1,5 +1,3 @@
-![Cover](/public/cover.png)
-
 <div align="center">
 
 <!-- Badges -->
