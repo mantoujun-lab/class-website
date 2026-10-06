@@ -1,0 +1,29 @@
+---
+// 快捷联系方式按钮的共享组件：链接取自 src/lib/contact-links.ts，图标由 ContactIcon 渲染。
+import ContactIcon from './ContactIcon.astro';
+import { contactLinks } from '../lib/contact-links';
+
+export type ContactKind = keyof typeof contactLinks;
+
+interface Props {
+	kind: ContactKind;
+	variant?: 'btn-primary' | 'btn-outline';
+}
+const { kind, variant = 'btn-outline' } = Astro.props;
+
+const labels: Record<ContactKind, string> = {
+	github: 'GitHub',
+	qq: 'QQ 群',
+	discord: 'Discord',
+	gitee: 'Gitee',
+	email: '邮箱',
+};
+
+const href = kind === 'email' ? `mailto:${contactLinks.email}` : contactLinks[kind];
+const external = href.startsWith('http');
+---
+
+<a class={`btn ${variant} btn-sm`} href={href} target={external ? '_blank' : null} rel={external ? 'noopener noreferrer' : null}>
+	<ContactIcon kind={kind} />
+	{labels[kind]}
+</a>
