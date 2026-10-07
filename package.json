@@ -31,7 +31,7 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "astro": "^7.3.5",
-    "daisyui": "^5.7.46",
+    "daisyui": "^5.7.47",
     "tailwindcss": "^4.3.3"
   },
   "overrides": {
@@ -43,6 +43,6 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.3"
   }
 }
