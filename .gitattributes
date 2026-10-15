@@ -32,7 +32,7 @@
 *.cmd text eol=lf
 
 # Lockfiles must keep platform-specific endings as authored by tools.
-package-lock.json -text
+bun.lock text eol=lf
 pnpm-lock.yaml text eol=lf
 yarn.lock text eol=lf
 
