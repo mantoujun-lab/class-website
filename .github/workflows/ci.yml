@@ -1,0 +1,27 @@
+# This workflow installs dependencies with bun, builds the source code and runs tests.
+
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v7
+    - name: Setup Bun
+      # Version is read from the "packageManager" field in package.json.
+      uses: oven-sh/setup-bun@v2
+    - run: bun install --frozen-lockfile
+    - run: bun run check
+    - run: bun run test
+    - run: bun run build

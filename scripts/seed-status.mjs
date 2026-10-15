@@ -1,6 +1,6 @@
 // One-time seed script: write valid JSON to Upstash Redis status_cards key.
-// Run: npx vercel env pull .env.local  (if needed)
-//      node --env-file=.env.local scripts/seed-status.mjs
+// Run: bunx vercel env pull .env.local  (if needed)
+//      bun scripts/seed-status.mjs
 import { Redis } from '@upstash/redis';
 
 const redis = Redis.fromEnv();

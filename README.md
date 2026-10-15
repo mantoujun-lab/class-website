@@ -3,7 +3,7 @@
 <!-- Badges -->
 
 [![GitHub License](https://img.shields.io/github/license/mantoujun-lab/class-website?style=for-the-badge)](LICENSE)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mantoujun-lab/class-website/node.yml?style=for-the-badge)](https://github.com/mantoujun-lab/class-website/actions/workflows/node.yml)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mantoujun-lab/class-website/ci.yml?style=for-the-badge&label=CI)](https://github.com/mantoujun-lab/class-website/actions/workflows/ci.yml)
 [![Vercel](https://img.shields.io/badge/Vercel-black?style=for-the-badge&logo=Vercel)](https://vercel.com)
 [![Astro](https://img.shields.io/badge/Astro-black?style=for-the-badge&logo=astro)](https://astro.build/)
 
@@ -31,7 +31,8 @@
 
 - [Astro](https://astro.build) — 静态站点生成器，提供极快的页面加载速度与现代化的开发体验
 - [TypeScript](https://www.typescriptlang.org/) — 为 JavaScript 加上静态类型支持，让代码更健壮、更易于维护
-- [Node.js](https://nodejs.org/) 22.12+ — 本地开发与构建所需的运行时环境
+- [Bun](https://bun.sh/) 1.4+ — 包管理器与构建工具，负责安装依赖、运行脚本与打包
+- [Node.js](https://nodejs.org/) 22.12+ — Vercel 函数运行时（`/api/status`）
 - [Vercel](https://vercel.com) — 托管与部署平台，提供全球 CDN 与自动化发布能力
 - [GitHub Actions](https://github.com/features/actions) — 持续集成与持续部署（CI/CD）工具
 - [Upstash Redis](https://upstash.com) — Serverless Redis 数据库，用于状态卡片数据存储
@@ -65,10 +66,10 @@
 `scripts/seed-status.mjs` 用于向 Upstash Redis 的 `status_cards` 键写入初始数据：
 
 ```bash
-node --env-file=.env.local scripts/seed-status.mjs
+bun scripts/seed-status.mjs
 ```
 
-脚本使用 `@upstash/redis` SDK（自动对数组/对象执行 `JSON.stringify`），写入后会回读数据并打印以验证写入成功。
+Bun 会自动加载 `.env.local`（无需 `--env-file`）。脚本使用 `@upstash/redis` SDK（自动对数组/对象执行 `JSON.stringify`），写入后会回读数据并打印以验证写入成功。
 
 #### 数据格式
 
@@ -95,21 +96,21 @@ UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_rest_token
 
 ### 安全审计
 
-在 npmmirror 等国内镜像源下，`npm audit` 会因镜像未实现 audit 接口而失败。审计请使用官方源：
+在 npmmirror 等国内镜像源下，安全审计接口可能不可用。审计请使用官方源：
 
 ```bash
-npm audit --registry=https://registry.npmjs.org
+bun audit --registry=https://registry.npmjs.org
 ```
 
 修复依赖漏洞同理：
 
 ```bash
-npm audit fix --registry=https://registry.npmjs.org
+bun audit fix --registry=https://registry.npmjs.org
 ```
 
 ### 本地构建
 
-在开始之前，请确保你的电脑上已经安装了 Node.js 22.12 或更高版本。
+在开始之前，请确保你的电脑上已经安装了 [Bun](https://bun.sh/) 1.4 或更高版本（Node.js 22.12+ 仅在 Vercel 函数运行时使用）。
 
 ````bash
 # 克隆仓库
@@ -120,19 +121,19 @@ gh repo clone mantoujun-lab/class-website # Github CLI
 cd class-website
 
 # 安装依赖
-npm install
+bun install
 
 # 启动本地开发服务器
-npm run dev
+bun run dev
 
 # 构建生产版本
-npm run build
+bun run build
 
 # 运行单元测试
-npm test
+bun run test
 
 # 本地预览构建产物
-npm run preview
+bun run preview
 ````
 
 启动开发服务器后，打开浏览器访问 [http://localhost:4321](http://localhost:4321) 即可预览网站。

@@ -1,9 +1,13 @@
 ## Development
 
-Do NOT run `npm run dev` or `astro dev`. For verification, use `npm run build` only:
+This project uses **Bun** (`bun@1.4.2`) as its package manager. The `preinstall`
+guard in `scripts/check-package-manager.mjs` blocks npm/pnpm/yarn, so always use
+`bun install` / `bun run`.
+
+Do NOT run `bun run dev` or `astro dev`. For verification, use `bun run build` only:
 
 ```bash
-npm run build
+bun run build
 ```
 
 The build output goes to `dist/client/` (Vercel adapter splits client output into
@@ -12,9 +16,9 @@ The build output goes to `dist/client/` (Vercel adapter splits client output int
 Verification commands (run all three before pushing):
 
 ```bash
-npm run check
-npm test
-npm run build
+bun run check
+bun run test
+bun run build
 ```
 
 ## Status Feature

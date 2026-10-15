@@ -14,6 +14,7 @@
   "engines": {
     "node": ">=22.12.0"
   },
+  "packageManager": "bun@1.4.2",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -21,7 +22,7 @@
     "preview": "astro preview",
     "test": "vitest run",
     "astro": "astro",
-    "preinstall": "node scripts/check-package-manager.mjs"
+    "preinstall": "bun scripts/check-package-manager.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -37,9 +38,10 @@
   "overrides": {
     "path-to-regexp": "6.3.0"
   },
-  "allowScripts": {
-    "esbuild": true
-  },
+  "trustedDependencies": [
+    "esbuild",
+    "sharp"
+  ],
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "typescript": "^6.0.3",
