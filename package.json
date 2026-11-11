@@ -26,14 +26,14 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vercel": "^11.0.11",
-    "@tailwindcss/vite": "^4.3.3",
-    "@upstash/redis": "^1.39.0",
+    "@astrojs/vercel": "^11.0.20",
+    "@tailwindcss/vite": "^4.3.5",
+    "@upstash/redis": "^1.41.0",
     "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
-    "astro": "^7.3.5",
-    "daisyui": "^5.7.47",
-    "tailwindcss": "^4.3.3"
+    "@vercel/speed-insights": "^2.1.0",
+    "astro": "^7.4.7",
+    "daisyui": "^5.7.50",
+    "tailwindcss": "^4.3.5"
   },
   "overrides": {
     "path-to-regexp": "6.3.0"
@@ -43,8 +43,8 @@
     "sharp"
   ],
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.12",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.3"
+    "vitest": "^5.1.0"
   }
 }
